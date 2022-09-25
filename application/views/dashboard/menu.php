@@ -69,6 +69,7 @@
             // =base_url('rajaongkir');?>">Tarif Kirim</a> -->
             <a class="collapse-item" href="<?=base_url('ekspedisi');?>">Daftar Ekspedisi</a>
             <a class="collapse-item" href="<?=base_url('tahun');?>">Tahun</a>
+            <a class="collapse-item" href="<?=base_url('rekening');?>">Rekening</a>
 
           </div>
         </div>
