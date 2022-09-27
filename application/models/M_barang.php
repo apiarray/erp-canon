@@ -228,7 +228,8 @@ class M_barang extends CI_Model
             "ppn"=>$this->input->post('ppn',true),
             "setelahpajak"=>$this->input->post('setelahpajak',true),
             "hargasetoran"=>$this->input->post('hargasetoran',true),
-            "jumlah"=>$this->input->post('jumlah',true)
+            "jumlah"=>$this->input->post('jumlah',true),
+            "id_coa"=>$this->input->post('id_coa',true)
             // "image"=>$this->image = $this->_uploadImage()
             // "image"=>$this->image = $this->_uploadImage()
         ];

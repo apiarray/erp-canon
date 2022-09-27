@@ -109,11 +109,12 @@
                 <th>Kode Barang</th>
                 <th>Nama Barang</th>
                 <th>Kategori</th>
+                <th>Kode Akun</th>
                 <th>Manager</th>
                 <th>Gudang</th>
-                <th>QTY</th>
-                <th>Unit Bagus</th>
-                <th>Unit Rusak</th>
+                <th>Unit Masuk</th>
+                <th>Unit Keluar</th>
+                <th>Unit Saldo</th>
                 <th>HPP</th>
                 <th>Harga Sebelum Pajak</th>
                 <th>PPN</th>
@@ -130,8 +131,11 @@
                 $kode = $dt['kode'];
                 $nama = $dt['nama'];
                 $kategori = $dt['kategori'];
+                $kode_akun = $dt['id_coa'];
                 $manager = $dt['manager'];
                 $gudang = $dt['gudang'];
+                $unitmasuk = $dt['unitmasuk'];
+                $unitkeluar = $dt['unitkeluar'];
                 $qty = $dt['qty'];
                 $unitbagus = $dt['unitbagus'];
                 $unitrusak = $dt['unitrusak'];
@@ -142,6 +146,8 @@
                 $hargasetoran = $dt['hargasetoran'];
                 $jumlah = $dt['jumlah'];
                 $id = $dt['id'];
+                
+                $akun = $this->M_account->getDataById($dt['id_coa']);
             ?>
             <tr data-kode="<?= $kode; ?>" data-barang="<?= $nama; ?>" data-gudang="<?= $gudang; ?>" data-qty="<?= $qty; ?>" class="t-row">
                 <td>
@@ -167,37 +173,40 @@
                     ?>
                 </td>
                 <td>
+                    <?= "K-".$akun['kode']." - ".$akun['nama']; ?>
+                </td>
+                <td>
                     <?= $manager; ?>
                 </td>
                 <td>
                     <?= $gudang; ?>
                 </td>
                 <td class="">
+                    <?= $unitmasuk; ?>
+                </td>
+                <td class="">
+                    <?= $unitkeluar; ?>
+                </td>
+                <td class="">
                     <?= $qty; ?>                    
                 </td>
                 <td class="">
-                    <?= $unitbagus; ?>
+                    <?php echo number_format($hpp, 2, ',', '.'); ?>
                 </td>
                 <td class="">
-                    <?= $unitrusak; ?>
-                </td>
-                <td class="">
-                    <?php echo number_format($hpp, 0, '', '.'); ?>
-                </td>
-                <td class="">
-                    <?php echo number_format($sebelumpajak, 0, '', '.'); ?>
+                    <?php echo number_format($sebelumpajak, 2, ',', '.'); ?>
                 </td>
                 <td class="">
                     <?php echo $ppn."%"; ?>
                 </td>
                 <td class="">
-                    <?php echo number_format($setelahpajak, 0, '', '.'); ?>
+                    <?php echo number_format($setelahpajak, 2, ',', '.'); ?>
                 </td>
                 <td class="">
-                    <?php echo number_format($hargasetoran, 0, '', '.'); ?>
+                    <?php echo number_format($hargasetoran, 2, ',', '.'); ?>
                 </td>
                 <td class="">
-                    <?php echo number_format($jumlah, 0, '', '.'); ?>
+                    <?php echo number_format($jumlah, 2, ',', '.'); ?>
                 </td>
                 <td>
                     <div class="btn-group">
@@ -429,7 +438,17 @@
                                     <input type="text" class="form-control" id="inputTotal" name="jumlah" required>
                                 </div>
                             </div>
-
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="hpp">Kode Akun</label>
+                                    <select class="form-control" name="id_coa" id="id_coa">
+                                        <option value="" selected="" disabled="">- Select No Akun -</option>
+                                        <?php foreach ($akun as $key => $value) { ?>
+                                            <option value="<?= $value['id'] ?>"><?= "K-".$value['kode']." - ".$value['nama'] ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         <!-- /.box-body -->
                     </div>
@@ -463,6 +482,7 @@
     $setelahpajak=$i['setelahpajak'];
     $hargasetoran=$i['hargasetoran'];
     $jumlah=$i['jumlah'];
+    $id_coa=$i['id_coa'];
     ?>
 
     <!-- ============ MODAL EDIT BARANG =============== -->
@@ -479,7 +499,7 @@
                     <div class="modal-body">
                         <section class="content">
                             <div class="row">
-                                <div class="col-md-10">
+                                <div class="col-md-12">
                                     <div class="box-header with-border">
                                         <h3 class="box-title"></h3>
                                     </div>
@@ -570,16 +590,26 @@
                                                     <input type="text" class="form-control" id="inputTotal" name="jumlah" value="<?php echo $jumlah;?>" required>
                                                 </div>
                                             </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-6">
+                                                    <label for="hpp">Kode Akun</label>
+                                                    <select class="form-control" name="id_coa" id="id_coa">
+                                                        <?php foreach ($listakun as $key => $value) { ?>
+                                                            <option value="<?= $value['id'] ?>" <?php echo ($value['id'] == $id_coa) ? "selected" : ""; ?> ><?= "K-".$value['kode']." - ".$value['nama'] ?></option>
+                                                        <?php } ?>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
                                         <!-- /.box-body -->
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-info">Edit</button>
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
                         </section>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-info">Edit</button>
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
                     </div>
                 </form>
             </div>
