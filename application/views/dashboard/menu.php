@@ -69,6 +69,7 @@
             // =base_url('rajaongkir');?>">Tarif Kirim</a> -->
             <a class="collapse-item" href="<?=base_url('ekspedisi');?>">Daftar Ekspedisi</a>
             <a class="collapse-item" href="<?=base_url('tahun');?>">Tahun</a>
+            <a class="collapse-item" href="<?=base_url('rekening');?>">Rekening</a>
 
           </div>
         </div>
@@ -105,6 +106,9 @@
             <h6 class="collapse-header">Custom Akutansi:</h6>
             <a class="collapse-item" href="<?= base_url('account'); ?>">
               <i class="fas fa-project-diagram fa-sm fa-fw"></i>&nbsp;Chart of Account
+            </a>
+            <a class="collapse-item" href="<?= base_url('mapping_coa'); ?>">
+              <i class="fas fa-project-diagram fa-sm fa-fw"></i>&nbsp;Mapping COA
             </a>
             <a class="collapse-item" href="<?= base_url('jurnalumum'); ?>">
               <i class="fas fa-book fa-sm fa-fw"></i>&nbsp;Jurnal Umum
