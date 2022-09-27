@@ -1,6 +1,6 @@
 <?php
 
-class M_Rekening extends CI_Model{
+class M_rekening extends CI_Model{
     public function tampil_data(){
         return $this->db->get('tbl_rekening')->result_array();
     }

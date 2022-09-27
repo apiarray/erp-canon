@@ -5,13 +5,13 @@ class Rekening extends CI_Controller
     public function __construct(){
         parent::__construct();
         $this->load->model('M_Rekening');
-        $this->load->model('M_Account');
+        $this->load->model('M_account');
     }
     public function index(){
         $topik['judul'] = 'Halaman Menu Rekening';
         $data['rekening'] = $this->M_Rekening->tampil_data();
         foreach ($data['rekening'] as $key => $value) {
-            $data['rekening'][$key]['nama_akun'] = $this->M_Account->getDataById($value['id_chartofaccount']);
+            $data['rekening'][$key]['nama_akun'] = $this->M_account->getDataById($value['id_chartofaccount']);
         }
         $this->load->view('templates/header',$topik);
         $this->load->view('rekening/index',$data);
@@ -19,7 +19,7 @@ class Rekening extends CI_Controller
     }
     public function tambah(){
         $data['judul'] = 'Form Tambah Data Rekening';
-        $data['akun'] = $this->M_Account->tampil_data("up");
+        $data['akun'] = $this->M_account->tampil_data("up");
         
         $this->form_validation->set_rules('name','Name','required');
         $this->form_validation->set_rules('id_chartofaccount','No Akun','required');
@@ -43,7 +43,7 @@ class Rekening extends CI_Controller
     public function edit($id){
         $topik['judul'] = 'Edit Data Dosen';
         $data['rekening'] = $this->M_Rekening->getRekeningById($id);
-        $data['akun'] = $this->M_Account->tampil_data("up");
+        $data['akun'] = $this->M_account->tampil_data("up");
         // $data['program'] = ['Teknik Informatika','Teknik Elektro','Bahasa Indonesia','Bahasa Inggris','Matematika','PKN'];
        
         $this->form_validation->set_rules('name','Name','required');

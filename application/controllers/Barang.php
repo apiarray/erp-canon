@@ -8,6 +8,7 @@ class Barang extends CI_Controller {
     public function __construct(){
         parent::__construct();
         $this->load->model('m_barang');
+        $this->load->model('M_account');
         $this->load->library('form_validation');
         $this->load->library('dompdf_gen');
         date_default_timezone_set('Asia/Jakarta');
@@ -32,6 +33,10 @@ class Barang extends CI_Controller {
         $x['get_kategori'] = $this->m_barang->get_option_kategori();
         $x['get_gudang'] = $this->m_barang->get_option_gudang();
      
+        $x['akun'] = $this->M_account->tampil_data("up");
+        
+        $x['listakun'] = $this->M_account->tampil_data("up");
+        
         $this->load->view('templates/header',$topik);
         $this->load->view('barang/index_show',$x);
         $this->load->view('templates/footer');
@@ -128,7 +133,7 @@ class Barang extends CI_Controller {
 		$setelahpajak = $this->input->post('setelahpajak');
 		$hargasetoran = $this->input->post('hargasetoran');
 		$jumlah = $this->input->post('jumlah');
-	
+		$id_coa = $this->input->post('id_coa');
 	
 		$data = array(
 			'kode' => $kode,
@@ -143,7 +148,8 @@ class Barang extends CI_Controller {
 			'ppn' => $ppn,
 			'setelahpajak' => $setelahpajak,
 			'hargasetoran' => $hargasetoran,
-			'jumlah' => $jumlah	
+			'jumlah' => $jumlah	,
+			'id_coa' => $id_coa	
 			);
 		  $this->m_barang->input_data($data,'produk');
 		    $this->session->set_flashdata('flash','Ditambahkan');
@@ -170,6 +176,7 @@ class Barang extends CI_Controller {
         $this->form_validation->set_rules('setelahpajak','Setelahpajak','required');
         $this->form_validation->set_rules('hargasetoran','Hargasetoran','required');
         $this->form_validation->set_rules('jumlah','Jumlah','required');
+        $this->form_validation->set_rules('id_coa','Kode Akun','required');
 
         if ($this->form_validation->run() == FALSE) {
             $this->load->view('templates/header',$topik);
