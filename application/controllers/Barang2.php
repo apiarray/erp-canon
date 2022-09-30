@@ -7,7 +7,7 @@ class Barang2 extends CI_Controller {
         $this->load->model('M_barang');
         $this->load->model('M_user');
         $this->load->library('form_validation');
-        $this->curfmt = new NumberFormatter( 'id_ID', NumberFormatter::CURRENCY );
+        $this->curfmt = new \NumberFormatter( 'id_ID', NumberFormatter::CURRENCY );
     }
     
     // code refactor
@@ -28,8 +28,8 @@ class Barang2 extends CI_Controller {
         $this->load->view('templates2/footer');
     }
     
-    public function tambah(){
-        
+    public function tambah()
+    {
         $data['judul'] = 'Form Tambah Data';
 
         $this->form_validation->set_rules('nama','Nama','required');
@@ -46,7 +46,6 @@ class Barang2 extends CI_Controller {
         $this->form_validation->set_rules('setelahpajak','Setelahpajak','required');
         $this->form_validation->set_rules('hargasetoran','Hargasetoran','required');
         $this->form_validation->set_rules('jumlah','Jumlah','required');
-
 
         // $this->form_validation->set_rules('image','Image','required');
 
