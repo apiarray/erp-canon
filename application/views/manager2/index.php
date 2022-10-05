@@ -34,7 +34,28 @@
 <?php endif;?>
 
 <h5 class="font-weight-bold">Manager P & L</h5>
-
+<div class="row">
+    <div class="col-md-3">
+        <div class="input-group input-group-sm">
+            <div class="input-group-prepend">
+                <label for="name" class="input-group-text">Name :</label>
+            </div>
+            <select name="name" id="name" class="form-control form-control-sm">
+                <option value=""><?= $user->name ?></option>
+            </select>
+        </div> 
+    </div>
+    <div class="col-md-3">
+        <div class="input-group input-group-sm">
+            <div class="input-group-prepend">
+                <label for="idMitra" class="input-group-text">ID Mitra :</label>
+            </div>
+            <select name="idMitra" id="idMitra" class="form-control form-control-sm">
+                <option value=""><?= $user->kode ?></option>
+            </select>
+        </div> 
+    </div>
+</div>
 <div class="row mt-3 mb-2">
     <div class="col-lg-6">
         <form action="" method="post">
@@ -142,15 +163,28 @@
       </div>
       <form action="<?= base_url('manager2/tambahDataPenjualanManager');?>" method="POST"> 
         <div class="modal-body">
-          <div class="form-group">
-            <label for="kode">Kode</label>
-            <select name="kode" id="kode" class="form-control">
-              <option>Pilih kode barang</option>
-              <?php foreach($kode_barang as $kode_brg): ?>
-              <option value="<?= $kode_brg['kode']; ?>"><?= $kode_brg['kode']; ?></option>
-              <?php endforeach; ?>
-            </select>
-          </div>
+          <div class="form-group" id="kodeappend">
+              <div class="row">
+                  <div class="col-md-10">
+                  <label for="kode">Kode</label>
+                    <select name="kode" id="kode" class="form-control">
+                    <option>Pilih kode barang</option>
+                    <?php foreach($kode_barang as $kode_brg): ?>
+                        <option value="<?= $kode_brg['kode']; ?>"><?= $kode_brg['kode']; ?></option>
+                    <?php endforeach; ?>
+                    </select>
+                  </div>
+                  <div class="col-md-2 d-flex align-items-center">
+                      <a href="javascript:;" class="btn mt-4 btn-danger">X</a>
+                  </div>
+              </div>
+            
+            </div>
+            <div class="form-group">
+                <button class="btn btn-info" id="addKode">+</button>
+            </div>
+
+
           <div class="form-group">
             <label for="nama">Nama</label>
             <input name="nama" id="nama" class="form-control" value="" readonly/>
@@ -368,6 +402,7 @@
 
 <script>
 
+
   $('.datepicker').datepicker();
 
   function allData() {
@@ -420,6 +455,26 @@
       }
     });
   }
+
+  $('#addKode').on('click', function(e) {
+      e.preventDefault();
+     $('#kodeappend').append(`<div class="row">
+                  <div class="col-md-10">
+                  <label for="kode">Kode</label>
+                    <select name="kode" id="kode" class="form-control">
+                    <option>Pilih kode barang</option>
+                    <?php foreach($kode_barang as $kode_brg): ?>
+                        <option value="<?= $kode_brg['kode']; ?>"><?= $kode_brg['kode']; ?></option>
+                    <?php endforeach; ?>
+                    </select>
+                  </div>
+                  <div class="col-md-2 d-flex align-items-center">
+                      <a href="javascript:;" onClick="$(this).parent().parent().remove()" class="btn mt-4 btn-danger">X</a>
+                  </div>
+              </div>
+            `)
+  })
+
 
   $('#kode').on('change', function() {
     let barang = $('#kode').val();

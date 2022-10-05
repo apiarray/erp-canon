@@ -1,10 +1,5 @@
 <div class="content-wrapper col-12">
 <section class="content-header ml mt-2 auto">
-
-
-
-  
-
 </ol>
 <div style="margin-left:5px">
 
@@ -42,7 +37,7 @@
             <div class="input-group-prepend">
                     <label for="exampleCheck" class="input-group-text">JABATAN</label>
                 </div>
-            <select name="" id="" class="form-control">
+            <select name="jabatan" id="" class="form-control">
                     <option value=""></option>
                     <option value="">Branch Manager</option>
                     <option value="">Asistat Manager</option>
@@ -64,7 +59,7 @@
             <div class="input-group-prepend">
                     <label for="exampleCheck" class="input-group-text">MENU</label>
                 </div>
-            <select name="" id="" class="form-control">
+            <select name="mitra" id="" class="form-control">
                     <option value=""></option>
                     <option value="">Master Barang</option>
                     <option value="">Master Kategori</option>
@@ -81,7 +76,7 @@
             </div>
             
     </div>
-<a href="<?= base_url('users/tambah');?>" class="btn btn-info mb-2">Tambah Data</a>
+<a href="<?= base_url('hakakses/tambah');?>" class="btn btn-info mb-2">Tambah Data</a>
 <div class="table-responsive">
 <!-- <table class="table" id="dataTable" width="" cellspacing="0"> -->
 <table id="mytable" class="table table-striped table-bordered table-hover table-full-width dataTable" cellspacing="0" width="" style="font-size: small;">
@@ -92,7 +87,7 @@
                 <th>Role Id</th>
                 <th>Nama</th>
                 <th>Keterangan</th>
-                <!-- <th>Aksi</th> -->
+                <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -111,18 +106,12 @@
                 <td width="">
                     <?php echo $usr['description'] ?>
                 </td>
-                <!-- <td style="text-align:center"> -->
+                <td style="text-align:center">
                 
-                <!-- <div class="btn-group" > -->
-                    <!-- <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Action
-                    </button>
-                    <div class="dropdown-menu"> -->
-                    <!-- <a href="<?php echo base_url();?>users/edit/<?= $usr['id'];?>" class="btn btn-success" style=""><i class="fa fa-edit"></i>Edit</i></a> -->
-                    <!-- <a href="<?= base_url();?>users/hapus/<?= $usr['id'];?>" class="btn btn-danger " style="" onclick="return confirm('Yakin ingin dihapus?');"><i class="fa fa-trash"></i>Hapus</a> -->
-                    <!-- </div> -->
-                <!-- </div> -->
-                <!-- </td> -->
+                <div class="btn-group" >
+                    <a href="<?= base_url();?>users/hapus/<?= $usr['id'];?>" class="btn btn-danger mr-2" style="" onclick="return confirm('Yakin ingin dihapus?');"><i class="fa fa-trash"></i>Hapus</a>
+                    <a href="<?php echo base_url();?>users/edit/<?= $usr['id'];?>" class="btn btn-success" style=""><i class="fa fa-edit"></i>Edit</i></a>
+                </div>
             </tr>
             <?php $i++;?>
             <?php endforeach; ?>

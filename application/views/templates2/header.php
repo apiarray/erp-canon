@@ -44,7 +44,7 @@
     /* .navbar-custom {
     color: #FFFFFF;
     background-color: #CC3333; */
-}
+
   </style>
   <!-- <script>
       function tema1(){

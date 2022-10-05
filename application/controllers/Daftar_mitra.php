@@ -10,9 +10,10 @@ class Daftar_mitra extends CI_Controller {
         $this->load->model('M_daftar');
         $this->load->library('form_validation');
     }
+    
     public function index(){
         $topik['judul'] = 'Halaman Menu Daftar Mitra';
-        $data['daftarmitra'] = $this->M_daftar->tampil_data();
+        $data['daftarmitra'] = $this->M_daftar->tampil_data()->result_array();
         if ($this->input->post('keyword')) {
             $data['daftar_mitra'] = $this->M_daftar->cariDataSupplier();
         }
@@ -41,6 +42,7 @@ class Daftar_mitra extends CI_Controller {
             $nourut = substr($dariDB, 5, 4);
             $kodeMitraSekarang = $nourut + 1;
             $data = array("kode" => $kodeMitraSekarang);
+            $data['daftarmitra'] = $this->M_daftar->tampil_data()->result_array();
             $data['promoter'] = $this->M_daftar->tampil_promoter();
             $data['jabatan'] = $this->M_daftar->tampil_jabatan();
             $data['gudang'] = $this->M_daftar->tampil_gudang();

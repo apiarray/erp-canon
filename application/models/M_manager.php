@@ -264,4 +264,10 @@ class M_manager extends CI_Model {
         $this->db->or_like('alamat',$keyword);
         return $this->db->get('manager')->result_array();
     }
+
+    public function getMitra()
+    {
+      $query = $this->db->query('SELECT `name`,`kode` FROM daftar_mitra LEFT JOIN users ON daftar_mitra.kode = users.kode_id')->row();
+      return $query;
+    }
 }

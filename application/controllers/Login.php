@@ -29,7 +29,6 @@ class Login extends CI_Controller {
             if ($cekUsername > 0) {
                 if (password_verify($password, $data['password']) && $data['activated'] === "1") {
                     $sessData = $this->m_login->fetchSessData($username)->row_array();
-                
                     $jabatan = $sessData ? $sessData['jabatan'] : null;
                     $gudang = $sessData ? $sessData['gudang'] : null;
                     $akun_simpanan = $sessData ? $sessData['akun_simpanan'] : null;

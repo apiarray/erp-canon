@@ -13,6 +13,7 @@ class Manager2 extends CI_Controller {
         $topik['judul'] = 'Halaman Menu Manager Lain';
         $data['manager'] = $this->M_manager->tampil_data1();
         $data['kode_barang'] = $this->M_manager->kode_barang();
+        $data['user'] = $this->M_manager->getMitra();
         $this->load->view('templates2/header',$topik);
         $this->load->view('manager2/index',$data);
         $this->load->view('templates2/footer');
@@ -45,6 +46,7 @@ class Manager2 extends CI_Controller {
         if ($this->form_validation->run() == FALSE) {
             $this->load->view('templates2/header',$data);
             $this->load->view('manager2/tambah');
+            $this->load->view('templates2/footer');
         } else {
             $this->M_manager->tambahDataDownLine();
             $this->session->set_flashdata('flash','Ditambahkan');

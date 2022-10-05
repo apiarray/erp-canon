@@ -4,13 +4,14 @@ class Users extends CI_Controller
 {
     public function __construct(){
         parent::__construct();
+        $this->load->model('M_menu');
         $this->load->model('M_user');
         $this->load->library('form_validation');
         $this->load->library('session');
     }
     public function index(){
         $topik['judul'] = 'Halaman Menu User';
-        $data['tbl_user'] = $this->M_user->tampil_data();
+        $data['tbl_user'] = $this->M_user->tampil_data()->result_array();
         $this->load->view('templates/header',$topik);
         $this->load->view('user/index',$data);
         $this->load->view('templates/footer');
@@ -27,8 +28,9 @@ class Users extends CI_Controller
 		$this->form_validation->set_rules('id_role','Id_role','required');
 
         if ($this->form_validation->run() == FALSE) {
+            $data['roles'] = $this->M_user->getRole();
             $this->load->view('templates/header',$data);
-            $this->load->view('user/tambah');
+            $this->load->view('user/tambah', $data);
         }else {
             $this->M_user->tambahDataUser();
             $this->session->set_flashdata('flash','Ditambahkan');

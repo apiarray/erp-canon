@@ -54,6 +54,9 @@
     .rotator { 
         transform: rotateX(180deg);
     }
+    .size-check {
+      font-size: 6.8px;
+    }
 
     @keyframes wiggle {
         50% {

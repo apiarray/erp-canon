@@ -65,7 +65,7 @@
         </form>
     </div>
     <div class="col-lg-4">
-        <form action="" method="post">
+        <form action="<?= base_url('Manager2/search') ?>" method="post">
             <div class="input-group input-group-sm">
                 <div class="">
                     <button for="jabatan" class="btn btn-secondary">Cari</button>
@@ -103,6 +103,9 @@
                     <td>-</td>
                     <td>No. Inv</td>
                     <td>Tanggal</td>
+                    <td>Nominal Total</td>
+                    <td>Status tutup Buku</td>
+                    <td>Aksi</td>
                 </th>
             </thead>
             <tbody>
@@ -110,6 +113,13 @@
                     <td><input type="checkbox" name="" id=""></td>
                     <td>12/No/KPC-2020</td>
                     <td>12-09-2020</td>
+                    <td>Rp. 12312</td>
+                    <td>ad</td>
+                    <td>
+                        <a href="<?= base_url('Manager2/edit/') ?>" class="btn btn-warning">Edit</a>
+                        <a href="<?= base_url('Manager2/hapus/') ?>" class="btn btn-danger">Hapus</a>
+                        <a href="" class="btn btn-success">Preview</a>
+                    </td>
                 </th>
             </tbody>
         </table>
