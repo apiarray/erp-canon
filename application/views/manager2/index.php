@@ -460,7 +460,6 @@
       e.preventDefault();
      $('#kodeappend').append(`<div class="row">
                   <div class="col-md-10">
-                  <label for="kode">Kode</label>
                     <select name="kode" id="kode" class="form-control">
                     <option>Pilih kode barang</option>
                     <?php foreach($kode_barang as $kode_brg): ?>
@@ -469,7 +468,7 @@
                     </select>
                   </div>
                   <div class="col-md-2 d-flex align-items-center">
-                      <a href="javascript:;" onClick="$(this).parent().parent().remove()" class="btn mt-4 btn-danger">X</a>
+                      <a href="javascript:;" onClick="$(this).parent().parent().remove()" class="btn btn-danger">X</a>
                   </div>
               </div>
             `)
