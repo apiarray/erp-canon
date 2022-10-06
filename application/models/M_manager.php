@@ -70,6 +70,27 @@ class M_manager extends CI_Model {
 	 return $query->result_array();
 	}
 
+  public function getDataSearch()
+  {
+    $this->db->select('manager.no_invoice, bukubesar.tgl, bukubesar.tutup_buku');
+    $this->db->from('manager');
+    $this->db->join('bukubesar', 'bukubesar.kode = manager.kode_id');
+    return $this->db->get();
+  }
+
+  public function getSearch($getData = '')
+  {
+    $start_date = $getData['start_date'];
+    $end_date = $getData['end_date'];
+    $sql = "SELECT `manager`.`no_invoice`, `bukubesar`.`tgl`, `bukubesar`.`tutup_buku` 
+    FROM `manager` JOIN `bukubesar` ON
+    `bukubesar`.`kode` = `manager`.`kode_id`
+    WHERE `bukubesar`.`tgl` BETWEEN '$start_date' AND '$end_date'";
+    $query = $this->db->query($sql);
+  
+      return $query->result_array();
+  }
+
   function fetchData($weekending, $jabatan, $manager) {
     // if ($weekending && $jabatan && $manager) {
       $this->db->select('manager.*, daftarmitra.nama as mitra, gudang.nama as gudang');
