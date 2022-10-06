@@ -45,7 +45,6 @@ class Manager2 extends CI_Controller {
             ];
             $data['judul'] = 'Halaman Search Weekly';
             $data['datas'] = $this->M_manager->getSearch($getData);
-            
             $this->load->view('templates2/header',$data);
             $this->load->view('manager2/search',$data);
             $this->load->view('templates2/footer');

@@ -112,7 +112,7 @@
                     <td><input type="checkbox" name="" id=""></td>
                     <td><?= $data['no_invoice'] ?></td>
                     <td><?= $data['tgl'] ?></td>
-                    <td>Rp. 12312</td>
+                    <td><?= $data['hargasetoran'] ?></td>
                     <td><?= $data['tutup_buku'] ?></td>
                     <td>
                         <a href="<?= base_url('Manager2/edit/') ?>" class="btn btn-warning">Edit</a>
