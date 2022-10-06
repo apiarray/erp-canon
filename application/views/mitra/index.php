@@ -163,8 +163,8 @@
                     <div class="input-group-prepend">
                         <label for="taggal" class="input-group-text">Tanggal :</label>
                     </div>
-                    <input type="date" name="tgl_lahir" id="tgl_lahir" class="form-control form-control-sm">
-                    <input type="date" name="tgl_lahir" id="tgl_lahir" class="form-control form-control-sm">
+                    <input type="date" name="start_date" id="start_date" class="form-control form-control-sm">
+                    <input type="date" name="end_date" id="end_date" class="form-control form-control-sm">
                 </div>
                 </div>
                 <div class="input-group input-group-sm mt-1">
