@@ -1,6 +1,6 @@
 <?php
 
-class M_Account extends CI_Model{
+class M_account extends CI_Model{
     public function tampil_data($weekending) {
         if (!$weekending) {
             $this->db->order_by('kode', 'ASC');
