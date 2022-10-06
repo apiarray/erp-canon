@@ -153,7 +153,7 @@
 
 <!-- Modal Tambah-->
 <div class="modal fade" id="modalTambah" tabindex="-1" aria-labelledby="modalTambahlabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modalTambahlabel">Form Tambah Data</h5>
@@ -162,49 +162,51 @@
         </button>
       </div>
       <form action="<?= base_url('manager2/tambahDataPenjualanManager');?>" method="POST"> 
-        <div class="modal-body">
+        <div class="modal-body ">
           <div class="form-group" id="kodeappend">
+            <div>
+                <button class="btn btn-success mb-3" id="addKode">+</button>
+            </div>
               <div class="row">
-                  <div class="col-md-10">
-                  <label for="kode">Kode</label>
-                    <select name="kode" id="kode" class="form-control">
-                    <option>Pilih kode barang</option>
-                    <?php foreach($kode_barang as $kode_brg): ?>
-                        <option value="<?= $kode_brg['kode']; ?>"><?= $kode_brg['kode']; ?></option>
-                    <?php endforeach; ?>
-                    </select>
+                  <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="kode">Kode</label>
+                            <select name="kode" id="kode" class="form-control">
+                            <option>Pilih kode barang</option>
+                            <?php foreach($kode_barang as $kode_brg): ?>
+                                <option value="<?= $kode_brg['kode']; ?>"><?= $kode_brg['kode']; ?></option>
+                            <?php endforeach; ?>
+                            </select>
+                        </div>
                   </div>
-                  <div class="col-md-2 d-flex align-items-center">
-                      <a href="javascript:;" class="btn mt-4 btn-danger">X</a>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="nama">Nama</label>
+                        <input type="text" name="nama" id="nama" class="form-control" readonly>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="qty">QTY</label>
+                        <input type="text" name="qty" id="qty" class="form-control" readonly>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="nama">STOK</label>
+                        <input type="text" name="nama" id="nama" class="form-control">
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="fc">F/C</label>
+                        <input type="text" name="fc" id="fc" class="form-control">
+                    </div>
+                  </div>
+                  <div class="col-md-1">
+                      <button class="btn mt-4 btn-danger" id="del">X</button>
                   </div>
               </div>
-            
-            </div>
-            <div class="form-group">
-                <button class="btn btn-info" id="addKode">+</button>
-            </div>
-
-
-          <div class="form-group">
-            <label for="nama">Nama</label>
-            <input name="nama" id="nama" class="form-control" value="" readonly/>
-          </div>
-          <div class="form-group">
-            <label for="gudang">Gudang</label>
-            <input name="gudang" id="gudang" class="form-control" value="<?= $this->session->userdata('gudang'); ?>" readonly />
-          </div>
-          <div class="form-group">
-            <label for="qty">Qty</label>
-            <input name="qty" id="qty" class="form-control" value="0" />
-          </div>
-          <div class="form-group">
-            <label for="stok">Stok</label>
-            <input name="stok" id="stok" class="form-control" value="0" readonly/>
-          </div>
-          <div class="form-group">
-            <label for="ftc">F/C</label>
-            <input name="ftc" id="ftc" class="form-control" value="0"/>
-          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
@@ -459,16 +461,44 @@
   $('#addKode').on('click', function(e) {
       e.preventDefault();
      $('#kodeappend').append(`<div class="row">
-                  <div class="col-md-10">
-                    <select name="kode" id="kode" class="form-control">
-                    <option>Pilih kode barang</option>
-                    <?php foreach($kode_barang as $kode_brg): ?>
-                        <option value="<?= $kode_brg['kode']; ?>"><?= $kode_brg['kode']; ?></option>
-                    <?php endforeach; ?>
-                    </select>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="kode">Kode</label>
+                            <select name="kode" id="kode" class="form-control">
+                            <option>Pilih kode barang</option>
+                            <?php foreach($kode_barang as $kode_brg): ?>
+                                <option value="<?= $kode_brg['kode']; ?>"><?= $kode_brg['kode']; ?></option>
+                            <?php endforeach; ?>
+                            </select>
+                        </div>
                   </div>
-                  <div class="col-md-2 d-flex align-items-center">
-                      <a href="javascript:;" onClick="$(this).parent().parent().remove()" class="btn btn-danger">X</a>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="nama">Nama</label>
+                        <input type="text" name="nama" id="nama" class="form-control" readonly>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="qty">QTY</label>
+                        <input type="text" name="qty" id="qty" class="form-control" readonly>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="nama">STOK</label>
+                        <input type="text" name="nama" id="nama" class="form-control">
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="fc">F/C</label>
+                        <input type="text" name="fc" id="fc" class="form-control">
+                    </div>
+                  </div>
+                  <div class="col-md-1">
+                      <a href="javascript:;" onClick="$(this).parent().parent().remove()" class="btn mt-4 btn-danger">X</a >
+>>>>>>> aziz
                   </div>
               </div>
             `)
