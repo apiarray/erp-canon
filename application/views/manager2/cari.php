@@ -48,27 +48,26 @@
         </form>
     </div>
     <div class="col-lg-4">
-        <form action="" method="post">
+        <form action="<?= base_url('Manager2/search') ?>" method="get">
             <div class="input-group input-group-sm">
                 <div class="input-group-prepend">
                     <label for="jabatan" class="input-group-text">Tgl Awal :</label>
                 </div>
-                <input type="date" name="" id="" class="form-control">
+                <input type="date" name="start_date" id="" class="form-control">
             </div>
             <!-- <div class="d-flex mt-1"> -->
                 <div class="input-group input-group-sm mt-1">
                 <div class="input-group-prepend">
                     <label for="jabatan" class="input-group-text">Tgl Akhir :</label>
                 </div>
-                <input type="date" name="" id="" class="form-control">
+                <input type="date" name="end_date" id="" class="form-control">
             </div>
+            <button for="jabatan" class="btn mt-3 btn-secondary">Cari</button>
         </form>
     </div>
     <div class="col-lg-4">
-        <form action="<?= base_url('Manager2/search') ?>" method="post">
             <div class="input-group input-group-sm">
                 <div class="">
-                    <button for="jabatan" class="btn btn-secondary">Cari</button>
                 </div>
                 <!-- <input type="date" name="" id="" class="form-control"> -->
             </div>
@@ -88,7 +87,6 @@
                     <option value="">Pembayaran</option>
                 </select>
             </div>
-        </form>
     </div>
 </div>
 
@@ -108,13 +106,14 @@
                     <td>Aksi</td>
                 </th>
             </thead>
+            <?php foreach($datas as $data) : ?>
             <tbody>
                 <th>
                     <td><input type="checkbox" name="" id=""></td>
-                    <td>12/No/KPC-2020</td>
-                    <td>12-09-2020</td>
+                    <td><?= $data['no_invoice'] ?></td>
+                    <td><?= $data['tgl'] ?></td>
                     <td>Rp. 12312</td>
-                    <td>ad</td>
+                    <td><?= $data['tutup_buku'] ?></td>
                     <td>
                         <a href="<?= base_url('Manager2/edit/') ?>" class="btn btn-warning">Edit</a>
                         <a href="<?= base_url('Manager2/hapus/') ?>" class="btn btn-danger">Hapus</a>
@@ -122,6 +121,7 @@
                     </td>
                 </th>
             </tbody>
+            <?php endforeach; ?>
         </table>
     </div>
     <!-- ./table-responsive -->
