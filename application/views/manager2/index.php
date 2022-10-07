@@ -498,7 +498,6 @@
                   </div>
                   <div class="col-md-1">
                       <a href="javascript:;" onClick="$(this).parent().parent().remove()" class="btn mt-4 btn-danger">X</a >
->>>>>>> aziz
                   </div>
               </div>
             `)
