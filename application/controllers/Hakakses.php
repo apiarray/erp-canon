@@ -13,7 +13,6 @@ class Hakakses extends CI_Controller
         $topik['judul'] = 'Halaman Menu User';
         $data['tbl_role'] = $this->m_role->tampil_data();
         $data['jabatan'] = $this->m_akses->getJabatan();
-        var_dump($data['jabatan']);
         $this->load->view('templates/header',$topik);
         $this->load->view('hakakses/index',$data);
         $this->load->view('templates/footer');
@@ -28,13 +27,13 @@ class Hakakses extends CI_Controller
         if($this->form_validation->run() == FALSE) {
             $data['menus'] = $this->M_menu->getMenu();
             $data['subMenus'] = $this->M_menu->getSubMenu();
+            $data['roles'] = $this->M_menu->getRole();
             $this->load->view('templates/header', $topik);
             $this->load->view('hakakses/tambah', $data);
         } else {
-            $this->M_Akses->tambahHakAkses();
+            $this->m_akses->tambahHakAkses();
             $this->session->set_flashdata('flash', 'Ditambahkan');
             redirect('users');
         }
     }
-    
 }

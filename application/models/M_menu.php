@@ -15,6 +15,11 @@ class M_menu extends CI_Model {
       return $query;
   }
 
+  public function getRole()
+  {
+    $query = $this->db->get('tbl_role')->result_array();
+    return $query;
+  }
 }
 
 /* End of file M_menu_model.php */

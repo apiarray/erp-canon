@@ -1,17 +1,21 @@
 <div class="container">
-    <div class="col-md-6">
+    <div class="col-md-12">
         <h2 class="">Form Tambah Data Hak Akses</h2>
         <form action="<?= base_url('Hakakses/tambah') ?>" class="form-horizontal" method="POST">
-            <div class="form-group">
-                <label for="name">Nama</label>
-                <div class="form-inline d-flex justify-content-between">
-                    <input type="text" name="name" placeholder="Nama" class="form-control flex-grow-1">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="name">Nama</label>
+                        <div class="form-inline d-flex justify-content-between">
+                            <input type="text" name="name" placeholder="Nama" class="form-control flex-grow-1">
+                        </div>
+                        <small><span class="text-danger"><?=form_error('name');?></span></small>
+                    </div>
                 </div>
-                <small><span class="text-danger"><?=form_error('name');?></span></small>
             </div>
             
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -69,6 +73,16 @@
                         </tbody>
                         <?php endforeach; ?>
                     </table>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <select name="role" id="role" class="form-control">
+                            <option value="">Pilih Role ID</option>
+                            <?php foreach($roles as $role) : ?>
+                                <option value="<?= $role['id'] ?>"><?= $role['name'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
                 </div>
             </div>
             

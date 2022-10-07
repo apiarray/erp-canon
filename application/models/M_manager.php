@@ -72,9 +72,10 @@ class M_manager extends CI_Model {
 
   public function getDataSearch()
   {
-    $this->db->select('manager.no_invoice, bukubesar.tgl, bukubesar.tutup_buku');
+    $this->db->select('manager.no_invoice, bukubesar.tgl, produk.hargasetoran, bukubesar.tutup_buku');
     $this->db->from('manager');
     $this->db->join('bukubesar', 'bukubesar.kode = manager.kode_id');
+    $this->db->join('produk', 'produk.kode_id= manager.kode_id');
     return $this->db->get();
   }
 
@@ -82,13 +83,21 @@ class M_manager extends CI_Model {
   {
     $start_date = $getData['start_date'];
     $end_date = $getData['end_date'];
-    $sql = "SELECT `manager`.`no_invoice`, `bukubesar`.`tgl`, `bukubesar`.`tutup_buku` 
-    FROM `manager` JOIN `bukubesar` ON
-    `bukubesar`.`kode` = `manager`.`kode_id`
+    $sql = "SELECT
+    `manager`.`no_invoice`,
+    `bukubesar`.`tgl`,
+    `produk`.`hargasetoran`,
+    `bukubesar`.`tutup_buku`
+  FROM
+    manager
+  LEFT JOIN bukubesar ON
+     `bukubesar`.`kode` = `manager`.`kode_id`
+  LEFT JOIN produk ON
+    `produk`.`kode_id` = `manager`.`kode_id` 
     WHERE `bukubesar`.`tgl` BETWEEN '$start_date' AND '$end_date'";
     $query = $this->db->query($sql);
   
-      return $query->result_array();
+    return $query->result_array();
   }
 
   function fetchData($weekending, $jabatan, $manager) {
