@@ -25,7 +25,8 @@ class M_Akses extends CI_Model {
 
     $data = [
       'name' => $this->input->post('name', true),
-      'akses' => json_encode($data)
+      'akses' => json_encode($data),
+      'role_id' => $this->input->post('role', true)
     ];
 
     $this->db->insert('hakakses', $data);
