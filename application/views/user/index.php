@@ -74,6 +74,7 @@
                 <th>Username</th>
                 <th>Email</th>
                 <th>Password</th>
+                <th>Hak Akses User</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -98,6 +99,9 @@
                 </td>
                 <td width="">
                     <?php echo $usr['password'] ?>
+                </td>
+                <td>
+                    <?= $usr['name'] ?>
                 </td>
                 <td style="text-align:center">
                 

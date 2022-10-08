@@ -5,15 +5,25 @@
         <!-- <form action="" method="POST">  -->
         <form action="<?= base_url() ?>daftar_mitra/tambah" method="post">
             <div class="form-row">
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                 <label for="kode">ID</label>
                 <input type="text" class="form-control" id="kode" name="kode" value="MT-<?php echo sprintf("%04s", $kode) ?>" readonly>
 
                 <!-- <input type="text" class="form-control" id="inputKode" name="kode" required> -->
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                 <label for="inputNama">Nama</label>
                 <input type="text" class="form-control" id="inputNama" name="name" required>
+                </div>
+                <div class="form-group col-md-4">
+                <label for="inputNama">Username</label>
+                <select name="username" id="username" class="form-control">
+                    <?php foreach($daftarmitra as $df) : ?>
+                        <?php if(isset($df['username'])) : ?>
+                            <option value=""><?= $df['username']; ?></option>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </select>
                 </div>
             </div>
             <div class="form-row">

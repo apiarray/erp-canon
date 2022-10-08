@@ -78,6 +78,7 @@
                 <th>No.</th>
                 <th>ID</th>
                 <th>Nama</th>
+                <th>Username</th>
                 <th>Tgl_lahir</th>
                 <th>Jabatan</th>
                 <th>Promoter</th>
@@ -102,6 +103,9 @@
                 </td>
                 <td width="">
                     <?php echo $daf['name'] ?>
+                </td>
+                <td>
+                    <?= $daf['username']; ?>
                 </td>
                 <td>
                     <?php echo $daf['tgl_lahir'] ?>
