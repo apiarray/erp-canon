@@ -368,7 +368,7 @@ class M_barang extends CI_Model
         $this->db->join("($penerimaanProdukMitra) as penerimaanProduk", 'penerimaanProduk.nama = produk.nama', 'LEFT');
         $this->db->join("($pengirimanProdukMitra) as pengirimanProduk", 'pengirimanProduk.nama = produk.nama', 'LEFT');
         $this->db->where('produk.gudang', $gudang);
-        $this->db->where_in('produk.kode', $produkList);
+        //$this->db->where_in('produk.kode', $produkList);
         return $this->db->get()->result_array();
     }
 }
