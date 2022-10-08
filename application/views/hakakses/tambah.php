@@ -86,6 +86,7 @@
                 </div>
             </div>
             
+            
             <button type="submit" class="btn btn-primary mb-2">Tambah Data</button>
             <a href="<?=base_url('users');?>" class="btn btn-success mb-2">Kembali</a>
         </form>
