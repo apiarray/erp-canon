@@ -1,4 +1,8 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed');
+<?php
+
+use LDAP\Result;
+
+ defined('BASEPATH') or exit('No direct script access allowed');
 
 class M_barang extends CI_Model
 {
@@ -327,7 +331,7 @@ class M_barang extends CI_Model
         return $query->result();
     }
 
-    public function get_barang_mitra($gudang)
+    public function get_barang_mitra($gudang, $manager)
     {
         $this->db->select('
             kode,
@@ -368,7 +372,12 @@ class M_barang extends CI_Model
         $this->db->join("($penerimaanProdukMitra) as penerimaanProduk", 'penerimaanProduk.nama = produk.nama', 'LEFT');
         $this->db->join("($pengirimanProdukMitra) as pengirimanProduk", 'pengirimanProduk.nama = produk.nama', 'LEFT');
         $this->db->where('produk.gudang', $gudang);
+        $this->db->where('produk.manager', $manager);
+        $this->db->distinct();
         //$this->db->where_in('produk.kode', $produkList);
-        return $this->db->get()->result_array();
+        $result = $this->db->get()->result_array();
+        // echo json_encode($result);
+        // die();
+        return $result;
     }
 }

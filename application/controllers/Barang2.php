@@ -14,16 +14,17 @@ class Barang2 extends CI_Controller {
     public function index() {
         $topik['judul'] = 'Halaman Menu Produk';
         $gudangId = $this->session->userdata('gudang');
+        $username = $this->session->userdata('username');
 
         if ($this->input->post('show')) {
             $viewPath = 'barang2/show';
 
             $data['curfmt'] = $this->curfmt;
             //$data['produk'] = $this->M_barang->showBarangClient();
-            $data['produk'] = $this->M_barang->get_barang_mitra($gudangId);
+            $data['produk'] = $this->M_barang->get_barang_mitra($gudangId, $username);
         } else {
             $viewPath = 'barang2/index';
-            $data['produk'] = $this->M_barang->get_barang_mitra($gudangId);
+            $data['produk'] = $this->M_barang->get_barang_mitra($gudangId, $username);
         }
 
         $this->load->view('templates2/header',$topik);
