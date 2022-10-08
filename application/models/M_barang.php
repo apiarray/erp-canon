@@ -364,7 +364,7 @@ class M_barang extends CI_Model
             IFNULL(pengirimanProduk.total_amount, 0) as total_out
         ');
         $this->db->from('produk');
-        $this->db->join('tbl_category', 'tbl_category.kode = produk.kategori');
+        $this->db->join('tbl_category', 'tbl_category.kode = produk.kategori', 'LEFT');
         $this->db->join("($penerimaanProdukMitra) as penerimaanProduk", 'penerimaanProduk.nama = produk.nama', 'LEFT');
         $this->db->join("($pengirimanProdukMitra) as pengirimanProduk", 'pengirimanProduk.nama = produk.nama', 'LEFT');
         $this->db->where('produk.gudang', $gudang);
