@@ -7,20 +7,23 @@ class Barang2 extends CI_Controller {
         $this->load->model('M_barang');
         $this->load->model('M_user');
         $this->load->library('form_validation');
-        $this->curfmt = new \NumberFormatter( 'id_ID', NumberFormatter::CURRENCY );
+        $this->curfmt = new \NumberFormatter( 'id_ID', \NumberFormatter::CURRENCY );
     }
     
     // code refactor
     public function index() {
         $topik['judul'] = 'Halaman Menu Produk';
+        $gudangId = $this->session->userdata('gudang');
 
         if ($this->input->post('show')) {
             $viewPath = 'barang2/show';
+
             $data['curfmt'] = $this->curfmt;
-            $data['produk'] = $this->M_barang->showBarangClient();
+            //$data['produk'] = $this->M_barang->showBarangClient();
+            $data['produk'] = $this->M_barang->get_barang_mitra($gudangId);
         } else {
             $viewPath = 'barang2/index';
-            $data = '';
+            $data['produk'] = $this->M_barang->get_barang_mitra($gudangId);
         }
 
         $this->load->view('templates2/header',$topik);

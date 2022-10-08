@@ -59,7 +59,7 @@
         <div class="col-lg-2">
         <form action="<?= base_url('barang2'); ?>" method="post">
             <input type="hidden" name="show" value="true">
-            <button type="submit" class="btn btn-primary">Show All </button>
+            <!-- <button type="submit" class="btn btn-primary">Show All </button> -->
         </form>
         </div>
         <div class="col-lg-4">
@@ -110,31 +110,35 @@
 <!-- <a href="<?= base_url('barang/laporan_pdf');?>" class="btn btn-danger mb-2">Export PDF</a> -->
 <br>
 
-
-
 <!-- </div> -->
 <div class="">
  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
     <thead>
         <tr >
-            <th>No.</th>
             <th>Kode Barang</th>
             <th>Nama Barang</th>
-            <th>Manager</th>
-            <th>Gudang</th>
-            <th>QTY</th>
-            <th>Unit Bagus</th>
-            <th>Unit Rusak</th>
-            <th>HPP</th>
-            <th>Harga Sebelum Pajak</th>
-            <th>PPN</th>
-            <th>Harga Setelah Pajak</th>
+            <th>Kategori</th>
+            <th>QTY Masuk</th>
+            <th>QTY Keluar</th>
+            <th>Saldo Barang</th>
             <th>Harga Setoran</th>
-            <th>Jumlah Modal</th>
             <th>Aksi</th>
         </tr>
     </thead>
-    <tbody></tbody>
+    <tbody>
+        <?php foreach($produk as $item): ?>
+            <tr>
+                <td><?= $item['kode'] ?></td>
+                <td><?= $item['nama'] ?></td>
+                <td><?= $item['kategori'] ?></td>
+                <td><?= $item['total_in'] ?></td>
+                <td><?= $item['total_out'] ?></td>
+                <td><?= $item['total_in'] - $item['total_out'] ?></td>
+                <td>Rp <?= number_format($item['hargasetoran'], 0, ',', '.') ?></td>
+                <td></td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
 </table>
 
     <!-- Untuk Footer Bawah -->
