@@ -2,8 +2,17 @@
 
 class M_penerimaan extends CI_Model{
     function tampil_data(){
-        $hasil=$this->db->query("SELECT * FROM penerimaan");
-		 return $hasil;
+		$this->db->select('*');
+		$this->db->from('penerimaan');
+		$this->db->order_by('id', 'DESC');
+		
+		$tanggal = $this->input->post('tanggal',true);
+		$tanggalSampai = $this->input->post('tanggal_sampai',true);
+		if (isset($tanggal) && isset($tanggalSampai)) {
+			$this->db->where('tanggal >=', $tanggal);
+			$this->db->where('tanggal <=', $tanggalSampai);
+		}
+		return $this->db->get();
     }
 	
 	function tampil_data_akun(){
@@ -29,22 +38,40 @@ class M_penerimaan extends CI_Model{
     }
 	
 	function tampil_total_qty(){
-        $hasil=$this->db->query("SELECT SUM(`total_qty`) AS sum_total_qty FROM `penerimaan`");
-		 return $hasil;
+		$this->db->select('COALESCE(SUM(total_qty), 0) AS sum_total_qty', FALSE);
+		$this->db->from('penerimaan');
+		
+		$tanggal = $this->input->post('tanggal',true);
+		$tanggalSampai = $this->input->post('tanggal_sampai',true);
+		if (isset($tanggal) && isset($tanggalSampai)) {
+			$this->db->where('tanggal >=', $tanggal);
+			$this->db->where('tanggal <=', $tanggalSampai);
+		}
+
+		return $this->db->get();
     }
 	
 	function tampil_total_harga(){
-        $hasil=$this->db->query("SELECT SUM(`harga`) AS sum_total_harga FROM `penerimaan`");
-		 return $hasil;
+		$this->db->select('COALESCE(SUM(harga), 0) AS sum_total_harga', FALSE);
+		$this->db->from('penerimaan');
+		
+		$tanggal = $this->input->post('tanggal',true);
+		$tanggalSampai = $this->input->post('tanggal_sampai',true);
+		if (isset($tanggal) && isset($tanggalSampai)) {
+			$this->db->where('tanggal >=', $tanggal);
+			$this->db->where('tanggal <=', $tanggalSampai);
+		}
+
+		return $this->db->get();
     }
 	
 	function tampil_cetak(){
-	 $this->db->select('*');
-	 $this->db->from('penerimaan');
-	 $this->db->order_by('id', 'DESC');
-	 $this->db->limit(1);
-	 $query = $this->db->get();
-	 return $query->result();
+		$this->db->select('*');
+		$this->db->from('penerimaan');
+		$this->db->order_by('id', 'DESC');
+		$this->db->limit(1);
+		$query = $this->db->get();
+		return $query->result();
 	}
 	
     public function tampil(){
@@ -56,19 +83,19 @@ class M_penerimaan extends CI_Model{
 		  $this->db->order_by('no_lpb','DESC');    
 		  $this->db->limit(1);    
 		  $query = $this->db->get('penerimaan');  //cek dulu apakah ada sudah ada kode di tabel.    
-		  if($query->num_rows() <> 0){      
-			   //cek kode jika telah tersedia    
-			   $data = $query->row();      
-			   $kode = intval($data->no_lpb) + 1; 
-		  }
-		  else{      
+		if($query->num_rows() <> 0){      
+			//cek kode jika telah tersedia    
+			$data = $query->row();      
+			$kode = intval($data->no_lpb) + 1; 
+		}
+		else{      
 			   $kode = 1;  //cek jika kode belum terdapat pada table
-		  }
-			  $tgl=date('d'); 
-			  $batas = str_pad($kode, 4, "LPB", STR_PAD_LEFT);    
-			  $kodetampil = ""."".$tgl.$batas;  //format kode
-			  return $kodetampil;  
-		 }
+		}
+				$tgl=date('d'); 
+				$batas = str_pad($kode, 4, "LPB", STR_PAD_LEFT);    
+				$kodetampil = ""."".$tgl.$batas;  //format kode
+				return $kodetampil;  
+		}
 	
 	public function tampil_datamitra(){
         $hasil=$this->db->query("SELECT * FROM daftarmitra");

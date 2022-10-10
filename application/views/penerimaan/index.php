@@ -91,30 +91,29 @@
 <div class="content-wrapper col-12">
 <section class="content-header ml mt-2 auto">
 
-<div class="row mt-3">
+<form action="" method="post">
+    <div class="row mt-3">
         <div class="col-4">
-            <form action="" method="post">
-                <div class="input-group input-group-sm">
-                    <div class="input-group-prepend">
-                        <label for="weekending" class="input-group-text">Supplier :</label>
-                    </div>
-                    <input type="text" name="supplier" id="nama"  class="form-control form-control-sm" data-toggle="modal" data-target="#myModal">
+            <div class="input-group input-group-sm">
+                <div class="input-group-prepend">
+                    <label for="weekending" class="input-group-text">Supplier :</label>
                 </div>
-                <div class="input-group input-group-sm mt-1">
-                    <div class="input-group-prepend">
-                        <label for="alamat" class="input-group-text">No. Sj Supplier :</label>
-                    </div>
-                    <input type="text" name="no_sj" class="form-control form-control-sm">
+                <input type="text" name="supplier" id="nama"  class="form-control form-control-sm" data-toggle="modal" data-target="#myModal">
+            </div>
+            <div class="input-group input-group-sm mt-1">
+                <div class="input-group-prepend">
+                    <label for="alamat" class="input-group-text">No. Sj Supplier :</label>
                 </div>
-                <div class="input-group input-group-sm mt-1">
-                    <div class="input-group-prepend">
-                        <label for="namawin2mgr" class="input-group-text">Tgl. SJ Supplier :</label>
-                    </div>
-                    <input type="text" name="tanggal" value="<?php echo date('d/m/Y'); ?>"  class="form-control form-control-sm">
-                    <!-- <input type="text" name="namawin2mgr" id="namawin2mgr" class="form-control form-control-sm"> -->
+                <input type="text" name="no_sj" class="form-control form-control-sm">
+            </div>
+            <div class="input-group input-group-sm mt-1">
+                <div class="input-group-prepend">
+                    <label for="namawin2mgr" class="input-group-text">Tgl</label>
                 </div>
-                
-           
+                <input type="text" name="tanggal" value="<?php echo date('d/m/Y'); ?>"  class="form-control form-control-sm">
+                <span>&nbsp; sd &nbsp;</span>
+                <input type="text" name="tanggal_sampai" value="<?php echo date('d/m/Y'); ?>"  class="form-control form-control-sm">
+            </div>
         </div>
         <div class="col-4">
                 <div class="input-group input-group-sm">
@@ -136,8 +135,8 @@
                     <input type="text" name="no_kontiner"  class="form-control form-control-sm">
                     <!-- <input type="text" name="namawin2mgr" id="namawin2mgr" class="form-control form-control-sm"> -->
                 </div>
-               
-   
+            
+
         </div>
         <div class="col-4">
                 <div class="input-group input-group-sm">
@@ -159,12 +158,14 @@
                     <input type="text" name="no_segel"  class="form-control form-control-sm">
                     <!-- <input type="text" name="namawin2mgr" id="namawin2mgr" class="form-control form-control-sm"> -->
                 </div>
-              
         </div>
-	
- </form>
+        <div class="col-4">
+            <button type="submit" class="btn btn-info mb-2 mt-2">Submit</button>
+            <a href="<?php echo base_url('penerimaan/tambah'); ?>" class="btn btn-primary mb-2 mt-2">Tambah Data</a>
+        </div>
+    </div>
+</form>
            
-        </div>
 
   
 
@@ -192,8 +193,6 @@
 </div>
 <?php endif;?>
  
- 	<a href="<?php echo base_url('penerimaan/tambah'); ?>" class="btn btn-primary mb-2 mt-2">Tambah Data</a>
- 
 <div class="table-responsive">
 <!-- <table class="table" id="dataTable" width="" cellspacing="0"> -->
 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -201,13 +200,11 @@
         <thead>
             <tr style="text-align:center;">
                 <th style="text-align:center;">No.</th>
-                <th>Kode Barang</th>
-                <th>Nama Barang</th>
-                <th>Qty Karton</th>
-                <th>Satuan Karton</th>
-                <th>Total Qty</th>
-                <th>Harga</th>
+                <th>NO LPB</th>
+                <th>Nama Supplier</th>
+                <th>No SJ Supplier</th>
                 <th>Total</th>
+                <th>Tanggal</th>
                 <th style="text-align:center;">Aksi</th>
             </tr>
         </thead>
@@ -216,12 +213,10 @@
 				$no = 1;				   
 				foreach($data1->result_array() as $i):
 				    $id=$i['id'];
-					$kode_id=$i['kode'];
-					$nama=$i['nama'];
-					$qty=$i['qty'];
-					$isi_karton=$i['isi_karton'];
-					$total_qty=$i['total_qty'];
-					$harga=$i['harga'];
+					$no_lpb=$i['no_lpb'];
+					$supplier=$i['supplier'];
+					$no_sj=$i['no_sj'];
+					$tanggal=$i['tanggal'];
 					$total=$i['total_qty']*$i['harga'];
 	           ?>
             <tr>
@@ -229,25 +224,19 @@
                    <?php echo $no++ ?>
                 </td>
                 <td style="text-align:center;">
-                    <?php echo $kode_id ?>
+                    <?php echo $no_lpb ?>
                 </td>
                 <td>
-                    <?php echo $nama ?>
+                    <?php echo $supplier ?>
                 </td>
                 <td style="text-align:center;">
-                    <?php echo $qty ?>
+                    <?php echo $no_sj ?>
                 </td>
                 <td style="text-align:center;">
-                    <?php echo $isi_karton ?>
+                    <?php echo number_format($total, 2, ',', '.'); ?>
                 </td>
                 <td style="text-align:center;">
-                    <?php echo $total_qty ?>
-                </td>
-                <td style="text-align:center;">
-                    <?php echo $harga?>
-                </td>
-                <td style="text-align:center;">
-                    <?php echo $total?>
+                    <?php echo $tanggal ?>
                 </td>
                 <td style="text-align:center;">
                 
@@ -257,6 +246,7 @@
                     </button>
                     <div class="dropdown-menu">
                    <a href="<?= base_url();?>penerimaan/edit/<?= $id;?>"  class="btn btn-success mt-2" style="margin-left:42px"><i class="fa fa-edit"></i>Edit</i></a>
+                   <a href="<?= base_url();?>penerimaan/cetak/<?= $id;?>"  class="btn btn-success mt-2" style="margin-left:42px"><i class="fa fa-print"></i>Cetak</i></a>
                     <a href="<?= base_url();?>penerimaan/hapus/<?= $id;?>" class="btn btn-danger mt-2" style="margin-left:35px" onclick="return confirm('Yakin ingin dihapus?');"><i class="fa fa-trash"></i>Hapus</a>
                     </div>
                 </div>
