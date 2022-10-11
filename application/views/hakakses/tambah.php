@@ -1,6 +1,5 @@
 <div class="container">
     <div class="col-md-12">
-        <h2 class="">Form Tambah Data Hak Akses</h2>
         <form action="<?= base_url('Hakakses/tambah') ?>" class="form-horizontal" method="POST">
             <div class="row">
                 <div class="col-md-3">
