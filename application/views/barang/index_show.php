@@ -110,7 +110,7 @@
                 <th>Nama Barang</th>
                 <th>Kategori</th>
                 <th>Kode Akun</th>
-                <th>Manager</th>
+                <!-- <th>Manager</th> -->
                 <th>Gudang</th>
                 <th>Unit Masuk</th>
                 <th>Unit Keluar</th>
@@ -175,9 +175,9 @@
                 <td>
                     <?= "K-".$akun['kode']." - ".$akun['nama']; ?>
                 </td>
-                <td>
+                <!-- <td>
                     <?= $manager; ?>
-                </td>
+                </td> -->
                 <td>
                     <?= $gudang; ?>
                 </td>
@@ -240,7 +240,7 @@
                                <th>Kode Barang</th>
                                <th>Nama Barang</th>
                                <th>Kategori</th>
-                               <th>Manager</th>
+                               <!-- <th>Manager</th> -->
                                <th>Gudang</th>
                                <th>QTY</th>
                                <th>Unit Bagus</th>
@@ -284,9 +284,9 @@
                                 <td>
                                     <?php echo $kategori ?>
                                 </td>
-                                <td>
+                                <!-- <td>
                                     <?php echo $manager ?>
-                                </td>
+                                </td> -->
                                 <td>
                                     <?php echo $gudang ?>
                                 </td>
@@ -370,10 +370,10 @@
                                         <?php } ?>
                                     </select>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <!-- <div class="form-group col-md-6">
                                     <label for="inputManager">Manager</label>
                                     <input type="text" class="form-control" id="inputManager" placeholder="" name="manager">
-                                </div>
+                                </div> -->
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
@@ -526,10 +526,10 @@
                                                         <?php } ?>
                                                     </select>
                                                 </div>
-                                                <div class="form-group col-md-6">
+                                                <!-- <div class="form-group col-md-6">
                                                     <label for="inputKategori">Manager</label>
                                                     <input type="text" class="form-control" id="inputKategori" value="<?php echo $manager;?>" name="manager">
-                                                </div>
+                                                </div> -->
                                             </div>
 
                                             <div class="form-row">
