@@ -221,12 +221,6 @@ class Penerimaan extends CI_Controller {
         $this->form_validation->set_rules('no_lpb','No LPB','required');
 		$this->form_validation->set_rules('gudang','Gudang','required');
 		$this->form_validation->set_rules('supplier','Supplier','required');
-        // $this->form_validation->set_rules('no_sj','No Surat Jalan','required');
-        // $this->form_validation->set_rules('no_po','No PO','required');
-		// $this->form_validation->set_rules('no_kontiner','No Kontiner','required');
-        // $this->form_validation->set_rules('no_polisi','No Polisi','required');
-        // $this->form_validation->set_rules('nama_supir','Nama Supir','required');
-        // $this->form_validation->set_rules('no_segel','No Segel','required');
 
         if ($this->form_validation->run() == FALSE) {
             $x['penerimaan'] = $this->m_penerimaan->getPenerimaanById($id);

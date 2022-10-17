@@ -92,6 +92,7 @@
       <table class="table table-bordered" width="100%" cellspacing="0">
         <thead>
           <tr style="text-align:center;">
+            <th>#</th>
             <th>Kode</th>
             <th>Nama Barang</th>
             <th>Gudang</th>
@@ -102,8 +103,11 @@
             <th>Total Harga</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="customFields">
           <tr>         
+            <td>
+              <a href="javascript:void(0);" class="addCF"><i class="fas fa-plus"></i></a>
+            </td>
             <td style="text-align:center;">
               <input type="text" name="kode" id="kode"  value="<?= $penerimaan['kode'];?>" class="form-control form-control-sm" data-toggle="modal" data-target="#myModal1">
             </td>
@@ -235,6 +239,41 @@
 
 <script>
   // tabel lookup mahasiswa
+  $(".addCF").click(function(){
+		$("#customFields").append(`
+          <tr>         
+            <td>
+              <a href="javascript:void(0);" class="remCF"><i class="fas fa-trash"></i></a>
+            </td>
+            <td style="text-align:center;">
+              <input type="text" name="kode" id="kode"  value="" class="form-control form-control-sm" data-toggle="modal" data-target="#myModal1">
+            </td>
+            <td>
+              <input type="text" name="nama"  id="namabrg" value=""  class="form-control form-control-sm">
+            </td>
+            <td style="text-align:center;">
+              <input type="text" id="gudang" name="gudang" value=""  class="form-control form-control-sm">
+            </td>
+            <td style="text-align:center;">
+              <input type="text" name="qty" id="txt1" onkeyup="sum();"  value="" class="form-control form-control-sm">
+            </td>
+            <td style="text-align:center;">
+              <input type="text" name="isi_karton" id="txt2" onkeyup="sum();"  value=""  class="form-control form-control-sm">
+            </td>
+            <td style="text-align:center;">
+              <input type="text" name="total_qty" id="txt3" onkeyup="sum();"  value=""  class="form-control form-control-sm" readonly>
+            </td>
+            <td style="text-align:center;">
+              <input type="text" name="harga" onkeyup="sumHarga()" value="" class="form-control form-control-sm">
+            </td>
+            <td style="text-align:center;">
+              <input type="text" name="total_harga"  value=""  class="form-control form-control-sm" readonly>
+            </td>
+          </tr>`);
+	});
+  $("#customFields").on('click','.remCF',function(){
+    $(this).parent().parent().remove();
+  });
   $('#lookup').DataTable();
   $('#lookup1').DataTable();
   $('#example2').DataTable({

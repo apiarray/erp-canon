@@ -81,6 +81,7 @@
       <table class="table table-bordered" width="100%" cellspacing="0">
         <thead>
           <tr style="text-align:center;">
+            <th>#</th>
             <th>Kode</th>
             <th>Nama Barang</th>
             <th>Jumlah Karton</th>
@@ -90,10 +91,13 @@
             <th>Total Harga</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
+        <tbody id="customFields">
+          <tr>   
+            <td>
+              <a href="javascript:void(0);" class="addCF rows"><i class="fas fa-plus"></i></a>
+            </td>
             <td style="text-align:center;">
-              <input type="text" name="kode" id="kode"  class="form-control form-control-sm" data-toggle="modal" data-target="#myModal1">
+              <input type="text" name="kode" id="kode"  class="form-control form-control-sm" data-toggle="modal" data-id="1" data-target="#myModal1">
             </td>
             <td>
               <input type="text" name="nama"  id="namabrg"  class="form-control form-control-sm">
@@ -261,8 +265,6 @@
     $('#myModal1').modal('hide');
 		document.getElementById("namabrg").value = $(this).attr('data-nama');
     $('#myModal1').modal('hide');
-	  document.getElementById("gudang").value = $(this).attr('data-gudang');
-    $('#myModal1').modal('hide');
   });
 
   function sum() {
@@ -371,4 +373,38 @@
 //   window.onpopstate = function(event) {
     // window.history.pushState(null, '', "index");
 //   }
+
+  $(".addCF").click(function(){
+		$("#customFields").append(`
+        <tr>         
+          <td>
+            <a href="javascript:void(0);" class="remCF rows"><i class="fas fa-trash"></i></a>
+          </td>
+          <td style="text-align:center;">
+            <input type="text" name="kode" id="kode"  class="form-control form-control-sm" data-toggle="modal" data-target="#myModal1">
+          </td>
+          <td>
+            <input type="text" name="nama"  id="namabrg"  class="form-control form-control-sm">
+          </td>
+          <td style="text-align:center;">
+            <input type="text" name="qty" id="txt1" onkeyup="sum();"  class="form-control form-control-sm">
+          </td>
+          <td style="text-align:center;">
+            <input type="text" name="isi_karton" id="txt2" onkeyup="sum();"  class="form-control form-control-sm">
+          </td>
+          <td style="text-align:center;">
+            <input type="text" name="total_qty" id="txt3"  class="form-control form-control-sm" readonly>
+          </td>
+          <td style="text-align:center;">
+            <input type="text" name="harga" onkeyup="sumHarga()" class="form-control form-control-sm">
+          </td>
+          <td style="text-align:center;">
+            <input type="text" name="total_harga" class="form-control form-control-sm">
+          </td>
+        </tr>
+      `);
+	});
+  $("#customFields").on('click','.remCF',function(){
+    $(this).parent().parent().remove();
+  });
 </script>
