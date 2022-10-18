@@ -192,7 +192,7 @@
             <?php if ($this->session->userdata('id_role') == 1) : ?>
               <a class="collapse-item" href="<?= base_url('users'); ?>">User Login</a>
               <a class="collapse-item" href="<?= base_url('users/changepassword'); ?>">Ganti Password</a>
-              <a class="collapse-item" href="<?= base_url('hakakses_baru'); ?>">Hak Akses User</a>
+              <a class="collapse-item" href="<?= base_url('hakakses'); ?>">Hak Akses User</a>
               <a class="collapse-item" href="<?= base_url('activity'); ?>">Activity Record</a>
             <?php else : ?>
               <a class="collapse-item" href="<?= base_url('users/changepassword'); ?>">Ganti Password</a>
