@@ -52,7 +52,7 @@ class Hakakses_baru extends CI_Controller
         if ($validation->run()) {
             $role->update();
             $this->session->set_flashdata('message', '<div class="alert alert-success alert-dismissible fade show" role="alert">
-            Data Role berhasil disimpan.
+            Data Mahasiswa berhasil disimpan.
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button></div>');
