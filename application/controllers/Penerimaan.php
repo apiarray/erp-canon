@@ -112,6 +112,7 @@ class Penerimaan extends CI_Controller
 			"no_segel" => $this->input->post('no_segel', true),
 			"supplier" => $this->input->post('supplier', true),
 			"gudang" => "Head Office",
+			"total_harga" => 0
 		];
 
 		$dataPenerimaanItem = [

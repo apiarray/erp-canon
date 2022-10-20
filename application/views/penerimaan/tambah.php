@@ -94,7 +94,22 @@
         <tbody id="customFields">
         </tbody>
       </table>
+      <div class="col-4">
+        <div class="input-group input-group-sm mt-1">
+          <div class="input-group-prepend">
+            <label class="input-group-text">Total Qty :</label>
+          </div>
+          <input type="text" id="total_qty" class="form-control form-control-sm" readonly>
+        </div>
+        <div class="input-group input-group-sm mt-1">
+          <div class="input-group-prepend">
+            <label class="input-group-text">Total Harga :</label>
+          </div>
+          <input type="text" id="total_harga" class="form-control form-control-sm" readonly>
+        </div>
+      </div>
     </div>
+    
 	<a href="javascript:void(0);" class="addCF btn btn-danger rows"><i class="fas fa-plus"></i></a>
     <!-- <button type="button" class="btn btn-primary mb-2 mt-2" onclick="showModalFaktur()">Proses</button> -->
     <button class="btn btn-primary mb-2 mt-2" type="submit"><i class="fas fa-save"></i>&nbsp;Submit</button>
@@ -261,6 +276,15 @@
     if (!isNaN(result)) {
       document.getElementById('txt3'+ lokasi).value = result;
     }
+
+    var total_qtys = $('.total_qty').map((_,el) => el.value).get()
+    var total_qty = 0;
+    total_qtys.forEach(element => {
+      total_qty += parseInt(element);
+    });
+    if (!isNaN(total_qty)) {
+      document.getElementById('total_qty').value = total_qty;
+    }
     sumHarga2(lokasi);
   }
 
@@ -369,9 +393,9 @@
 			  '<input type="text" name="nama[]"  id="namabrg'+counter+'"  class="form-control form-control-sm">',
 			  '<input type="text" name="qty[]" id="txt1'+counter+'" onkeyup="sum(' + counter + ');"  class="form-control form-control-sm">',
 			  '<input type="text" name="isi_karton[]" id="txt2'+counter+'" onkeyup="sum(' + counter + ');"  class="form-control form-control-sm">',
-			  '<input type="text" name="total_qty[]" id="txt3'+counter+'"  class="form-control form-control-sm" readonly>',
+			  '<input type="text" name="total_qty[]" id="txt3'+counter+'"  class="form-control form-control-sm total_qty" readonly>',
 			  '<input type="text" name="harga[]"    id="harga'+counter+'"  onkeyup="sumHarga2(' + counter + ')" class="form-control form-control-sm">',
-			  '<input type="text" name="total_harga[]" id="total_harga'+counter+'"  class="form-control form-control-sm">'
+			  '<input type="text" name="total_harga[]" id="total_harga'+counter+'"  class="form-control form-control-sm total_harga">'
 			  
 			]).draw( false );
 		//console.log('<input type="text" name="kode[]" id="kode'+counter+'"  class="form-control form-control-sm" data-toggle="modal" data-target="#myModal1"  />');
@@ -394,7 +418,6 @@
 function get_barang(kunci,lokasi)
 {
 	$('#myModal1').modal('show');
-	console.log('pilih barang kunci dan selektor =' + kunci + ' :' + lokasi);
 	selektor = lokasi;
  };
  
@@ -407,6 +430,16 @@ function sumHarga2(lokasi) {
     jumlahtotal = harga.value * jumlah.value;
     total.value =  jumlahtotal;
     
+    
+    var total_hargas = $('.total_harga').map((_,el) => el.value).get()
+    var total_harga = 0;
+    console.log(total_harga);
+    total_hargas.forEach(element => {
+      total_harga += parseInt(element);
+    });
+    if (!isNaN(total_harga)) {
+      document.getElementById('total_harga').value = total_harga;
+    }
   }  
   
 </script>
