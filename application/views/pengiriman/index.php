@@ -7,7 +7,15 @@
 </head>
 
 <body>
+    <?php
+    date_default_timezone_set('Asia/Jakarta');
+    $no_do = $this->db->from('pengiriman')->order_by('pengiriman.no_do', 'DESC')->get()->row();
 
+    $pieces = explode("/", $no_do->no_do);
+    $angka = (int)$pieces[2] + 1;
+
+    $no_do_new = $pieces[0] . '/' . $pieces[1] . '/0000' . $angka;
+    ?>
 
 
     <!-- Modal -->
@@ -127,10 +135,39 @@
 
 <div class="content-wrapper col-12">
     <section class="content-header ml mt-2 auto">
-
-        <form action="" method="post">
+        <form action="<?= base_url(); ?>Pengiriman/insert" method="post">
             <div class="row mt-3">
                 <div class="col-lg-4">
+
+                    <?php
+                    $username = $this->session->set_userdata("username");
+                    $role = $this->session->set_userdata("role");
+                    // var_dump($this->session->get_userdata());die;
+                    if ($role == '1') {
+
+                        $mitra = $this->db->get('daftar_mitra')->result();
+                        
+                    } else {
+
+                        $mitra = $this->db->from('daftar_mitra')
+                            ->where('daftar_mitra.name', $username)->get()->row();
+                            // var_dump($mitra);die;
+                    } 
+                    
+                ?>
+
+
+                    <div class="input-group input-group-sm mt-1">
+                        <div class="input-group-prepend">
+                            <label for="pembayaran" class="input-group-text">Mitra :</label>
+                        </div>
+                        <select id="kode_mitra" name="kode_mitra" class="form-control">
+                            <option selected>Pilih Mitra</option>
+                            <?php foreach ($mitra as $mitra) : ?>
+                                <option value="<?= $mitra->kode; ?>"><?= $mitra->name; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
                     <div class="input-group input-group-sm">
                         <div class="input-group-prepend">
                             <label for="weekending" class="input-group-text">Kepada :</label>
@@ -159,7 +196,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                     <div class="d-flex">
                         <div class="input-group input-group-sm mt-1">
                             <div class="input-group-prepend">
@@ -174,7 +211,7 @@
                         <div class="input-group-prepend">
                             <label for="no_do" class="input-group-text">No. DO :</label>
                         </div>
-                        <input type="text" name="no_do" id="id" class="form-control form-control-sm">
+                        <input type="text" value="<?= $no_do_new; ?>" name="no_do" id="id" class="form-control form-control-sm">
                     </div>
                     <div class="input-group input-group-sm mt-1">
                         <div class="input-group-prepend">
@@ -194,6 +231,33 @@
                         </div>
                         <input type="text" name="no_segel" id="no_segel" class="form-control form-control-sm">
                     </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="d-flex">
+                        <div class="input-group input-group-sm mt-1">
+                            <div class="input-group-prepend">
+                                <label for="taggal" class="input-group-text">Set Up Jurnal :</label>
+                            </div>
+                            <input type="text" name="tanggal" class="form-control form-control-sm">
+                        </div>
+                    </div>
+                    <div class="input-group input-group-sm mt-1">
+                        <div class="input-group-prepend">
+                            <label for="pembayaran" class="input-group-text">Jenis Transaksi :</label>
+                        </div>
+                        <select id="jenis_transaksi" name="jenis_transaksi" class="form-control">
+                            <option selected>Pilih Jenis</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Kredit">Kredit</option>
+                        </select>
+                    </div>
+                    <div class="input-group input-group-sm mt-1">
+                        <div class="input-group-prepend">
+                            <label for="manager_gudang" class="input-group-text">Tanggal J/T :</label>
+                        </div>
+                        <input type="date" name="" value="<?php echo date('d/m/Y'); ?>" id="" class="form-control form-control-sm">
+                    </div>
+
                 </div>
 
                 <div class="col-4">
@@ -235,7 +299,10 @@
                                 <th style="text-align:center;">No.</th>
                                 <th>No DO</th>
                                 <th>Mitra</th>
-                                <th>Tanggal</th>
+                                <th>Tanggal Pengiriman</th>
+                                <th>Tanggal J/T</th>
+                                <th>Jenis Transaksi</th>
+                                <th>Setup Jurnal</th>
                                 <th>Total Nominal</th>
                                 <th style="text-align:center;">Aksi</th>
                             </tr>
@@ -247,6 +314,17 @@
                             $no_do = $i['no_do'];
                             $kepada = $i['kepada'];
                             $tanggal = $i['tanggal'];
+                            if (isset($i['tanggal_jt'])) {
+                                $tanggal_jt = $i['tanggal_jt'];
+                            }
+                            if (isset($i['jenis_transaksi'])) {
+                                $jenis_transaksi = $i['jenis_transaksi'];
+                            }
+                            if (isset($i['setup_jurnal'])) {
+                                $setup_jurnal = $i['setup_jurnal'];
+                            }
+
+                            // $total_nominal = $i['total_nominal'];
                             $qty_perkarton = $i['qty_perkarton'];
                             $total = $i['total'];
                         ?>
@@ -266,6 +344,21 @@
                                     <?php echo $tanggal; ?>
                                 </td>
                                 <td style="text-align:center;">
+                                    <?php if (isset($i['tanggal_jt'])) {
+                                        echo $tanggal_jt;
+                                    }; ?>
+                                </td>
+                                <td style="text-align:center;">
+                                    <?php if (isset($i['jenis_transaksi'])) {
+                                        echo $jenis_transaksi;
+                                    }; ?>
+                                </td>
+                                <td style="text-align:center;">
+                                    <?php if (isset($i['setup_jurnal'])) {
+                                        echo $setup_jurnal;
+                                    }; ?>
+                                </td>
+                                <td style="text-align:center;">
                                     <?php echo $total; ?>
                                 </td>
                                 <td style="text-align:center;">
@@ -275,6 +368,7 @@
                                             Action
                                         </button>
                                         <div class="dropdown-menu">
+                                            <a href="<?= base_url(); ?>pengiriman/print/<?php echo $id; ?>" class="btn btn-primary mt-2" style="margin-left:42px"><i class="fa fa-print"></i>Cetak</i></a>
                                             <a href="<?= base_url(); ?>pengiriman/edit/<?php echo $id; ?>" class="btn btn-success mt-2" style="margin-left:42px"><i class="fa fa-edit"></i>Edit</i></a>
                                             <a href="<?= base_url(); ?>pengiriman/hapus/<?php echo $id; ?>" class="btn btn-danger mt-2" style="margin-left:35px" onclick="return confirm('Yakin ingin dihapus?');"><i class="fa fa-trash"></i>Hapus</a>
                                         </div>
