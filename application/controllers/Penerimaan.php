@@ -12,8 +12,6 @@ class Penerimaan extends CI_Controller
 	public function index()
 	{
 		$topik['judul'] = 'Halaman Menu Penerimaan Barang';
-		$x['data3'] = $this->m_penerimaan->tampil_total_qty();
-		$x['data4'] = $this->m_penerimaan->tampil_total_harga();
 		$x['data1'] = $this->m_penerimaan->tampil_data();
 		$x['data'] = $this->m_penerimaan->tampil_supplier();
 		$x['data2'] = $this->m_penerimaan->tampil_barang();
