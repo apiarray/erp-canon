@@ -1,177 +1,163 @@
 <div class="content-wrapper col-12">
-<section class="content-header ml mt-2 auto">
-<!-- <h1>Stok Akhir</h1> -->
-<div class="row mt-3 mb-2">
-    <div class="col-lg-4">
-        <form action="" method="post">
-            <div class="input-group input-group-sm">
-                <div class="input-group-prepend">
-                    <label for="weekending" class="input-group-text">Weekending:</label>
-                </div>
-                <select name="" id="" class="form-control">
-                    <option value="">Weekending Up</option>
-                </select>
-            </div>
-            <div class="input-group input-group-sm mt-1 mb-1">
-                
-            </div>
-           
-        </form>
-    </div>
-    <div class="col-lg-4">
-    <form action="" method="post">
-            <div class="input-group input-group-sm">
-                <div class="input-group-prepend">
-                    <label for="weekending" class="input-group-text">Kode:</label>
-                </div>
-                <select name="" id="" class="form-control">
-                    <option value="">Seluruh Stok</option>
-                    <option value="">Stok A</option>
+    <section class="content-header ml mt-2 auto">
+        <!-- <h1>Stok Akhir</h1> -->
+        <div class="row mt-3 mb-2">
+            <div class="col-lg-4">
+                <form action="" method="post">
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend">
+                            <label for="weekending" class="input-group-text">Weekending:</label>
+                        </div>
+                        <select name="" id="" class="form-control">
+                            <option value="">Weekending Up</option>
+                        </select>
+                    </div>
+                    <div class="input-group input-group-sm mt-1 mb-1">
 
-                </select>
-            </div>
-            <div class="input-group input-group-sm mt-1 mb-1">
-                <div class="input-group-prepend">
-                    <label for="noinv" class="input-group-text">Gudang :</label>
-                </div>
-                <select name="" id="" class="form-control">
-                    <option value="">Seluruh Gudang</option>
-                    <option value="">Gudang A</option>
+                    </div>
 
-                </select>
-            </div>
-           
-        </form>     
+                </form>
             </div>
             <div class="col-lg-4">
-            <div class="input-group input-group-sm mt-1 mb-1">
-                <div class="">
-                    <button class="btn btn-primary">Filter</button>
-                </div>
-                <div class="input-group-prepend">
-                    <label for="noinv" class="input-group-text mt-2">Total Sisa :</label>
-                    <input type="text" class="form-control mt-2">
+                <form action="" method="post">
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend">
+                            <label for="weekending" class="input-group-text">Kode:</label>
+                        </div>
+                        <select name="kode" id="kode" class="form-control">
+                            <option value="all">All</option>
+                            <?php foreach ($kodeProduk as $key => $value) : ?>
+                                <option value="<?= $value->kode ?>"><?= $value->kode ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="input-group input-group-sm mt-1 mb-1">
+                        <div class="input-group-prepend">
+                            <label for="noinv" class="input-group-text">Gudang :</label>
+                        </div>
+                        <select name="gudang" id="gudang" class="form-control">
+                            <option value="all">All</option>
+                            <?php foreach ($gudangs as $key => $gudang) : ?>
+                                <option value="<?= $gudang->nama ?>"><?= $gudang->kode ?> - <?= $gudang->nama ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
 
-                </div>
+                </form>
             </div>
-            </div>
-    </div>
-<!-- <div class="" style="background-color:blue;margin-left:2px;border-radius:5px;width:190px;color:white">
-<p style="margin-left:2px;padding-left:5px">Kategori 1 = Elektronik</p>
-<p style="margin-left:2px;padding-left:5px">Kategori 2 = ATK</p>
-</div> -->
-<!-- <ol class=""> -->
-<!-- <h2>
-    Menu Data Produk
-    <div class="row mt-3">
-    <div class="col-md-6">
-        <form action="" method="post">
-            <div class="input-group">
-            <input type="text" name="keyword" id="" placeholder="Cari Data Produk..." class="form-control" autocomplete="off">
-            <div class="input-group-append">
-                <button type="submit" class="btn btn-primary">Cari</button>
-            </div>
-            </div>
-        </form>
-    </div>
-</div>
-</h2> -->
+            <div class="col-lg-4">
+                <div class="input-group input-group-sm mt-1 mb-1">
+                    <div class="">
+                        <button class="btn btn-primary" onclick="handleFilterProduk()">Filter</button>
+                    </div>
+                    <div class="input-group-prepend">
+                        <label for="noinv" class="input-group-text mt-2">Total Sisa :</label>
+                        <input type="text" class="form-control mt-2">
 
-  
-
-</ol>
-<!-- <div style="margin-left:5px">
-
-<div class="">
-<?php if($this->session->flashdata('flash2')) :?>
-<div class="row mt-3">
-    <div class="col md-6">
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">Data Produk <strong>berhasil </strong><?= $this->session->flashdata('flash2');?>
-        <button type="submit" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        </div>
-    </div>    
-</div>
-<?php endif;?>
-
-<?php if($this->session->flashdata('flash')) :?>
-<div class="row mt-3">
-    <div class="col md-6">
-        <div class="alert alert-success alert-dismissible fade show" role="alert">Data Produk <strong>berhasil </strong><?= $this->session->flashdata('flash');?>
-        <button type="submit" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        </div>
-    </div>    
-</div>
--->
-
-<?php endif;?>
-
-<a href="<?= base_url('barang/tambah');?>" class="btn btn-info mb-2">Tambah Data</a>
-<div class="table-responsive">
-<!-- <table class="table" id="dataTable" width="" cellspacing="0"> -->
-<table id="mytable" class="table table-striped table-bordered table-hover table-full-width dataTable" cellspacing="0" width="" style="font-size: small;">
-
-        <thead>
-            <tr style="text-align:center;">
-                <th>No.</th>
-                <th>Kode</th>
-                <th>Barang</th>
-                <th>Kategori</th>
-                <th>Manager</th>
-                <th>Gudang</th>
-                <th>Stok</th>
-                <th>HPP</th>
-                <th>Total</th>
-                <!-- <th>Aksi</th> -->
-            </tr>
-        </thead>
-        <tbody>
-            <?php $i=1;?>
-            <?php foreach ($produk as $erp): ?>
-            <tr>
-                <td width="">
-                    <?php echo $i;?>
-                </td>
-                <td>
-                    <?php echo $erp['kode'] ?>
-                </td>
-                <td width="">
-                    <?php echo $erp['nama'] ?>
-                </td>
-                <td>
-                    <?php echo $erp['name'] ?>
-                </td>
-                <td>
-                    <?php echo $erp['manager'] ?>
-                </td>
-                <td>
-                    <?php echo $erp['gudang'] ?>
-                </td>
-                <td class="">
-                    <?php echo $erp['qty']?>
-                </td>
-                <td class="">
-                    <?php echo $erp['hpp']?>
-                </td>
-                <td class="">
-                    <?php echo $erp['jumlah']?>
-                </td>
-                <!-- <td>
-                
-                <div class="btn-group" >
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Action
-                    </button>
-                    <div class="dropdown-menu">
-                    <a href="<?php echo base_url();?>barang/edit/<?= $erp['id'];?>" class="btn btn-success" style="margin-left:42px"><i class="fa fa-edit"></i>Edit</i></a>
-                    <a href="<?= base_url();?>barang/hapus/<?= $erp['id'];?>" class="btn btn-danger mt-2" style="margin-left:35px" onclick="return confirm('Yakin ingin dihapus?');"><i class="fa fa-trash"></i>Hapus</a>
                     </div>
                 </div>
-                </td> -->
-            </tr>
-            <?php $i++;?>
-            <?php endforeach; ?>
+            </div>
+        </div>
 
-        </tbody>
-    </table>
-    </div>
+        <a href="<?= base_url('barang/tambah'); ?>" class="btn btn-info mb-2">Tambah Data</a>
+        <div class="table-responsive">
+            <!-- <table class="table" id="dataTable" width="" cellspacing="0"> -->
+            <table id="mytable" class="table table-striped table-bordered table-hover table-full-width" cellspacing="0" width="" style="font-size: small;">
+                <thead>
+                    <tr style="text-align:center;">
+                        <th>No.</th>
+                        <th>Kode</th>
+                        <th>Barang</th>
+                        <th>Kategori</th>
+                        <th>Gudang</th>
+                        <th>Stok</th>
+                        <th>HPP</th>
+                        <th>Total</th>
+                        <!-- <th>Aksi</th> -->
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
 </div>
+
+<script>
+    $(document).ready(function() {
+        getAllProduk();
+    });
+
+    function numberFormat(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    const fetchDataProdukToServer = (url, options, beforeSend) => {
+        requestFetch = function() {
+            beforeSend
+            return fetch.apply(this, arguments);
+        }
+        requestFetch(url, options).then((response) => {
+            return response.json();
+        }).then((data) => {
+            initDataToTable(data);
+        });
+    }
+
+    const getAllProduk = async () => {
+        const url = "<?= base_url('Kartu_stok/getAllProduk') ?>";
+        const options = {
+            method: 'POST'
+        }
+
+        const beforeSend = $("#mytable > tbody").html(`<tr><td colspan="8" class="text-center"><span ><i class="fa fa-spinner fa-spin"></i> Loading...</span></td></tr>`);
+
+        fetchDataProdukToServer(url, options, beforeSend);
+
+    }
+
+    const handleFilterProduk = async () => {
+        const kode = $("#kode").val()
+        const gudang = $("#gudang").val()
+
+        const url = "<?= base_url('Kartu_stok/getAllProduk') ?>";
+
+        let postData = new FormData();
+        postData.append('kode', kode);
+        postData.append('gudang', $("#gudang").val());
+
+        const options = {
+            method: 'POST',
+            body: postData
+        }
+
+        const beforeSend = $("#mytable > tbody").html(`<tr><td colspan="8" class="text-center"><span ><i class="fa fa-spinner fa-spin"></i> Loading...</span></td></tr>`);
+
+        fetchDataProdukToServer(url, options, beforeSend);
+    }
+
+    const initDataToTable = (data) => {
+        $("#mytable > tbody").empty();
+        data.forEach((item, index) => {
+            $("#mytable > tbody").append(`
+                <tr class="text-center">
+                    <td>${index + 1}</td>
+                    <td>${item.kode}</td>
+                    <td>${item.nama}</td>
+                    <td>${item.kategori}</td>
+                    <td>${item.gudang}</td>
+                    <td>${item.stok}</td>
+                    <td>${numberFormat(item.hpp)}</td>
+                    <td>${numberFormat(item.jumlah)}</td>
+                </tr>
+            `)
+        })
+
+        $('#mytable').DataTable({
+            'paging': true,
+            'lengthChange': false,
+            'ordering': true,
+            'info': true,
+            'autoWidth': false
+        })
+    }
+</script>
