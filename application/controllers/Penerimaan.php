@@ -112,7 +112,9 @@ class Penerimaan extends CI_Controller
 			"no_segel" => $this->input->post('no_segel', true),
 			"supplier" => $this->input->post('supplier', true),
 			"gudang" => "Head Office",
-			"total_harga" => 0
+			"total_harga" => 0,
+			"jenis_transaksi" => $this->input->post('jenis_transaksi', true),
+			"tanggal_jatuh_tempo" => $this->input->post('tanggal_jatuh_tempo', true),
 		];
 
 		$dataPenerimaanItem = [
@@ -211,28 +213,55 @@ class Penerimaan extends CI_Controller
 	{
 		$topik['judul'] = 'Edit Data Penerimaan Barang';
 		$x['data1'] = $this->m_penerimaan->tampil_data();
+		$x['data_item'] = $this->m_penerimaan->tampil_data_item($id);
 		$x['data'] = $this->m_penerimaan->tampil_supplier();
 		$x['data2'] = $this->m_penerimaan->tampil_barang();
 		$x['kode1'] = $this->m_penerimaan->kode1();
 
-		$this->form_validation->set_rules('kode', 'Kode', 'required');
-		$this->form_validation->set_rules('nama', 'Nama', 'required');
-		$this->form_validation->set_rules('qty', 'Qty', 'required');
-		$this->form_validation->set_rules('isi_karton', 'Isi Karton', 'required');
-		$this->form_validation->set_rules('harga', 'Harga', 'required');
-		$this->form_validation->set_rules('total_harga', 'Total Harga', 'required');
-		$this->form_validation->set_rules('tanggal', 'Tanggal', 'required');
-		$this->form_validation->set_rules('no_lpb', 'No LPB', 'required');
-		$this->form_validation->set_rules('gudang', 'Gudang', 'required');
-		$this->form_validation->set_rules('supplier', 'Supplier', 'required');
+		// $this->form_validation->set_rules('kode', 'Kode', 'required');
+		// $this->form_validation->set_rules('nama', 'Nama', 'required');
+		// $this->form_validation->set_rules('qty', 'Qty', 'required');
+		// $this->form_validation->set_rules('isi_karton', 'Isi Karton', 'required');
+		// $this->form_validation->set_rules('harga', 'Harga', 'required');
+		// $this->form_validation->set_rules('total_harga', 'Total Harga', 'required');
+		// $this->form_validation->set_rules('tanggal', 'Tanggal', 'required');
+		// $this->form_validation->set_rules('no_lpb', 'No LPB', 'required');
+		// $this->form_validation->set_rules('gudang', 'Gudang', 'required');
+		// $this->form_validation->set_rules('supplier', 'Supplier', 'required');
 
-		if ($this->form_validation->run() == FALSE) {
+		$dataPenerimaan = [
+			"no_sj" => $this->input->post('no_sj', true),
+			"tanggal" => $this->input->post('tanggal', true),
+			"no_lpb" => $this->input->post('no_lpb', true),
+			"no_po" => $this->input->post('no_po', true),
+			"no_kontiner" => $this->input->post('no_kontiner', true),
+			"no_polisi" => $this->input->post('no_polisi', true),
+			"nama_supir" => $this->input->post('nama_supir', true),
+			"no_segel" => $this->input->post('no_segel', true),
+			"supplier" => $this->input->post('supplier', true),
+			"gudang" => "Head Office",
+			"total_harga" => 0,
+			"jenis_transaksi" => $this->input->post('jenis_transaksi', true),
+			"tanggal_jatuh_tempo" => $this->input->post('tanggal_jatuh_tempo', true),
+		];
+
+		$dataPenerimaanItem = [
+			"kode" => $this->input->post('kode', true),
+			"nama" => $this->input->post('nama', true),
+			"qty" => $this->input->post('qty', true),
+			"isi_karton" => $this->input->post('isi_karton', true),
+			"total_qty" => $this->input->post('total_qty', true),
+			"harga" => $this->input->post('harga', true),
+			"total_harga" => $this->input->post('total_harga', true)
+		];
+
+		if ($this->input->server('REQUEST_METHOD') === 'GET') {
 			$x['penerimaan'] = $this->m_penerimaan->getPenerimaanById($id);
 			$this->load->view('templates/header', $topik);
 			$this->load->view('penerimaan/edit', $x);
 			$this->load->view('templates/footer');
 		} else {
-			$this->m_penerimaan->ubahDataPenerimaan();
+			$this->m_penerimaan->ubahDataPenerimaan($dataPenerimaan, $dataPenerimaanItem);
 			$this->session->set_flashdata('flash', 'Diubah');
 			redirect('penerimaan');
 		}

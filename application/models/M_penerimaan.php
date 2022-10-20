@@ -17,6 +17,15 @@ class M_penerimaan extends CI_Model
 		return $this->db->get();
 	}
 
+	function tampil_data_item($idPenerimaan)
+	{
+		$this->db->select('*');
+		$this->db->from('penerimaan_item');
+		$this->db->where('penerimaan_id', $idPenerimaan);
+
+		return $this->db->get()->result_array();
+	}
+
 	function tampil_data_akun()
 	{
 		$hasil = $this->db->query("SELECT * FROM akun_pembayaran");
@@ -112,6 +121,7 @@ class M_penerimaan extends CI_Model
 		$hasil = $this->db->query("SELECT * FROM daftarmitra");
 		return $hasil;
 	}
+
 	public function tambahDataPenerimaan($dataPenerimaan, $dataPenerimaanItem)
 	{
 		$this->db->insert('penerimaan', $dataPenerimaan);
@@ -138,7 +148,6 @@ class M_penerimaan extends CI_Model
 			"total_harga" => $totalHarga
 		]);
 	}
-
 
 	function input_data($data, $table)
 	{
@@ -167,30 +176,34 @@ class M_penerimaan extends CI_Model
 		$this->db->delete($table);
 	}
 
-	public function ubahDataPenerimaan()
+	public function ubahDataPenerimaan($dataPenerimaan, $dataPenerimaanItem)
 	{
-		$data = [
-			"kode" => $this->input->post('kode', true),
-			"nama" => $this->input->post('nama', true),
-			"gudang" => $this->input->post('gudang', true),
-			"qty" => $this->input->post('qty', true),
-			"isi_karton" => $this->input->post('isi_karton', true),
-			"total_qty" => $this->input->post('total_qty', true),
-			"harga" => $this->input->post('harga', true),
-			"total_harga" => $this->input->post('total_harga', true),
-			"no_sj" => $this->input->post('no_sj', true),
-			"tanggal" => $this->input->post('tanggal', true),
-			"no_lpb" => $this->input->post('no_lpb', true),
-			"no_po" => $this->input->post('no_po', true),
-			"no_kontiner" => $this->input->post('no_kontiner', true),
-			"no_polisi" => $this->input->post('no_polisi', true),
-			"nama_supir" => $this->input->post('nama_supir', true),
-			"no_segel" => $this->input->post('no_segel', true),
-			"supplier" => $this->input->post('supplier', true)
-		];
+		$this->db->update('penerimaan', $dataPenerimaan);
+		$totalHarga = 0;
+
+		$this->db->where('penerimaan_id', $this->input->post('id'));
+		$this->db->delete('penerimaan_item');
+		for ($i = 0; $i < count($dataPenerimaanItem['kode']); $i++) {
+			$item = [
+				"kode" => $dataPenerimaanItem['kode'][$i],
+				"nama" => $dataPenerimaanItem['nama'][$i],
+				"qty" => $dataPenerimaanItem['qty'][$i],
+				"isi_karton" => $dataPenerimaanItem['isi_karton'][$i],
+				"total_qty" => $dataPenerimaanItem['total_qty'][$i],
+				"harga" => $dataPenerimaanItem['harga'][$i],
+				"total_harga" => $dataPenerimaanItem['total_harga'][$i],
+				"penerimaan_id" => $this->input->post('id'),
+			];
+
+			$totalHarga += $item['total_harga'];
+			$this->db->where('penerimaan_id', $this->input->post('id'));
+			$this->db->insert('penerimaan_item', $item);
+		}
 
 		$this->db->where('id', $this->input->post('id'));
-		$this->db->update('penerimaan', $data);
+		$this->db->update('penerimaan', [
+			"total_harga" => $totalHarga
+		]);
 	}
 
 	public function cariDataKaryawan()
