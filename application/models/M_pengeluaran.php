@@ -15,36 +15,29 @@ class M_pengeluaran extends CI_Model{
 	 return $query->result_array();
 	}
 	
-    public function tambahDataPengeluaran(){
-        $data = [
-            "tgl" => $this->input->post('tgl',true),
-            "uraian" => $this->input->post('uraian',true),
-            "reff" => $this->input->post('reff',true),
-            "batasan" => $this->input->post('batasan',true),
-            "jumlah" => $this->input->post('jumlah',true),
-            "no_akun" => $this->input->post('no_akun',true),
-			"kode_id" => $this->input->post('kode_id',true),
-            
-        ];
+    public function tambahDataPengeluaran($data){
+        
         $this->db->insert('pengeluaran',$data);
+    }
+
+    public function tambahDataPengeluaranAkun($data){
+        $this->db->insert('pengeluaran_akun_transaksi',$data);
+    }
+    public function hapusAkunDataPengeluaran($pengeluaranid){
+        $this->db->where('pengeluaran_id',$pengeluaranid);
+        $this->db->delete('pengeluaran_akun_transaksi');
     }
     public function getPengeluaranById($id){
         return $this->db->get_where('pengeluaran',['id'=>$id])->row_array();
+    }
+    public function getAkunPengeluaran($pengeluaranid){
+        return $this->db->get_where('pengeluaran_akun_transaksi',['pengeluaran_id'=>$pengeluaranid])->result_array();
     }
     public function hapusDataPengeluaran($id){
         $this->db->where('id',$id);
         $this->db->delete('pengeluaran');
     }
-    public function ubahDataPengeluaran(){
-        $data = [
-            "tgl" => $this->input->post('tgl',true),
-            "uraian" => $this->input->post('uraian',true),
-            "reff" => $this->input->post('reff',true),
-            "batasan" => $this->input->post('batasan',true),
-            "jumlah" => $this->input->post('jumlah',true),
-            "no_akun" => $this->input->post('no_akun',true),
-			"kode_id" => $this->input->post('kode_id',true),
-        ];
+    public function ubahDataPengeluaran($data){
         $this->db->where('id',$this->input->post('id'));
         $this->db->update('pengeluaran',$data);
     }

@@ -24,6 +24,32 @@
 <div style="margin-left:5px">
 
 <div class="">
+
+<form action="<?= base_url('');?>" method="post">
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="input-group input-group-sm">
+                <div class="input-group-prepend">
+                    <label for="weekending" class="input-group-text">Tanggal Awal:</label>
+                </div>
+                <input type="date" name="name" id="name" class="form-control form-control-sm">
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="input-group input-group-sm">
+                <div class="input-group-prepend">
+                    <label for="namawin2mgr" class="input-group-text">Taggal Akhir :</label>
+                </div>
+                <input type="date" name="jenis_kendaraan" id="jenis_kendaraan" class="form-control form-control-sm">
+                <!-- <input type="text" name="namawin2mgr" id="namawin2mgr" class="form-control form-control-sm"> -->
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <button type="submit" class="btn btn-primary btn-sm">Cari</button>
+        </div>
+    </div>
+</form>
+<hr>
 <?php if($this->session->flashdata('flash2')) :?>
 <div class="row mt-3">
     <div class="col md-6">
@@ -54,15 +80,17 @@
                 <th>Tanggal</th>
                 <th>Uraian</th>
                 <th>Bukti Transaksi</th>
-                <th>Batasan</th>
-                <th>Jumlah</th>
-                <th>No. Akun</th>
+                <th>Rekeneing</th>
+                <th>Jumlah Total</th>
                 <th style="text-align:center;">Aksi</th>
             </tr>
         </thead>
         <tbody>
             <?php $i=1;?>
-            <?php foreach ($pengeluaran as $pen): ?>
+            <?php $total=0;?>
+            <?php foreach ($pengeluaran as $pen): 
+                $total += floatval($pen['total_pengeluaran']);
+                ?>
             <tr>
                 <td style="text-align:center;">
                     <?php echo $i;?>
@@ -77,13 +105,10 @@
                     <?php echo $pen['reff'] ?>
                 </td>
                 <td style="text-align:center;">
-                    <?php echo $pen['batasan'] ?>
+                    <?php echo $pen['rekening'] ?>
                 </td>
                 <td style="text-align:center;">
-                    <?php echo $pen['jumlah'] ?>
-                </td>
-                <td style="text-align:center;">
-                    <?php echo $pen['no_akun'] ?>
+                    <?php echo $pen['total_pengeluaran'] ?>
                 </td>
                 <td style="text-align:center;">
                 
@@ -100,6 +125,15 @@
             </tr>
             <?php $i++;?>
             <?php endforeach; ?>
+            <tr>
+                <td  colspan="4"></td>
+                <td>
+                    <h5><b>Total</b></h5>
+                </td>
+                <td colspan="1">
+                    <h5><b><?= $total ?><b></h5>
+                </td>
+            </tr>
 
         </tbody>
     </table>

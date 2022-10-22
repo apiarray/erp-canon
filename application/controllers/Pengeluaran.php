@@ -5,6 +5,8 @@ class Pengeluaran extends CI_Controller {
     public function __construct(){
         parent::__construct();
         $this->load->model('m_pengeluaran');
+        $this->load->model('M_Rekening');
+        $this->load->model('M_account');
         $this->load->library('form_validation');
     }
     public function index(){
@@ -20,15 +22,43 @@ class Pengeluaran extends CI_Controller {
         $this->form_validation->set_rules('tgl','Tgl','required');
         $this->form_validation->set_rules('uraian','Uraian','required');
         $this->form_validation->set_rules('reff','Reff','required');
-        $this->form_validation->set_rules('batasan','Batasan','required');
-        $this->form_validation->set_rules('jumlah','Jumlah','required');
-        $this->form_validation->set_rules('no_akun','No_akun','required');
+        $this->form_validation->set_rules('kode_jurnal','Kode Jurnal','required');
+        $this->form_validation->set_rules('rekening','Rekening','required');
 
         if ($this->form_validation->run() == FALSE) {
+            $data['rekening'] = $this->M_Rekening->tampil_data();
+            $data['coa'] = $this->M_account->tampil_data(NULL);
+
             $this->load->view('templates/header',$data);
             $this->load->view('pengeluaran/tambah');
         }else {
-            $this->m_pengeluaran->tambahDataPengeluaran();
+            $getrek = $this->M_Rekening->getRekeningById($this->input->post('rekening',true));
+            $data = [
+                "tgl" => $this->input->post('tgl',true),
+                "uraian" => $this->input->post('uraian',true),
+                "reff" => $this->input->post('reff',true),
+                "rekening_id" => $this->input->post('rekening',true),
+                "rekening" => $getrek['name'],
+                "reff" => $this->input->post('reff',true),
+                "kode_jurnal" => $this->input->post('kode_jurnal',true),
+                "total_pengeluaran" => $this->input->post('jumlah_total',true)
+            ];
+            $add = $this->m_pengeluaran->tambahDataPengeluaran($data);
+            $pid = $this->db->insert_id();
+
+            $dataakun = [];
+            for($i=0;$i<=count($this->input->post('kode_id',true))-1;$i++){
+                $coa = $this->M_account->getAccountById($this->input->post('kode_id',true)[$i]);
+                $dataakun['pengeluaran_id'] = $pid;
+                $dataakun['coa_id'] = $this->input->post('kode_id',true)[$i];
+                $dataakun['coa_kode'] = $coa['kode'];
+                $dataakun['coa_nama'] = $coa['nama'];
+                $dataakun['jumlah'] = $this->input->post('jumlah',true)[$i];
+                $dataakun['batasan'] = $this->input->post('batasan',true)[$i];
+
+                $this->m_pengeluaran->tambahDataPengeluaranAkun($dataakun);
+            }
+
             $this->session->set_flashdata('flash','Ditambahkan');
             redirect('pengeluaran');
         }
@@ -42,6 +72,7 @@ class Pengeluaran extends CI_Controller {
     // }
     public function hapus($id){
         $this->m_pengeluaran->hapusDataPengeluaran($id);
+        $this->m_pengeluaran->hapusAkunDataPengeluaran($id);
         $this->session->set_flashdata('flash2','Dihapus');
         redirect('pengeluaran');
     }
@@ -53,15 +84,46 @@ class Pengeluaran extends CI_Controller {
         $this->form_validation->set_rules('tgl','Tgl','required');
         $this->form_validation->set_rules('uraian','Uraian','required');
         $this->form_validation->set_rules('reff','Reff','required');
-        $this->form_validation->set_rules('batasan','Batasan','required');
-        $this->form_validation->set_rules('jumlah','Jumlah','required');
-        $this->form_validation->set_rules('no_akun','No_akun','required');
+        $this->form_validation->set_rules('kode_jurnal','Kode Jurnal','required');
+        $this->form_validation->set_rules('rekening','Rekening','required');
 
         if ($this->form_validation->run() == FALSE) {
+            $data['rekening'] = $this->M_Rekening->tampil_data();
+            $data['coa'] = $this->M_account->tampil_data(NULL);
+            $data['penge'] = $this->m_pengeluaran->getAkunPengeluaran($id);
+
             $this->load->view('templates/header',$topik);
             $this->load->view('pengeluaran/edit',$data);
         }else {
-            $this->m_pengeluaran->ubahDataPengeluaran();
+            $getrek = $this->M_Rekening->getRekeningById($this->input->post('rekening',true));
+            $data = [
+                "tgl" => $this->input->post('tgl',true),
+                "uraian" => $this->input->post('uraian',true),
+                "reff" => $this->input->post('reff',true),
+                "rekening_id" => $this->input->post('rekening',true),
+                "rekening" => $getrek['name'],
+                "reff" => $this->input->post('reff',true),
+                "kode_jurnal" => $this->input->post('kode_jurnal',true),
+                "total_pengeluaran" => $this->input->post('jumlah_total',true)
+            ];
+            $this->m_pengeluaran->ubahDataPengeluaran($data);
+            $this->m_pengeluaran->hapusAkunDataPengeluaran($id);
+            $pid = $id;
+
+            $dataakun = [];
+            for($i=0;$i<=count($this->input->post('kode_id',true))-1;$i++){
+                $coa = $this->M_account->getAccountById($this->input->post('kode_id',true)[$i]);
+                $dataakun['pengeluaran_id'] = $pid;
+                $dataakun['coa_id'] = $this->input->post('kode_id',true)[$i];
+                $dataakun['coa_kode'] = $coa['kode'];
+                $dataakun['coa_nama'] = $coa['nama'];
+                $dataakun['jumlah'] = $this->input->post('jumlah',true)[$i];
+                $dataakun['batasan'] = $this->input->post('batasan',true)[$i];
+
+                $this->m_pengeluaran->tambahDataPengeluaranAkun($dataakun);
+            }
+
+
             $this->session->set_flashdata('flash','Diubah');
             redirect('pengeluaran');
         }
