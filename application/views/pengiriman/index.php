@@ -52,7 +52,7 @@
                             $alamat = $i['alamat'];
 
                         ?>
-                            <tr class="pilih" data-kota="<?php echo $kota; ?>" data-nama="<?php echo $nama; ?>" data-alamat="<?php echo $alamat; ?>" data-telepon="<?php echo $telepon; ?>" data-tgl_lahir="<?php echo $tgl_lahir; ?>" data-id="<?php echo $kode ?>">
+                            <tr class="pilih" data-kodeid="<?= $kode ?>" data-kota="<?php echo $kota; ?>" data-nama="<?php echo $nama; ?>" data-alamat="<?php echo $alamat; ?>" data-telepon="<?php echo $telepon; ?>" data-tgl_lahir="<?php echo $tgl_lahir; ?>" data-id="<?php echo $kode ?>">
                                 <td><?php echo $kode; ?></td>
                                 <td><?php echo $nama; ?></td>
                                 <td><?php echo $jabatan; ?></td>
@@ -87,6 +87,8 @@
     <script type="text/javascript">
         //            jika dipilih, nim akan masuk ke input dan modal di tutup
         $(document).on('click', '.pilih', function(e) {
+            document.getElementById("kode_id").value = $(this).attr('data-kodeid');
+            $('#myModal').modal('hide');
             document.getElementById("nama").value = $(this).attr('data-nama');
             $('#myModal').modal('hide');
             document.getElementById("kota").value = $(this).attr('data-kota');
@@ -126,6 +128,25 @@
             var id = document.getElementById("$id").value;
             alert('No DO ' + id + ' berhasil tersimpan');
         }
+
+        $(document).on('change', '#tanggal_mulai', function(e) {
+            var tm = document.getElementById("tanggal_mulai");
+            var ts = document.getElementById("tanggal_sampai");
+            if(tm.value != ''){
+                ts.value = tm.value;
+                ts.setAttribute('min', tm.value);
+                ts.removeAttribute('disabled');
+            }
+            else{
+                ts.setAttribute('disabled');
+            }
+            console.log(tm.value);
+        })
+        // $('#tanggal_mulai').on('change', function(){
+        //     $('#tanggal_sampai').val($(this).val());
+        //     $('#tanggal_sampai').attr('min', $(this).val());
+        // })
+        
     </script>
 
 
@@ -135,8 +156,8 @@
 
 <div class="content-wrapper col-12">
     <section class="content-header ml mt-2 auto">
-        <form action="<?= base_url(); ?>Pengiriman/insert" method="post">
-            <div class="row mt-3">
+        <form action="<?= base_url(); ?>pengiriman/filter" method="GET">
+            <div class="row mt-3 mb-2">
                 <div class="col-lg-4">
 
                     <?php
@@ -156,23 +177,18 @@
                     
                     ?>
 
-
                     <div class="input-group input-group-sm mt-1">
                         <div class="input-group-prepend">
-                            <label for="pembayaran" class="input-group-text">Mitra :</label>
+                            <label for="weekending" class="input-group-text">Mitra :</label>
                         </div>
-                        <select id="kode_mitra" name="kode_mitra" class="form-control">
-                            <option selected>Pilih Mitra</option>
-                            <?php foreach ($mitra as $mitra) : ?>
-                                <option value="<?= $mitra->kode; ?>"><?= $mitra->name; ?></option>
-                            <?php endforeach; ?>
-                        </select>
+                        <!-- <input type="hidden" name="kode_id" id="kode_id" class="form-control form-control-sm" /> -->
+                        <input type="text" name="kode_id" id="kode_id" class="form-control form-control-sm" data-toggle="modal" data-target="#myModal">
                     </div>
-                    <div class="input-group input-group-sm">
+                    <div class="input-group input-group-sm mt-1">
                         <div class="input-group-prepend">
-                            <label for="weekending" class="input-group-text">Kepada :</label>
+                            <label for="nama" class="input-group-text">Kepada :</label>
                         </div>
-                        <input type="text" name="nama" id="nama" class="form-control form-control-sm" data-toggle="modal" data-target="#myModal">
+                        <input type="text" name="kepada" id="nama" class="form-control form-control-sm">
                     </div>
                     <div class="input-group input-group-sm mt-1">
                         <div class="input-group-prepend">
@@ -196,15 +212,16 @@
                     </div>
                 </div>
 
-                <div class="col-lg-4">
+                <div class="col-lg-5">
                     <div class="d-flex">
                         <div class="input-group input-group-sm mt-1">
                             <div class="input-group-prepend">
                                 <label for="taggal" class="input-group-text">Tanggal :</label>
                             </div>
-                            <input type="text" name="tanggal" value="<?php echo date('d/m/Y'); ?>" class="form-control form-control-sm">
+                            <input type="date" id="tanggal_mulai" name="tanggal" value="<?php echo date('Y-m-d'); ?>" class="form-control form-control-sm">
                             <span>&nbsp; sd &nbsp;</span>
-                            <input type="text" name="tanggal_sampai" value="<?php echo date('d/m/Y'); ?>" class="form-control form-control-sm">
+                            
+                            <input type="date" id="tanggal_sampai" name="tanggal_sampai" value="<?php echo date('Y-m-d'); ?>" min="<?php echo date('Y-m-d'); ?>" class="form-control form-control-sm">
                         </div>
                     </div>
                     <div class="input-group input-group-sm mt-1">
@@ -232,7 +249,7 @@
                         <input type="text" name="no_segel" id="no_segel" class="form-control form-control-sm">
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                     <div class="d-flex">
                         <div class="input-group input-group-sm mt-1">
                             <div class="input-group-prepend">
@@ -260,14 +277,12 @@
 
                 </div>
 
-                <div class="col-4">
-                    <button type="submit" class="btn btn-info mb-2">Submit</button>
-                    <a href="<?= base_url('pengiriman/tambah'); ?>" class="btn btn-success mb-2">Tambah Data</a>
-                </div>
             </div>
+            <button type="submit" class="btn btn-info mb-2">Filter</button>
+            <a href="<?= base_url('pengiriman/tambah'); ?>" class="btn btn-success mb-2">Tambah Data</a>
+                
         </form>
-
-        </ol>
+        <hr>
         <div style="margin-left:5px">
 
             <div class="">
@@ -307,6 +322,7 @@
                                 <th style="text-align:center;">Aksi</th>
                             </tr>
                         </thead>
+                        <tbody>
                         <?php
                         $no = 1;
                         $totalall = 0;
@@ -328,7 +344,8 @@
 
                             // $total_nominal = $i['total_nominal'];
                             $qty_perkarton = $i['qty_perkarton'];
-                            $total = $i['total'];
+                            $total = $i['total_pengiriman'];
+                            $totalall += floatval($total);
                         ?>
 
 
@@ -361,7 +378,7 @@
                                     }; ?>
                                 </td>
                                 <td style="text-align:center;">
-                                    <?php echo $total; ?>
+                                    <?php echo number_format($total, 2, ',', '.'); ?>
                                 </td>
                                 <td style="text-align:center;">
 
@@ -370,7 +387,7 @@
                                             Action
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a href="<?= base_url(); ?>pengiriman/print/<?php echo $id; ?>" class="btn btn-primary mt-2" style="margin-left:42px"><i class="fa fa-print"></i>Cetak</i></a>
+                                            <a target="_blank" href="<?= base_url(); ?>pengiriman/cetak_faktur/<?php echo $id; ?>" class="btn btn-primary mt-2" style="margin-left:42px"><i class="fa fa-print"></i>Cetak</i></a>
                                             <a href="<?= base_url(); ?>pengiriman/edit/<?php echo $id; ?>" class="btn btn-success mt-2" style="margin-left:42px"><i class="fa fa-edit"></i>Edit</i></a>
                                             <a href="<?= base_url(); ?>pengiriman/hapus/<?php echo $id; ?>" class="btn btn-danger mt-2" style="margin-left:35px" onclick="return confirm('Yakin ingin dihapus?');"><i class="fa fa-trash"></i>Hapus</a>
                                         </div>
@@ -380,18 +397,20 @@
                             <?php // $i++; 
                             ?>
                         <?php endforeach; ?>
-                        <th>
-                            <td colspan="5"></td>
-                            <td><h5><b>Total</b></h5></td>
-                            <td><h5><b><?= $totalall ?></b></h5></td>
-                            <td></td>
-                        </th>
-
-
+                        </tbody>
+                        <tfoot id="tfooter">
+                            <tr>
+                                <th colspan="6"></th>
+                                <th><h5><b>Total</b></h5></th>
+                                <th><h5><b><?= number_format($totalall, 2, ',', '.') ?></b></h5></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
                 <!-- Footer Pengiriman -->
-                <div class="row mt-3">
+                <!-- <div class="row mt-3">
                     <div class="col-lg-4">
                         <form action="<?= base_url(''); ?>" method="post">
                             <div class="input-group input-group-sm">
@@ -411,21 +430,18 @@
                                     <label for="jenis_kendaraan" class="input-group-text">Jenis Kendaraan :</label>
                                 </div>
                                 <input type="text" name="jenis_kendaraan" id="jenis_kendaraan" class="form-control form-control-sm">
-                                <!-- <input type="text" name="namawin2mgr" id="namawin2mgr" class="form-control form-control-sm"> -->
                             </div>
                             <div class="input-group input-group-sm mt-1">
                                 <div class="input-group-prepend">
                                     <label for="security" class="input-group-text">No. Polisi :</label>
                                 </div>
                                 <input type="text" name="no_polisi" id="no_polisi" class="form-control form-control-sm">
-                                <!-- <input type="text" name="security" id="security" class="form-control form-control-sm"> -->
                             </div>
                             <div class="input-group input-group-sm mt-1">
                                 <div class="input-group-prepend">
                                     <label for="driver" class="input-group-text">Nama Driver :</label>
                                 </div>
                                 <input type="text" name="driver" id="driver" class="form-control form-control-sm">
-                                <!-- <input type="text" name="security" id="security" class="form-control form-control-sm"> -->
                             </div>
                         </form>
                     </div>
@@ -459,7 +475,7 @@
 
                         </form>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- ============ MODAL ADD Kategori =============== -->
                 <div class="modal fade" id="modal_add_new" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true">
