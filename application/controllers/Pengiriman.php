@@ -19,6 +19,34 @@ class Pengiriman extends CI_Controller
     $this->load->view('pengiriman/index', $x);
     $this->load->view('templates/footer');
   }
+
+  public function filter()
+  {
+    $topik['judul'] = 'Halaman Menu Pengiriman Barang';
+
+    $dfil['kode_id'] = $this->input->get('kode_id', true);
+    $dfil['kepada'] = $this->input->get('kepada', true);
+    $dfil['alamat'] = $this->input->get('alamat', true);
+    $dfil['kota'] = $this->input->get('kota', true);
+    $dfil['telepon'] = $this->input->get('telepon', true);
+    $dfil['tanggal'] = $this->input->get('tanggal', true);
+    $dfil['tanggal_sampai'] = $this->input->get('tanggal_sampai', true);
+    $dfil['no_do'] = $this->input->get('no_do', true);
+    $dfil['manager_gudang'] = $this->input->get('manager_gudang', true);
+    $dfil['no_kontainer'] = $this->input->get('no_kontainer', true);
+    $dfil['no_segel'] = $this->input->get('no_segel', true);
+    $dfil['setup_jurnal'] = $this->input->get('setup_jurnal', true);
+    $dfil['jenis_transaksi'] = $this->input->get('jenis_transaksi', true);
+    $dfil['tanggal_jt'] = $this->input->get('tanggal_jt', true);
+
+    $x['df'] = $dfil;
+    $x['data1'] = $this->m_pengiriman->filter_data($dfil);
+    $x['kode'] = $this->m_pengiriman->kode();
+    $x['data'] = $this->m_pengiriman->tampil_datamitra();
+    $this->load->view('templates/header', $topik);
+    $this->load->view('pengiriman/filter', $x);
+    $this->load->view('templates/footer');
+  }
   // $x['data2'] = $this->m_pengiriman->tampil_barang();
 
   public function cetak_faktur()

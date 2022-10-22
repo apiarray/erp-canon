@@ -5,6 +5,13 @@ class M_pengeluaran extends CI_Model{
         return $this->db->get('pengeluaran')->result_array();
     }
 	
+    public function filter($data){
+        $this->db->where('tgl >=', $data['tanggal']);
+		$this->db->where('tgl <=', $data['tanggal_sampai']);
+        
+        return $this->db->get_where('pengeluaran')->result_array();
+    }
+
 	function tampil_data1(){
     $username=$this->session->userdata("username");
      $this->db->where('users.username',"$username");

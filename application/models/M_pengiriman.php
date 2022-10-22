@@ -18,6 +18,52 @@ class M_pengiriman extends CI_Model
 		}
 	}
 
+	public function filter_data($data)
+	{
+		if($data['kode_id'] != ''){
+			$this->db->where('kode_id', $data['kode_id']);
+		}
+		if($data['kepada'] != ''){
+			$this->db->where('kepada', $data['kepada']);
+		}
+		if($data['alamat'] != ''){
+			$this->db->where('alamat', $data['alamat']);
+		}
+		if($data['kota'] != ''){
+			$this->db->where('kota', $data['kota']);
+		}
+		if($data['telepon'] != ''){
+			$this->db->where('no_telepon', $data['telepon']);
+		}
+		if($data['no_do'] != ''){
+			$this->db->where('no_do', $data['no_do']);
+		}
+		if($data['manager_gudang'] != ''){
+			$this->db->where('manager_gudang', $data['manager_gudang']);
+		}
+		if($data['no_kontainer'] != ''){
+			$this->db->where('no_kontainer', $data['no_kontainer']);
+		}
+		if($data['no_segel'] != ''){
+			$this->db->where('no_segel', $data['no_segel']);
+		}
+		if($data['jenis_transaksi'] != 0){
+			$this->db->where('jenis_transaksi', $data['jenis_transaksi']);
+		}
+		if($data['setup_jurnal'] != ''){
+			$this->db->where('setup_jurnal', $data['setup_jurnal']);
+		}
+
+		$this->db->where('tanggal >=', $data['tanggal']);
+		$this->db->where('tanggal <=', $data['tanggal_sampai']);
+		
+		if ($this->session->userdata('id_role') === "2") {
+			return $this->db->get_where('pengiriman', ['gudang_asal' => $this->session->userdata('gudang')]);
+		} else {
+			return $this->db->get('pengiriman');
+		}
+	}
+
 	function tampil_barang()
 	{
 		if ($this->session->userdata('id_role') === "2") {

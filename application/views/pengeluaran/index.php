@@ -20,7 +20,22 @@
 
   
 
-</ol>
+<!-- </ol> -->
+<script>
+        $(document).on('change', '#tanggal_mulai', function(e) {
+            var tm = document.getElementById("tanggal_mulai");
+            var ts = document.getElementById("tanggal_sampai");
+            if(tm.value != ''){
+                ts.value = tm.value;
+                ts.setAttribute('min', tm.value);
+                ts.removeAttribute('disabled');
+            }
+            else{
+                ts.setAttribute('disabled');
+            }
+            console.log(tm.value);
+        })
+    </script>
 <div style="margin-left:5px">
 
 <div class="">
@@ -100,6 +115,19 @@
             </tr>
             <?php $i++;?>
             <?php endforeach; ?>
+<<<<<<< HEAD
+=======
+            <tr>
+                <td  colspan="4"></td>
+                <td>
+                    <h5><b>Total</b></h5>
+                </td>
+                <td>
+                    <h5><b><?= $total ?><b></h5>
+                </td>
+                <td></td>
+            </tr>
+>>>>>>> f60740ccbf279c13e06131ba37861cfd4fbf94db
 
         </tbody>
     </table>

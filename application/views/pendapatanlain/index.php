@@ -48,16 +48,16 @@
             <form action="<?= base_url('');?>" method="post">
                 <div class="input-group input-group-sm">
                     <div class="input-group-prepend">
-                        <label for="weekending" class="input-group-text">Tanggal Awal:</label>
+                        <label for="tanggal_mulai" class="input-group-text">Tanggal Awal:</label>
                     </div>
-                    <input type="date" name="name" id="name" class="form-control form-control-sm">
+                    <input type="date" name="tanggal" id="tanggal_mulai" value="<?php echo date('Y-m-d'); ?>" class="form-control form-control-sm">
                 </div>
                 
                 <div class="input-group input-group-sm mt-1">
                     <div class="input-group-prepend">
-                        <label for="namawin2mgr" class="input-group-text">Taggal Akhir :</label>
+                        <label for="tanggal_sampai" class="input-group-text">Taggal Akhir :</label>
                     </div>
-                    <input type="date" name="jenis_kendaraan" id="jenis_kendaraan" class="form-control form-control-sm">
+                    <input type="date" name="tanggal_sampai" value="<?php echo date('Y-m-d'); ?>"  min="<?php echo date('Y-m-d'); ?>" id="tanggal_sampai" class="form-control form-control-sm">
                     <!-- <input type="text" name="namawin2mgr" id="namawin2mgr" class="form-control form-control-sm"> -->
                 </div>
                 <button type="submit" class="btn btn-primary mb-2 mt-2">Cari</button>
