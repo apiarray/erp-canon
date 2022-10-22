@@ -14,7 +14,7 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="">Tgl</label>
-                        <input type="text" required name="tgl" placeholder="<?php echo date('d/M/y');?>" class="form-control" value="<?php echo date('d/m/y');?>">
+                        <input type="date" required name="tgl" class="form-control" value="<?php echo date('Y-m-d');?>">
                         <small><span class="text-danger"><?=form_error('tgl');?></span></small>
                     </div>
                 </div>

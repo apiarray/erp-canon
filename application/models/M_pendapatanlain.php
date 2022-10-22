@@ -4,6 +4,12 @@ class M_pendapatanlain extends CI_Model{
     public function tampil_data(){
         return $this->db->get('pendapatanlain')->result_array();
     }
+    public function filter($data){
+        $this->db->where('tgl >=', $data['tanggal']);
+		$this->db->where('tgl <=', $data['tanggal_sampai']);
+        
+        return $this->db->get_where('pendapatanlain')->result_array();
+    }
     public function getcoaByPendapatanId($id){
         $this->db->where('pendapatanlain_id', $id);
         return $this->db->get('pendapatanlain_akun_transaksi')->result_array();

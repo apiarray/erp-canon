@@ -16,6 +16,16 @@ class Pendapatan extends CI_Controller {
         $this->load->view('pendapatanlain/index',$data);
         $this->load->view('templates/footer');
     }
+    public function filter(){
+        $topik['judul'] = 'Halaman Menu Pendapatan Lain';
+        $dfil['tanggal'] = $this->input->get('tanggal', true);
+        $dfil['tanggal_sampai'] = $this->input->get('tanggal_sampai', true);
+
+        $data['pendapatanlain'] = $this->M_pendapatanlain->filter($dfil);
+        $this->load->view('templates/header',$topik);
+        $this->load->view('pendapatanlain/index',$data);
+        $this->load->view('templates/footer');
+    }
     
     public function tambah(){
         $data['judul'] = 'Form Tambah Data Pendapatan Lain';

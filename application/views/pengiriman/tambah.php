@@ -62,7 +62,7 @@ console.log('start');
                     <div class="input-group-prepend">
                         <label for="taggal" class="input-group-text">Tanggal :</label>
                     </div>
-                    <input type="text" name="tanggal" id="tgl_lahir" class="form-control form-control-sm">
+                    <input type="date" name="tanggal" value="<?= date('Y-m-d')?>" id="tgl_lahir" class="form-control form-control-sm">
                 </div>
                 <div class="input-group input-group-sm mt-1">
                     <div class="input-group-prepend">

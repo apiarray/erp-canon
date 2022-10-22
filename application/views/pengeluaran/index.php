@@ -20,32 +20,48 @@
 
   
 
-</ol>
+<!-- </ol> -->
+<script>
+        $(document).on('change', '#tanggal_mulai', function(e) {
+            var tm = document.getElementById("tanggal_mulai");
+            var ts = document.getElementById("tanggal_sampai");
+            if(tm.value != ''){
+                ts.value = tm.value;
+                ts.setAttribute('min', tm.value);
+                ts.removeAttribute('disabled');
+            }
+            else{
+                ts.setAttribute('disabled');
+            }
+            console.log(tm.value);
+        })
+    </script>
 <div style="margin-left:5px">
 
 <div class="">
 
-<form action="<?= base_url('');?>" method="post">
+<form action="<?= base_url('pengeluaran/filter');?>" method="get">
     <div class="row">
         <div class="col-lg-4">
             <div class="input-group input-group-sm">
                 <div class="input-group-prepend">
-                    <label for="weekending" class="input-group-text">Tanggal Awal:</label>
+                    <label for="tanggal_mulai" class="input-group-text">Tanggal Awal:</label>
                 </div>
-                <input type="date" name="name" id="name" class="form-control form-control-sm">
+                <input type="date" name="tanggal" id="tanggal_mulai" value="<?php echo date('Y-m-d'); ?>" class="form-control form-control-sm">
             </div>
         </div>
         <div class="col-lg-4">
             <div class="input-group input-group-sm">
                 <div class="input-group-prepend">
-                    <label for="namawin2mgr" class="input-group-text">Taggal Akhir :</label>
+                    <label for="tanggal_sampai" class="input-group-text">Taggal Akhir :</label>
                 </div>
-                <input type="date" name="jenis_kendaraan" id="jenis_kendaraan" class="form-control form-control-sm">
+                <input type="date" name="tanggal_sampai" id="tanggal_sampai" value="<?php echo date('Y-m-d'); ?>" min="<?php echo date('Y-m-d'); ?>" class="form-control form-control-sm">
                 <!-- <input type="text" name="namawin2mgr" id="namawin2mgr" class="form-control form-control-sm"> -->
             </div>
         </div>
         <div class="col-lg-4">
             <button type="submit" class="btn btn-primary btn-sm">Cari</button>
+            <a href="<?= base_url('pengeluaran');?>" class="btn btn-danger btn-sm">Reset</a>
         </div>
     </div>
 </form>
@@ -130,9 +146,10 @@
                 <td>
                     <h5><b>Total</b></h5>
                 </td>
-                <td colspan="1">
+                <td>
                     <h5><b><?= $total ?><b></h5>
                 </td>
+                <td></td>
             </tr>
 
         </tbody>

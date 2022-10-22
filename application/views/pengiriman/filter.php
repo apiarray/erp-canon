@@ -182,32 +182,32 @@
                             <label for="weekending" class="input-group-text">Mitra :</label>
                         </div>
                         <!-- <input type="hidden" name="kode_id" id="kode_id" class="form-control form-control-sm" /> -->
-                        <input type="text" name="kode_id" id="kode_id" class="form-control form-control-sm" data-toggle="modal" data-target="#myModal">
+                        <input type="text" name="kode_id" id="kode_id" value="<?= $df['kode_id'] ?>" class="form-control form-control-sm" data-toggle="modal" data-target="#myModal">
                     </div>
                     <div class="input-group input-group-sm mt-1">
                         <div class="input-group-prepend">
                             <label for="nama" class="input-group-text">Kepada :</label>
                         </div>
-                        <input type="text" name="kepada" id="nama" class="form-control form-control-sm">
+                        <input type="text" name="kepada" id="nama"  value="<?= $df['kepada'] ?>" class="form-control form-control-sm">
                     </div>
                     <div class="input-group input-group-sm mt-1">
                         <div class="input-group-prepend">
                             <label for="alamat" class="input-group-text">Alamat :</label>
                         </div>
-                        <input type="text" name="alamat" id="alamat" class="form-control form-control-sm">
+                        <input type="text" name="alamat" id="alamat"  value="<?= $df['alamat'] ?>" class="form-control form-control-sm">
                     </div>
                     <div class="input-group input-group-sm mt-1">
                         <div class="input-group-prepend">
                             <label for="namawin2mgr" class="input-group-text">Kota/Kec :</label>
                         </div>
-                        <input type="text" name="kota" id="kota" class="form-control form-control-sm">
+                        <input type="text" name="kota" id="kota"  value="<?= $df['kota'] ?>" class="form-control form-control-sm">
                         <!-- <input type="text" name="namawin2mgr" id="namawin2mgr" class="form-control form-control-sm"> -->
                     </div>
                     <div class="input-group input-group-sm mt-1">
                         <div class="input-group-prepend">
                             <label for="security" class="input-group-text">No. Telepon :</label>
                         </div>
-                        <input type="text" name="telepon" id="telepon" class="form-control form-control-sm">
+                        <input type="text" name="telepon" id="telepon" value="<?= $df['telepon'] ?>" class="form-control form-control-sm">
                         <!-- <input type="text" name="security" id="security" class="form-control form-control-sm"> -->
                     </div>
                 </div>
@@ -218,35 +218,35 @@
                             <div class="input-group-prepend">
                                 <label for="taggal" class="input-group-text">Tanggal :</label>
                             </div>
-                            <input type="date" id="tanggal_mulai" name="tanggal" value="<?php echo date('Y-m-d'); ?>" class="form-control form-control-sm">
+                            <input type="date" id="tanggal_mulai" name="tanggal"  value="<?= $df['tanggal'] ?>" class="form-control form-control-sm">
                             <span>&nbsp; sd &nbsp;</span>
                             
-                            <input type="date" id="tanggal_sampai" name="tanggal_sampai" value="<?php echo date('Y-m-d'); ?>" min="<?php echo date('Y-m-d'); ?>" class="form-control form-control-sm">
+                            <input type="date" id="tanggal_sampai" name="tanggal_sampai"  value="<?= $df['tanggal_sampai'] ?>" min="<?= $df['tanggal_sampai'] ?>" class="form-control form-control-sm">
                         </div>
                     </div>
                     <div class="input-group input-group-sm mt-1">
                         <div class="input-group-prepend">
                             <label for="no_do" class="input-group-text">No. DO :</label>
                         </div>
-                        <input type="text" value="" name="no_do" id="id" class="form-control form-control-sm">
+                        <input type="text" value="" name="no_do" id="id" value="<?= $df['no_do'] ?>" class="form-control form-control-sm">
                     </div>
                     <div class="input-group input-group-sm mt-1">
                         <div class="input-group-prepend">
                             <label for="manager_gudang" class="input-group-text">Manager Gudang :</label>
                         </div>
-                        <input type="text" name="manager_gudang" id="manager_gudang" class="form-control form-control-sm">
+                        <input type="text" name="manager_gudang" value="<?= $df['manager_gudang'] ?>" id="manager_gudang" class="form-control form-control-sm">
                     </div>
                     <div class="input-group input-group-sm mt-1">
                         <div class="input-group-prepend">
                             <label for="no_kontainer" class="input-group-text">No. Kontainer :</label>
                         </div>
-                        <input type="text" name="no_kontainer" id="no_kontainer" class="form-control form-control-sm">
+                        <input type="text" name="no_kontainer" id="no_kontainer" value="<?= $df['no_kontainer'] ?>" class="form-control form-control-sm">
                     </div>
                     <div class="input-group input-group-sm mt-1">
                         <div class="input-group-prepend">
                             <label for="no_segel" class="input-group-text">No. Segel :</label>
                         </div>
-                        <input type="text" name="no_segel" id="no_segel" class="form-control form-control-sm">
+                        <input type="text" name="no_segel" id="no_segel" value="<?= $df['no_segel'] ?>" class="form-control form-control-sm">
                     </div>
                 </div>
                 <div class="col-lg-3">
@@ -255,7 +255,7 @@
                             <div class="input-group-prepend">
                                 <label for="taggal" class="input-group-text">Set Up Jurnal :</label>
                             </div>
-                            <input type="text" name="setup_jurnal" class="form-control form-control-sm">
+                            <input type="text" name="setup_jurnal" value="<?= $df['setup_jurnal'] ?>" class="form-control form-control-sm">
                         </div>
                     </div>
                     <div class="input-group input-group-sm mt-1">
@@ -263,22 +263,23 @@
                             <label for="pembayaran" class="input-group-text">Jenis Transaksi :</label>
                         </div>
                         <select id="jenis_transaksi" name="jenis_transaksi" class="form-control">
-                            <option value="0" selected>Pilih Jenis</option>
-                            <option value="Cash">Cash</option>
-                            <option value="Kredit">Kredit</option>
+                            <option value="0" selected <?= $df['jenis_transaksi'] == 0 ? 'selected' : ''; ?>>Pilih Jenis</option>
+                            <option value="Cash" <?= $df['jenis_transaksi'] == 'Cash' ? 'selected' : ''; ?>>Cash</option>
+                            <option value="Kredit" <?= $df['jenis_transaksi'] == 'Kredit' ? 'selected' : ''; ?>>Kredit</option>
                         </select>
                     </div>
                     <div class="input-group input-group-sm mt-1">
                         <div class="input-group-prepend">
                             <label for="manager_gudang" class="input-group-text">Tanggal J/T :</label>
                         </div>
-                        <input type="date" name="tanggal_jt" value="<?php echo date('d/m/Y'); ?>" id="" class="form-control form-control-sm">
+                        <input type="date" name="tanggal_jt" value="<?= $df['tanggal_jt'] ?>" id="" class="form-control form-control-sm">
                     </div>
 
                 </div>
 
             </div>
-            <button type="submit" class="btn btn-info mb-2">Submit</button>
+            <button type="submit" class="btn btn-info mb-2">Filter</button>
+            <a href="<?= base_url('pengiriman'); ?>" class="btn btn-danger mb-2">Reset</a>
             <a href="<?= base_url('pengiriman/tambah'); ?>" class="btn btn-success mb-2">Tambah Data</a>
                 
         </form>

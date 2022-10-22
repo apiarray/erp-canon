@@ -1,6 +1,20 @@
 <div class="content-wrapper col-12 mb-4">
 
-
+    <script>
+        $(document).on('change', '#tanggal_mulai', function(e) {
+            var tm = document.getElementById("tanggal_mulai");
+            var ts = document.getElementById("tanggal_sampai");
+            if(tm.value != ''){
+                ts.value = tm.value;
+                ts.setAttribute('min', tm.value);
+                ts.removeAttribute('disabled');
+            }
+            else{
+                ts.setAttribute('disabled');
+            }
+            console.log(tm.value);
+        })
+    </script>
     <?php if($this->session->flashdata('flash2')) :?>
         <div class="row mt-3">
             <div class="col md-12">
@@ -21,27 +35,28 @@
         </div>
     <?php endif;?>
 
-    <form action="<?= base_url('');?>" method="post">
+    <form action="<?= base_url('pendapatan/filter');?>" method="get">
         <div class="row">
             <div class="col-lg-4">
                 <div class="input-group input-group-sm">
                     <div class="input-group-prepend">
-                        <label for="weekending" class="input-group-text">Tanggal Awal:</label>
+                        <label for="tanggal_mulai" class="input-group-text">Tanggal Awal:</label>
                     </div>
-                    <input type="date" name="name" id="name" class="form-control form-control-sm">
+                    <input type="date" name="tanggal" id="tanggal_mulai" value="<?php echo date('Y-m-d'); ?>" class="form-control form-control-sm">
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="input-group input-group-sm">
                     <div class="input-group-prepend">
-                        <label for="namawin2mgr" class="input-group-text">Taggal Akhir :</label>
+                        <label for="tanggal_sampai" class="input-group-text">Taggal Akhir :</label>
                     </div>
-                    <input type="date" name="jenis_kendaraan" id="jenis_kendaraan" class="form-control form-control-sm">
+                    <input type="date" name="tanggal_sampai" value="<?php echo date('Y-m-d'); ?>"  min="<?php echo date('Y-m-d'); ?>" id="tanggal_sampai" class="form-control form-control-sm">
                     <!-- <input type="text" name="namawin2mgr" id="namawin2mgr" class="form-control form-control-sm"> -->
                 </div>
             </div>
             <div class="col-lg-4">
                 <button type="submit" class="btn btn-primary btn-sm">Cari</button>
+                <a href="<?= base_url('pendapatan');?>" class="btn btn-danger btn-sm">Reset</a>
             </div>
         </div>
     </form>

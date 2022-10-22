@@ -96,7 +96,7 @@
                             <?php foreach($coa as $a){ ?>
                                 <option value="<?= $a['id'] ?>"><?= $a['kode'] ?> - <?= $a['nama'] ?></option>
                             <?php } ?>
-                        </select >>
+                        </select >
                     </div>
                 </div>
                 <div class="col-md-4">
