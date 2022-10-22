@@ -87,6 +87,7 @@
             <a class="collapse-item" href="<?= base_url('pengiriman'); ?>">Pengiriman Barang</a>
             <a class="collapse-item" href="<?= base_url('pendapatan'); ?>">Pendapatan Lain</a>
             <a class="collapse-item" href="<?= base_url('pengeluaran'); ?>">Pengeluaran</a>
+            <a class="collapse-item" href="<?= base_url('Kas_bank'); ?>">Kas Bank</a>
             <a class="collapse-item" href="<?= base_url('hutang'); ?>">Hutang Piutang</a>
             <a class="collapse-item" href="<?= base_url('gaji'); ?>">Gaji Karyawan</a>
           </div>
@@ -95,7 +96,7 @@
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-fw fa-money-bill-alt"></i>
+          <i class="fas fa-fw fas fa-box"></i>
           <span>Persediaan</span>
         </a>
         <div id="collapseFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -105,6 +106,20 @@
             <a class="collapse-item" href="<?= base_url('Transfer_gudang'); ?>">Transfer Gudang</a>
             <a class="collapse-item" href="<?= base_url('Return_gudang'); ?>">Retur Gudang</a>
             <a class="collapse-item" href="<?= base_url('Adjust_stok'); ?>">Penyesuaian Persediaan</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTen" aria-expanded="true" aria-controls="collapseTwo">
+          <!-- <i class="fas fa-fw fa-money-bill-alt"></i> -->
+          <i class="fas fa-money-check-alt"></i>
+          <span>Hutang Piutang</span>
+        </a>
+        <div id="collapseTen" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="<?= base_url('Piutang'); ?>">Piutang</a>
+            <a class="collapse-item" href="<?= base_url('Hutang'); ?>">Hutang</a>
           </div>
         </div>
       </li>
