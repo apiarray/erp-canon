@@ -169,9 +169,18 @@ class M_pengiriman extends CI_Model
 		$this->db->insert('pengiriman', $data);
 	}
 
+	public function tambahDataBarangPengiriman($data)
+	{
+		$this->db->insert('pengiriman_barang', $data);
+	}
+
 	public function getPengirimanById($id)
 	{
 		return $this->db->get_where('pengiriman', ['id' => $id])->row_array();
+	}
+	public function getBarangByPengirimanId($pengirimanid)
+	{
+		return $this->db->get_where('pengiriman_barang', ['pengiriman_id' => $pengirimanid])->result_array();
 	}
 
 
@@ -180,6 +189,13 @@ class M_pengiriman extends CI_Model
 		$this->db->where('id', $id);
 		$this->db->delete('pengiriman');
 	}
+
+	public function hapusDataPengirimanBarangByPengirimanId($id)
+	{
+		$this->db->where('pengiriman_id', $id);
+		$this->db->delete('pengiriman_barang');
+	}
+
 	public function ubahDataPengiriman()
 	{
 		$data = [

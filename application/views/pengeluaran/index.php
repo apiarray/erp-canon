@@ -39,6 +39,33 @@
 <div style="margin-left:5px">
 
 <div class="">
+
+<form action="<?= base_url('pengeluaran/filter');?>" method="get">
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="input-group input-group-sm">
+                <div class="input-group-prepend">
+                    <label for="tanggal_mulai" class="input-group-text">Tanggal Awal:</label>
+                </div>
+                <input type="date" name="tanggal" id="tanggal_mulai" value="<?php echo date('Y-m-d'); ?>" class="form-control form-control-sm">
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="input-group input-group-sm">
+                <div class="input-group-prepend">
+                    <label for="tanggal_sampai" class="input-group-text">Taggal Akhir :</label>
+                </div>
+                <input type="date" name="tanggal_sampai" id="tanggal_sampai" value="<?php echo date('Y-m-d'); ?>" min="<?php echo date('Y-m-d'); ?>" class="form-control form-control-sm">
+                <!-- <input type="text" name="namawin2mgr" id="namawin2mgr" class="form-control form-control-sm"> -->
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <button type="submit" class="btn btn-primary btn-sm">Cari</button>
+            <a href="<?= base_url('pengeluaran');?>" class="btn btn-danger btn-sm">Reset</a>
+        </div>
+    </div>
+</form>
+<hr>
 <?php if($this->session->flashdata('flash2')) :?>
 <div class="row mt-3">
     <div class="col md-6">
@@ -61,7 +88,7 @@
 <a href="<?= base_url('pengeluaran/tambah');?>" class="btn btn-info mb-2">Tambah Data</a>
 <div class="table-responsive">
 <!-- <table class="table" id="dataTable" width="" cellspacing="0"> -->
-<table id="mytable" class="table table-striped table-bordered table-hover table-full-width dataTable" cellspacing="0" width="" style="font-size: small;">
+<table id="mytable" class="table table-striped table-bordered table-hover table-full-width dataTable mb-4" cellspacing="0" width="" style="font-size: small;">
 
         <thead>
             <tr style="text-align:center;">
@@ -69,15 +96,17 @@
                 <th>Tanggal</th>
                 <th>Uraian</th>
                 <th>Bukti Transaksi</th>
-                <th>Batasan</th>
-                <th>Jumlah</th>
-                <th>No. Akun</th>
+                <th>Rekeneing</th>
+                <th>Jumlah Total</th>
                 <th style="text-align:center;">Aksi</th>
             </tr>
         </thead>
         <tbody>
             <?php $i=1;?>
-            <?php foreach ($pengeluaran as $pen): ?>
+            <?php $total=0;?>
+            <?php foreach ($pengeluaran as $pen): 
+                $total += floatval($pen['total_pengeluaran']);
+                ?>
             <tr>
                 <td style="text-align:center;">
                     <?php echo $i;?>
@@ -92,13 +121,10 @@
                     <?php echo $pen['reff'] ?>
                 </td>
                 <td style="text-align:center;">
-                    <?php echo $pen['batasan'] ?>
+                    <?php echo $pen['rekening'] ?>
                 </td>
                 <td style="text-align:center;">
-                    <?php echo $pen['jumlah'] ?>
-                </td>
-                <td style="text-align:center;">
-                    <?php echo $pen['no_akun'] ?>
+                    <?= number_format($pen['total_pengeluaran'], 2, ',', '.') ?>
                 </td>
                 <td style="text-align:center;">
                 
@@ -115,21 +141,15 @@
             </tr>
             <?php $i++;?>
             <?php endforeach; ?>
-<<<<<<< HEAD
-=======
-            <tr>
-                <td  colspan="4"></td>
-                <td>
-                    <h5><b>Total</b></h5>
-                </td>
-                <td>
-                    <h5><b><?= $total ?><b></h5>
-                </td>
-                <td></td>
-            </tr>
->>>>>>> f60740ccbf279c13e06131ba37861cfd4fbf94db
-
         </tbody>
+        <tfoot id="tfooter">
+            <tr>
+                <th colspan="4"></th>
+                <th><h5><b>Total</b></h5></th>
+                <th><h5><b><?= number_format($total, 2, ',', '.') ?><b></h5></th>
+                <th></th>
+            </tr>
+        </tfoot>
     </table>
     </div>
 </div>

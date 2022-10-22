@@ -323,6 +323,7 @@
                                 <th style="text-align:center;">Aksi</th>
                             </tr>
                         </thead>
+                        <tbody>
                         <?php
                         $no = 1;
                         $totalall = 0;
@@ -378,7 +379,7 @@
                                     }; ?>
                                 </td>
                                 <td style="text-align:center;">
-                                    <?php echo $total; ?>
+                                    <?php echo number_format($total, 2, ',', '.'); ?>
                                 </td>
                                 <td style="text-align:center;">
 
@@ -397,12 +398,16 @@
                             <?php // $i++; 
                             ?>
                         <?php endforeach; ?>
-                        <th>
-                            <td colspan="5"></td>
-                            <td><h5><b>Total</b></h5></td>
-                            <td><h5><b><?= $totalall ?></b></h5></td>
-                            <td></td>
-                        </th>
+                        </tbody>
+                        <tfoot id="tfooter">
+                            <tr>
+                                <th colspan="6"></th>
+                                <th><h5><b>Total</b></h5></th>
+                                <th><h5><b><?= number_format($totalall, 2, ',', '.') ?></b></h5></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
 
 
                     </table>
