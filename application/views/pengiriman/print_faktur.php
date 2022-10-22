@@ -1,11 +1,11 @@
 	
 <html>
 <head>
-  <title>Laporan Pembayaran</title>
+  <title>Print Faktur</title>
   <style>
     table {
       border-collapse:collapse;
-      table-layout:fixed;width: 300px;
+      table-layout:fixed;
 	  font-size: 11pt;
 	  font-style: Times new roman;
     }
@@ -20,105 +20,79 @@
   
 </head>
 <body>
-<div align="center"><h2>Surat Jalan</h2></div>
-<div align="left">
-</div>
-       <?php
-         if(!empty($pengiriman)){
-    	$no = 1;
-		$grandtotal = 0;
-    	foreach($pengiriman as $u){			
-		?>	
-		<table border="0" cellpadding="8">	
-			
-			
-			<tr>
-			<th>Nama</th>
-			<td>:<?php echo $u->kepada ?></td>
-			 <th>Tanggal</th>
-			<td>:<?php echo $u->tanggal ?></td>
-			</tr>
-			
-			<tr>
-			<th>No HP</th>
-			<td>:<?php echo $u->no_telepon ?></td>
-			<th>No DO</th>
-			<td>:<?php echo $u->no_do ?></td>
-			</tr>
-			
-			
-			<tr>
-			<th>Alamat</th>
-			<td>:<?php echo $u->alamat ?></td>
-			<th>Dikirim Dengan</th>
-			<td>:<?php echo $u->ongkir ?></td>
-			</tr>
-			
-			
-			<tr>
-			<th>No Kontiner</th>
-			<td>:<?php echo $u->no_kontainer ?></td>
-			<th>Jenis Kendaraan</th>
-			<td>:<?php echo $u->jenis_kendaraan ?></td>
-			</tr>
-			
-			
-			<tr>
-			<th>No Segel</th>
-			<td>:<?php echo $u->no_segel ?></td>
-			<th>No Polisi</th>
-			<td>:<?php echo $u->no_polisi ?></td>
-			</tr>
-			
-			
-            
-             <tr>
-			<th>Nama Supir</th>
-			<td>:<?php echo $u->driver ?></td>
-			</tr>
-			
-	
-  </table>
+  <div style="place-items: flex-end;display: flex;">
+    <div style="width: 49%;margin-right: 1%;">
+      <h4>Kepada Yth</h4>
+      <div style="border: 1px solid #000;padding: 23px 10px;">
+        <?= $pengiriman['kepada'] ?>
+      </div>
+    </div>
+    <div style="width: 49%;">
+      <h1 style="text-decoration: underline;">INVOICE</h1>
+      <table border="1" style="text-align: left;" cellpadding="2">
+        <tr>
+          <th>No</th>
+          <td><?= $pengiriman['kode']?></td>
+        </tr>
+        <tr>
+          <th>Tanggal</th>
+          <td><?= $pengiriman['tanggal']?></td>
+        </tr>
+        <tr>  
+          <th>Terms</th>
+          <td>TES</td>
+        </tr>
+      </table>
+    </div>
+  </div>
   <br><br>
-  	<table border="1" cellpadding="8">	
+  	<table border="1" cellpadding="8" style="width:100%">	
 			<tr align="center">
-                  <th>Nama Produk</th>
-				   <th>Jumlah Karton</th>
-                  <th>Satuan/Karton</th>
-				   <th>Jumlah Total</th>
+          <th widht="20px">Kode</th>
+          <th>Nama Produk</th>
+				  <th>Jumlah Total</th>
 			</tr>
 		
+			<?php 
+      $gtot = 0;
+      foreach($barang as $k => $v){ ?>
+        <tr align="center">
+          <td><?php echo $v['kode'] ?></td>
+          <td><?php echo $v['nama'] ?></td>
+          <td><?php echo $v['total'] ?></td>
+        </tr>
+      <?php 
+      $gtot += $gtot + $v['subtotal'];
+      } ?>
 			
-			<tr align="center">
-				<td><?php echo $u->nama ?></td>
-				<td><?php echo $u->qty_karton ?></td>
-				<td><?php echo $u->qty_perkarton ?></td>
-				<td><?php echo $u->total ?></td>
-			</tr>
-			 <?php
-       	 $grandtotal =$grandtotal + $u->total;
-			
-    	}
-    }
-	
-    ?>
-			
-   <tr>
-  <td align="right" colspan="3">Total </td>
-<td align="center"><?php echo $grandtotal; ?></td>
-</tr>
-					
-		
+    <tr>
+      <td align="right" colspan="2">Total </td>
+      <td align="center"><?php echo $gtot; ?></td>
+    </tr>
   </table>
 
   <br><br>
+    
+  <table border="0" cellpadding="8" style="width:100%;background-color: #efefef;">	
+			<tr align="center">
+          <th widht="60%">Deskripsi</th>
+          <th>Subtotal</th>
+				  <td><?php echo $gtot; ?></td>
+			</tr>
+			<tr align="center">
+          <th widht="20px">-</th>
+          <th>Total</th>
+				  <td><?php echo $pengiriman['total_pengiriman']; ?></td>
+			</tr>
+  </table>
+  <br>
+  <br>
+  <br>
   <table>
   <tr>
-  <td>Logistic/Sopir</td>
   <td></td>
-  <td>Manager Gudang</td>
   <td></td>
-  <td>Penerima</td>
+  <td>Hormat Kami</td>
   <td></td>
   <td></td>
   <td></td>
@@ -128,9 +102,7 @@
   </tr>
   
   <tr>
-  <td><br><br><br>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
   <td></td>
-  <td><br><br><br>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
   <td></td>
   <td><br><br><br>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
   <td></td>
