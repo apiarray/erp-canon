@@ -4,15 +4,23 @@ class M_pendapatanlain extends CI_Model{
     public function tampil_data(){
         return $this->db->get('pendapatanlain')->result_array();
     }
+    public function getcoaByPendapatanId($id){
+        $this->db->where('pendapatanlain_id', $id);
+        return $this->db->get('pendapatanlain_akun_transaksi')->result_array();
+    }
     public function tambahDataPendapatan(){
         $data = [
             "tgl" => $this->input->post('tgl',true),
+            "rekening" => $this->input->post('rekening',true),
             "no_faktur" => $this->input->post('no_faktur',true),
-            "transaksi" => $this->input->post('transaksi',true),
-            "jumlah" => $this->input->post('jumlah',true)
-            
+            "kode_jurnal" => $this->input->post('kode_jurnal',true),
+            "jumlah_total" => $this->input->post('jumlah_total',true)
         ];
         $this->db->insert('pendapatanlain',$data);
+    }
+    public function tambahDataPendapatanAkun($data){
+
+        $this->db->insert('pendapatanlain_akun_transaksi',$data);
     }
     public function cekkodependapatan()
     {
@@ -27,12 +35,17 @@ class M_pendapatanlain extends CI_Model{
         $this->db->where('id',$id);
         $this->db->delete('pendapatanlain');
     }
+    public function hapusDataPendapatanAkunByPendapatanId($id){
+        $this->db->where('pendapatanlain_id',$id);
+        $this->db->delete('pendapatanlain_akun_transaksi');
+    }
     public function ubahDataPendapatan(){
         $data = [
             "tgl" => $this->input->post('tgl',true),
+            "rekening" => $this->input->post('rekening',true),
             "no_faktur" => $this->input->post('no_faktur',true),
-            "transaksi" => $this->input->post('transaksi',true),
-            "jumlah" => $this->input->post('jumlah',true)
+            "kode_jurnal" => $this->input->post('kode_jurnal',true),
+            "jumlah_total" => $this->input->post('jumlah_total',true)
         ];
         $this->db->where('id',$this->input->post('id'));
         $this->db->update('pendapatanlain',$data);
