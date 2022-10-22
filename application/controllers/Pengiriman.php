@@ -21,15 +21,11 @@ class Pengiriman extends CI_Controller
   }
   // $x['data2'] = $this->m_pengiriman->tampil_barang();
 
-  public function cetak_faktur($id = null)
+  public function cetak_faktur()
   {
     ob_start();
-    // $data['pengiriman'] = $this->m_pengiriman->tampil_cetak();
-    $data['pengiriman'] = $this->m_pengiriman->getPengirimanById($id);
-    $data['barang'] = $this->m_pengiriman->getBarangByPengirimanId($id);
-    //  var_dump($data['pengiriman']);die();
+    $data['pengiriman'] = $this->m_pengiriman->tampil_cetak();
     $this->load->view('pengiriman/print_faktur', $data);
-    // die();
     $html = ob_get_contents();
     ob_end_clean();
     require_once('./asset/html2pdf/html2pdf.class.php');
@@ -88,45 +84,42 @@ class Pengiriman extends CI_Controller
 
   public function tambahDataPengiriman()
   {
-    
-    $this->form_validation->set_rules('jenis_transaksi', 'Jenis Transaksi', 'required');
-    $this->form_validation->set_rules('setupjurnal', 'Setup Jurnal', 'required');
-    $this->form_validation->set_rules('tanggaljt', 'Tanggal J/T', 'required');
-    // $this->form_validation->set_rules('kode', 'Kode', 'required');
-    // $this->form_validation->set_rules('nama', 'Nama', 'required');
-    // $this->form_validation->set_rules('qty_karton', 'Jumlah Karton', 'required');
-    // $this->form_validation->set_rules('qty_perkarton', 'Jumlah Perkarton', 'required');
-    // $this->form_validation->set_rules('total', 'Total', 'required');
-    // $this->form_validation->set_rules('qty_karton_rsk', 'Jumlah Karton Rusak', 'required');
-    // $this->form_validation->set_rules('qty_perkarton_rsk', 'Jumlah Perkarton Rusak', 'required');
-    // $this->form_validation->set_rules('total_rsk', 'Total Rusak', 'required');
-    // $this->form_validation->set_rules('gudang_asal', 'Gudang Asal', 'required');
-    // $this->form_validation->set_rules('gudang_tujuan', 'Gudang Tujuan', 'required');
-    // $this->form_validation->set_rules('harga_jual', 'Harga Jual', 'required');
-    // $this->form_validation->set_rules('subtotal', 'Subtotal', 'required');
-    // $this->form_validation->set_rules('stok', 'Stok', 'required');
-    // $this->form_validation->set_rules('stok_rsk', 'Stok Rusak', 'required');
+    $this->form_validation->set_rules('kode', 'Kode', 'required');
+    $this->form_validation->set_rules('nama', 'Nama', 'required');
+    $this->form_validation->set_rules('qty_karton', 'Jumlah Karton', 'required');
+    $this->form_validation->set_rules('qty_perkarton', 'Jumlah Perkarton', 'required');
+    $this->form_validation->set_rules('total', 'Total', 'required');
+    $this->form_validation->set_rules('qty_karton_rsk', 'Jumlah Karton Rusak', 'required');
+    $this->form_validation->set_rules('qty_perkarton_rsk', 'Jumlah Perkarton Rusak', 'required');
+    $this->form_validation->set_rules('total_rsk', 'Total Rusak', 'required');
+    $this->form_validation->set_rules('gudang_asal', 'Gudang Asal', 'required');
+    $this->form_validation->set_rules('gudang_tujuan', 'Gudang Tujuan', 'required');
     $this->form_validation->set_rules('kepada', 'Kepada', 'required');
     $this->form_validation->set_rules('kota', 'Kota', 'required');
     $this->form_validation->set_rules('no_telepon', 'No Telepon', 'required');
     $this->form_validation->set_rules('tanggal', 'Tanggal', 'required');
     $this->form_validation->set_rules('no_do', 'No DO', 'required');
-    $this->form_validation->set_rules('nama_expedisi','Nama Ekspedisi','required');
-    $this->form_validation->set_rules('alamat','Alamat','required');
-    $this->form_validation->set_rules('manager_gudang','Manager Gudang','required');
-    $this->form_validation->set_rules('no_kontainer','No Kontainer','required');
-    $this->form_validation->set_rules('no_segel','No Segel','required');
-    $this->form_validation->set_rules('total_pengiriman','Total Pengiriman','required');
+    // $this->form_validation->set_rules('nama_ekspedisi','Nama Ekspedisi','required');
+    // $this->form_validation->set_rules('alamat','Alamat','required');
+    // $this->form_validation->set_rules('manager_gudang','Manager Gudang','required');
+    // $this->form_validation->set_rules('no_kontainer','No Kontainer','required');
+    // $this->form_validation->set_rules('no_segel','No Segel','required');
 
     if ($this->form_validation->run() == FALSE) {
       $errors = ['errors' => validation_errors()];
       echo json_encode($errors, true);
     } else {
-      $dataPengiriman = [
-        // "kode" => $this->input->post('kode', true),
-        "jenis_transaksi" => $this->input->post('jenis_transaksi', true),
-        "setup_jurnal" => $this->input->post('setupjurnal', true),
-        "tanggal_jt" => $this->input->post('tanggaljt', true),
+      $data = [
+        "kode" => $this->input->post('kode', true),
+        "nama" => $this->input->post('nama', true),
+        "qty_karton" => $this->input->post('qty_karton', true),
+        "qty_perkarton" => $this->input->post('qty_perkarton', true),
+        "total" => $this->input->post('total', true),
+        "qty_karton_rusak" => $this->input->post('qty_karton_rsk', true),
+        "qty_perkarton_rusak" => $this->input->post('qty_perkarton_rsk', true),
+        "total_rusak" => $this->input->post('total_rsk', true),
+        "gudang_asal" => $this->input->post('gudang_asal', true),
+        "gudang_tujuan" => $this->input->post('gudang_tujuan', true),
         "kepada" => $this->input->post('kepada', true),
         "alamat" => $this->input->post('alamat', true),
         "kota" => $this->input->post('kota', true),
@@ -145,38 +138,10 @@ class Pengiriman extends CI_Controller
         "driver" => $this->input->post('driver', true),
         "total_qty" => $this->input->post('total_qty', true),
         "total_ongkir" => $this->input->post('total_ongkir', true),
-        "pembayaran" => $this->input->post('pembayaran', true),
-        "total_pengiriman" => $this->input->post('total_pengiriman', true)
+        "pembayaran" => $this->input->post('pembayaran', true)
       ];
 
-      $addPengiriman = $this->m_pengiriman->tambahDataPengiriman($dataPengiriman);
-      $pengiriman_id = $this->db->insert_id();
-
-      foreach($this->input->post('barang', true) as $b){
-        $dataBarang = [
-          "pengiriman_id" => $pengiriman_id,
-          "kode" => $b['kode'],
-          "nama" => $b['nama'],
-          "qty_karton" => $b['qty_karton'],
-          "qty_karton_rusak" => $b['qty_karton_rsk'],
-          "qty_perkarton" => $b['qty_perkarton'],
-          "qty_perkarton_rusak" => $b['qty_perkarton_rsk'],
-          "total" => $b['total'],
-          "total_rusak" => $b['total_rsk'],
-          "stok" => $b['stok'],
-          "stok_rusak" => $b['stok_rsk'],
-          "gudang_asal" => $b['gudang_asal'],
-          "gudang_tujuan" => $b['gudang_tujuan'],
-          "harga_jual" => $b['harga_jual'],
-          "subtotal" => $b['subtotal'],
-        ];
-        $this->m_pengiriman->tambahDataBarangPengiriman($dataBarang);
-      }
-
-      // for($i=0;$i<=count($this->input->post('nama', true));$i++){
-        
-      // }
-
+      $this->m_pengiriman->tambahDataPengiriman($data);
       // echo json_encode($this->input->post('kode',true));
       echo json_encode('ok');
     }
@@ -191,7 +156,6 @@ class Pengiriman extends CI_Controller
   public function hapus($id)
   {
     $this->m_pengiriman->hapusDataPengiriman($id);
-    $this->m_pengiriman->hapusDataPengirimanBarangByPengirimanId($id);
     $this->session->set_flashdata('flash2', 'Dihapus');
     redirect('pengiriman');
   }
@@ -206,8 +170,6 @@ class Pengiriman extends CI_Controller
     $x['kode'] = $this->m_pengiriman->kode();
 
     $x['pengiriman'] = $this->m_pengiriman->getPengirimanById($id);
-    $x['barang'] = $this->m_pengiriman->getBarangByPengirimanId($id);
-    // var_dump($x['barang']);die();
 
     $x['stok'] = $this->m_pengiriman->cekStok($id);
 
@@ -281,106 +243,53 @@ class Pengiriman extends CI_Controller
     }
   }
 
-  function update($id)
+  function update()
   {
-    $this->form_validation->set_rules('jenis_transaksi', 'Jenis Transaksi', 'required');
-    $this->form_validation->set_rules('setupjurnal', 'Setup Jurnal', 'required');
-    $this->form_validation->set_rules('tanggaljt', 'Tanggal J/T', 'required');
-    // $this->form_validation->set_rules('kode', 'Kode', 'required');
-    // $this->form_validation->set_rules('nama', 'Nama', 'required');
-    // $this->form_validation->set_rules('qty_karton', 'Jumlah Karton', 'required');
-    // $this->form_validation->set_rules('qty_perkarton', 'Jumlah Perkarton', 'required');
-    // $this->form_validation->set_rules('total', 'Total', 'required');
-    // $this->form_validation->set_rules('qty_karton_rsk', 'Jumlah Karton Rusak', 'required');
-    // $this->form_validation->set_rules('qty_perkarton_rsk', 'Jumlah Perkarton Rusak', 'required');
-    // $this->form_validation->set_rules('total_rsk', 'Total Rusak', 'required');
-    // $this->form_validation->set_rules('gudang_asal', 'Gudang Asal', 'required');
-    // $this->form_validation->set_rules('gudang_tujuan', 'Gudang Tujuan', 'required');
-    // $this->form_validation->set_rules('harga_jual', 'Harga Jual', 'required');
-    // $this->form_validation->set_rules('subtotal', 'Subtotal', 'required');
-    // $this->form_validation->set_rules('stok', 'Stok', 'required');
-    // $this->form_validation->set_rules('stok_rsk', 'Stok Rusak', 'required');
-    $this->form_validation->set_rules('kepada', 'Kepada', 'required');
-    $this->form_validation->set_rules('kota', 'Kota', 'required');
-    $this->form_validation->set_rules('no_telepon', 'No Telepon', 'required');
-    $this->form_validation->set_rules('tanggal', 'Tanggal', 'required');
-    $this->form_validation->set_rules('no_do', 'No DO', 'required');
-    $this->form_validation->set_rules('nama_expedisi','Nama Ekspedisi','required');
-    $this->form_validation->set_rules('alamat','Alamat','required');
-    $this->form_validation->set_rules('manager_gudang','Manager Gudang','required');
-    $this->form_validation->set_rules('no_kontainer','No Kontainer','required');
-    $this->form_validation->set_rules('no_segel','No Segel','required');
-    $this->form_validation->set_rules('total_pengiriman','Total Pengiriman','required');
+    $id = $this->input->post('id');
+    $kode_id = $this->input->post('kode_id');
+    $nama = $this->input->post('nama');
+    $qty_karton = $this->input->post('qty_karton');
+    $qty_perkarton = $this->input->post('qty_perkarton');
+    $total = $this->input->post('total');
+    $gudang_asal = $this->input->post('gudang_asal');
+    $gudang_tujuan = $this->input->post('gudang_tujuan');
+    $kepada = $this->input->post('kepada');
+    $alamat = $this->input->post('alamat');
+    $kota = $this->input->post('kota');
+    $no_telepon = $this->input->post('no_telepon');
+    $tanggal = $this->input->post('tanggal');
+    $no_do = $this->input->post('no_do');
+    $manager_gudang = $this->input->post('manager_gudang');
+    $no_kontainer = $this->input->post('no_kontainer');
+    $no_segel = $this->input->post('no_segel');
 
-    if ($this->form_validation->run() == FALSE) {
-      $errors = ['errors' => validation_errors()];
-      echo json_encode($errors, true);
-    } else {
-      $dataPengiriman = [
-        // "kode" => $this->input->post('kode', true),
-        "jenis_transaksi" => $this->input->post('jenis_transaksi', true),
-        "setup_jurnal" => $this->input->post('setupjurnal', true),
-        "tanggal_jt" => $this->input->post('tanggaljt', true),
-        "kepada" => $this->input->post('kepada', true),
-        "alamat" => $this->input->post('alamat', true),
-        "kota" => $this->input->post('kota', true),
-        "no_telepon" => $this->input->post('no_telepon', true),
-        "tanggal" => $this->input->post('tanggal', true),
-        "no_do" => $this->input->post('no_do', true),
-        "manager_gudang" => $this->input->post('manager_gudang', true),
-        "no_kontainer" => $this->input->post('no_kontainer', true),
-        "no_segel" => $this->input->post('no_segel', true),
-        "kode_id" => $this->input->post('kode_id', true),
-        "nama_expedisi" => $this->input->post('nama_expedisi', true),
-        "ongkir" => $this->input->post('ongkir', true),
-        "berat_ongkir" => $this->input->post('berat_ongkir', true),
-        "jenis_kendaraan" => $this->input->post('jenis_kendaraan', true),
-        "no_polisi" => $this->input->post('no_polisi', true),
-        "driver" => $this->input->post('driver', true),
-        "total_qty" => $this->input->post('total_qty', true),
-        "total_ongkir" => $this->input->post('total_ongkir', true),
-        "pembayaran" => $this->input->post('pembayaran', true),
-        "total_pengiriman" => $this->input->post('total_pengiriman', true)
-      ];
 
-      $where = array(
-        'id' => $id
-      );
-  
-      $this->m_pengiriman->update_data($where, $dataPengiriman, 'pengiriman');
+    $data = array(
+      'kode_id' => $kode_id,
+      'nama' => $nama,
+      'qty_karton' => $qty_karton,
+      'qty_perkarton' => $qty_perkarton,
+      'total' => $total,
+      'gudang_asal' => $gudang_asal,
+      'gudang_tujuan' => $gudang_tujuan,
+      'kepada' => $kepada,
+      'alamat' => $alamat,
+      'kota' => $kota,
+      'no_telepon' => $no_telepon,
+      'tanggal' => $tanggal,
+      'no_do' => $no_do,
+      'manager_gudang' => $manager_gudang,
+      'no_kontainer' => $no_kontainer,
+      'no_segel' => $no_segel
+    );
 
-      $delbp = $this->m_pengiriman->hapusDataBarangPengiriman($id);
+    $where = array(
+      'id' => $id
+    );
 
-      foreach($this->input->post('barang', true) as $b){
-        $dataBarang = [
-          "pengiriman_id" => $id,
-          "kode" => $b['kode'],
-          "nama" => $b['nama'],
-          "qty_karton" => $b['qty_karton'],
-          "qty_karton_rusak" => $b['qty_karton_rsk'],
-          "qty_perkarton" => $b['qty_perkarton'],
-          "qty_perkarton_rusak" => $b['qty_perkarton_rsk'],
-          "total" => $b['total'],
-          "total_rusak" => $b['total_rsk'],
-          "stok" => $b['stok'],
-          "stok_rusak" => $b['stok_rsk'],
-          "gudang_asal" => $b['gudang_asal'],
-          "gudang_tujuan" => $b['gudang_tujuan'],
-          "harga_jual" => $b['harga_jual'],
-          "subtotal" => $b['subtotal'],
-        ];
-        $this->m_pengiriman->tambahDataBarangPengiriman($dataBarang);
-      }
-
-      // for($i=0;$i<=count($this->input->post('nama', true));$i++){
-        
-      // }
-
-      // echo json_encode($this->input->post('kode',true));
-      echo json_encode('ok');
-    }
-
-    
+    $this->m_pengiriman->update_data($where, $data, 'pengiriman');
+    $this->session->set_flashdata('flash', 'Diubah');
+    redirect('pengiriman');
   }
 
   function update_koreksi()

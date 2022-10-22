@@ -1,6 +1,3 @@
-<script>
-console.log('start');
-</script>
 <div class="container">
     <?php if($this->session->flashdata('flash2')) :?>
     <div class="row mt-3">
@@ -24,19 +21,13 @@ console.log('start');
     </div>
 
         <div class="row">
-            <div class="col-lg-4">
-                <div class="input-group input-group-sm mt-1">
+            <div class="col-lg-6">
+                <div class="input-group input-group-sm">
                     <div class="input-group-prepend">
-                        <label for="weekending" class="input-group-text">Mitra :</label>
+                        <label for="weekending" class="input-group-text">Kepada :</label>
                     </div>
-                    <!-- <input type="hidden" name="kode_id" id="kode_id" class="form-control form-control-sm" /> -->
-                    <input type="text" name="kode_id" id="kode_id" class="form-control form-control-sm" data-toggle="modal" data-target="#myModal">
-                </div>
-                <div class="input-group input-group-sm mt-1">
-                    <div class="input-group-prepend">
-                        <label for="nama" class="input-group-text">Kepada :</label>
-                    </div>
-                    <input type="text" name="kepada" id="nama" class="form-control form-control-sm">
+                    <input type="hidden" name="kode_id" id="kode_id" class="form-control form-control-sm" />
+                    <input type="text" name="kepada" id="nama" class="form-control form-control-sm" data-toggle="modal" data-target="#myModal">
                 </div>
                 <div class="input-group input-group-sm mt-1">
                     <div class="input-group-prepend">
@@ -57,8 +48,8 @@ console.log('start');
                     <input type="text" name="no_telepon" id="telepon" class="form-control form-control-sm">
                 </div>
             </div>
-            <div class="col-lg-4">
-                <div class="input-group input-group-sm mt-1">
+            <div class="col-lg-6">
+                <div class="input-group input-group-sm">
                     <div class="input-group-prepend">
                         <label for="taggal" class="input-group-text">Tanggal :</label>
                     </div>
@@ -88,114 +79,79 @@ console.log('start');
                     </div>
                     <input type="text" name="no_segel" id="no_segel" class="form-control form-control-sm">
                 </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="input-group input-group-sm mt-1">
-                    <div class="input-group-prepend">
-                        <label for="setupjurnal" class="input-group-text">Set Up Jurnal :</label>
-                    </div>
-                    <select class="form-control" id="setupjurnal" name="setupjurnal">
-                        <option value="-" >-</option>
-                    </select>
-                </div>
-                <div class="input-group input-group-sm mt-1">
-                    <div class="input-group-prepend">
-                        <label for="jenis_t" class="input-group-text">Jenis Transaksi</label>
-                    </div>
-                    <select class="form-control" id="jenis_t" name="jenis_transaksi">
-                        <option value="cash" >Cash</option>
-                        <option value="kredit" >Kredit</option>
-                    </select>
-                </div>
-                <div class="input-group input-group-sm mt-1">
-                    <div class="input-group-prepend">
-                        <label for="tanggaljt" class="input-group-text">Tanggal J/T :</label>
-                    </div>
-                    <input type="date" name="tanggaljt" id="tanggaljt" value="<?= date('Y-m-d')?>" min="<?= date('Y-m-d')?>" class="form-control form-control-sm">
-                </div>
-            </div> 
+            </div>   
         </div>
-        <hr>
-        <a href="javascript:void(0);" class="mb-2 addCF btn btn-success rows"><i class="fas fa-plus"></i> Tambah Barang</a>
-		<div class="table-responsive">
-            <table id="tbarang" class="table table-bordered my-2" width="100%" cellspacing="0">
-                <thead>
-                    <tr style="text-align:center;">
-                        <th>Aksi</th>
-                        <th>Kode</th>
-                        <th>Nama Barang</th>
-                        <th>Gudang Asal</th>
-                        <th>Gudang Tujuan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!--tr>
-                        <td style="text-align:center;">
-                        <input type="text" class="form-control" id="kode" name="kode" data-toggle="modal" data-target="#myModal1" required>
-                        </td>
-                        <td>
-                        <input type="text" class="form-control" id="namabrg" name="nama" required>
-                        </td>
-                        
-                        <td>
-                        <input type="text" class="form-control" id="gudang" name="gudang_asal" required>
-                        </td>
-                        <td style="text-align:center;">
-                            <input type="text" class="form-control" id="gudang1" name="gudang_tujuan" required>
-                        </td>
-                    </tr-->
-                </tbody>
-            </table>
-        </div>
-        <!-- <hr>
-        <a href="javascript:void(0);" class="mb-2 addCF btn btn-success btn-sm rows"><i class="fas fa-plus"></i> Kemasan</a> -->
-        <div class="table-responsive">
-            <table id="tkirim" class="table table-bordered" width="100%" cellspacing="0">
-                <thead>
-                    <tr style="text-align:center;">
-                        <th>Jumlah Karton</th>
-                        <th>Jumlah Karton (Rusak)</th>
-                        <th>Isi Karton</th>
-                        <th>Isi Karton (Rusak)</th>
-                        <th>Total Qty</th>
-                        <th>Total Qty (Rusak)</th>
-                        <th>Stok</th>
-                        <th>Stok (Rusak)</th>
-                        <th>Harga Jual</th>
-                        <th>Subtotal</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!--tr>
-                        <td style="text-align:center;">
-                            <input type="text" class="form-control" id="qty_karton" name="qty_karton" required>
-                        </td>
-                        <td style="text-align:center;">
-                            <input type="text" class="form-control" id="qty_karton_rsk" name="qty_karton_rsk" required>
-                        </td>
-                        <td style="text-align:center;">
-                        <input type="text" class="form-control" id="qty_perkarton" name="qty_perkarton" required>
-                        </td>
-                        <td style="text-align:center;">
-                        <input type="text" class="form-control" id="qty_perkarton_rsk" name="qty_perkarton_rsk" required>
-                        </td>
-                        <td style="text-align:center;">
-                            <input type="text" class="form-control" id="total" name="total" required>
-                        </td>
-                        <td style="text-align:center;">
-                            <input type="text" class="form-control" id="total_rsk" name="total_rsk" required>
-                        </td>
-                        <td style="text-align:center;">
-                            <input type="text" class="form-control" id="qty" name="stok" readonly>
-                        </td>
-                        <td style="text-align:center;">
-                            <input type="text" class="form-control" id="qty_rsk" name="stok_rsk" readonly>
-                        </td>
-                    </tr-->
-                </tbody>
-            </table>
-        </div>   
-        <hr> 
+
+        <table class="table table-bordered my-2" width="100%" cellspacing="0">
+            <thead>
+                <tr style="text-align:center;">
+                    <th>Kode</th>
+                    <th>Nama Barang</th>
+                    <th>Gudang Asal</th>
+                    <th>Gudang Tujuan</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="text-align:center;">
+                       <input type="text" class="form-control" id="kode" name="kode" data-toggle="modal" data-target="#myModal1" required>
+                    </td>
+                    <td>
+                      <input type="text" class="form-control" id="namabrg" name="nama" required>
+                    </td>
+                    
+                    <td>
+                      <input type="text" class="form-control" id="gudang" name="gudang_asal" required>
+                    </td>
+                     <td style="text-align:center;">
+                         <input type="text" class="form-control" id="gudang1" name="gudang_tujuan" required>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    
+        <table class="table table-bordered" width="100%" cellspacing="0">
+            <thead>
+                <tr style="text-align:center;">
+                    <th>Jumlah Karton</th>
+                    <th>Jumlah Karton (Rusak)</th>
+                    <th>Isi Karton</th>
+                    <th>Isi Karton (Rusak)</th>
+                    <th>Total Qty</th>
+                    <th>Total Qty (Rusak)</th>
+                    <th>Stok</th>
+                    <th>Stok (Rusak)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="text-align:center;">
+                        <input type="text" class="form-control" id="qty_karton" name="qty_karton" required>
+                    </td>
+                    <td style="text-align:center;">
+                        <input type="text" class="form-control" id="qty_karton_rsk" name="qty_karton_rsk" required>
+                    </td>
+                    <td style="text-align:center;">
+                       <input type="text" class="form-control" id="qty_perkarton" name="qty_perkarton" required>
+                    </td>
+                    <td style="text-align:center;">
+                       <input type="text" class="form-control" id="qty_perkarton_rsk" name="qty_perkarton_rsk" required>
+                    </td>
+                    <td style="text-align:center;">
+                         <input type="text" class="form-control" id="total" name="total" required>
+                    </td>
+                    <td style="text-align:center;">
+                         <input type="text" class="form-control" id="total_rsk" name="total_rsk" required>
+                    </td>
+                    <td style="text-align:center;">
+                         <input type="text" class="form-control" id="qty" name="stok" readonly>
+                    </td>
+                    <td style="text-align:center;">
+                         <input type="text" class="form-control" id="qty_rsk" name="stok_rsk" readonly>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     
         <!-- Footer Pengiriman -->
         <div class="row mt-3">
@@ -258,16 +214,10 @@ console.log('start');
                     </div>
                     <input type="text" id="driver" name="driver"  class="form-control form-control-sm">
                 </div>
-                <div class="input-group input-group-sm mt-1">
-                    <div class="input-group-prepend">
-                        <label for="total_pengiriman" class="input-group-text">Total Pengiriman :</label>
-                    </div>
-                    <input type="text" id="total_pengiriman" name="total_pengiriman"  class="form-control form-control-sm">
-                </div>
-
             </div>
         </div>
-		<button type="button" class="btn btn-primary my-3" onclick="saveData()">Proses</button>
+
+        <button type="button" class="btn btn-primary my-3" onclick="saveData()">Proses</button>
 
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -346,10 +296,9 @@ console.log('start');
         						$gudang=$i['gudang'];
         						$qty=$i['unitbagus'];
         						$qtyr=$i['unitrusak'];
-        						$harga_jual=floatval($i['setelahpajak']);
         				    ?>
                             
-                            <tr class="pilih1" data-harga_jual="<?= $harga_jual?>" data-kode="<?php echo $kode; ?>" data-nama="<?php echo $namabrg; ?>" data-gudang="<?php echo $gudang; ?>" data-qty="<?php echo $qty; ?>" data-qtyr="<?php echo $qtyr; ?>">
+                            <tr class="pilih1" data-kode="<?php echo $kode; ?>" data-nama="<?php echo $namabrg; ?>" data-gudang="<?php echo $gudang; ?>" data-qty="<?php echo $qty; ?>" data-qtyr="<?php echo $qtyr; ?>">
                                 <td><?php echo $kode; ?></td>
                                 <td><?php echo $namabrg; ?></td>
                                 <td><?php echo $gudang; ?></td>
@@ -363,24 +312,14 @@ console.log('start');
     </div>
 </div>
 
-<!--script src="<?php echo base_url('asset/jquery.min.js');?>"></script>
-<script src="<?php echo base_url().'assets/vendor/bootstrap/js/bootstrap.js'?>"></script-->
-   
+<script src="<?php echo base_url('asset/jquery.min.js');?>"></script>
+<script src="<?php echo base_url().'assets/vendor/bootstrap/js/bootstrap.js'?>"></script>
+
 <script>
-    var t = $("#tkirim").DataTable({searching: false, paging: false, info: false});
-	var b = $("#tbarang").DataTable({searching: false, paging: false, info: false});
-	var counter = 0 ;
-	var selektor = 0 ;
-	var counterb = 0 ;
-	var selektorb = 0;
     getLatestNoDO();
-	console.log('start');
-	var erpus;
     $(document).ready(function() {
 
         $(document).on('click', '.pilih', function (e) {
-            document.getElementById("kode_id").value = $(this).attr('data-kodeid');
-            $('#myModal').modal('hide');
             document.getElementById("nama").value = $(this).attr('data-nama');
             $('#myModal').modal('hide');
             document.getElementById("kota").value = $(this).attr('data-kota');
@@ -398,30 +337,23 @@ console.log('start');
         });
 
         $(document).on('click', '.pilih1', function (e) {
-			console.log($(this).attr('data-kode'));
-			harga = document.getElementById("harga");	
-			//  + selektorb console.log("harga" + selektorb + '=' = harga.value);
-            document.getElementById("kode" + selektorb).value = $(this).attr('data-kode'); 
-			
+            document.getElementById("kode").value = $(this).attr('data-kode');
             $('#myModal1').modal('hide');
     		
-    		document.getElementById("namabrg" + selektorb).value = $(this).attr('data-nama');
+    		document.getElementById("namabrg").value = $(this).attr('data-nama');
             $('#myModal1').modal('hide');
     		
-    		document.getElementById("gudang" + selektorb).value = $(this).attr('data-gudang');
+    		document.getElementById("gudang").value = $(this).attr('data-gudang');
             $('#myModal1').modal('hide');
     		
-    		document.getElementById("qty" + selektorb).value = $(this).attr('data-qty');
+    		document.getElementById("qty").value = $(this).attr('data-qty');
             $('#myModal1').modal('hide');
             
-            document.getElementById("qty_rsk" + selektorb).value = $(this).attr('data-qtyr');
-            $('#myModal1').modal('hide');
-            
-            document.getElementById("harga_jual" + selektorb).value = $(this).attr('data-harga_jual');
+            document.getElementById("qty_rsk").value = $(this).attr('data-qtyr');
             $('#myModal1').modal('hide');
         });
 
-        $("#qty_karton2, #qty_perkarton2").keyup(function() {
+        $("#qty_karton, #qty_perkarton").keyup(function() {
             var qty_karton  = $("#qty_karton").val();
             var qty_perkarton = $("#qty_perkarton").val();
             
@@ -444,7 +376,7 @@ console.log('start');
         });
 
     });
-	console.log('selektor to do' + selektor);
+
     function getLatestNoDO() {
         $.get({
             url: '<?= base_url('pengiriman/getLatestNoDO'); ?>',
@@ -455,158 +387,9 @@ console.log('start');
         });
     }
 
-    function drawrowb(){
-        b.row.add(
-			[ 
-			//data-toggle="modal" data-target="#myModal1"			
-			'<a href="javascript:void(0);" data-c="'+counterb+'" class="remCF rows btn btn-danger"><i class="fas fa-trash"></i></a>', 
-			'<input type="text" class="form-control" id="kode'+counterb+'" 		name="kode[]" onclick="get_barang(this.value,' + counterb + ')"  required>', 
-			'<input type="text" class="form-control" id="namabrg'+counterb+'" 	name="nama[]" required>', 
-			'<input type="text" class="form-control" id="gudang'+counterb+'" 	name="gudang_asal[]" required>', 
-			'<input type="text" class="form-control" id="gudang1'+counterb+'" 	name="gudang_tujuan[]" required>'
-			]).draw( false );
-		//console.log('<input type="text" name="kode[]" id="kode'+counter+'"  class="form-control form-control-sm" data-toggle="modal" data-target="#myModal1"  />');
-		counterb ++;
-    }
-    function drawrowt(){
-        t.row.add(
-			[ 
-            //   '<a href="javascript:void(0);" class="remCF btn btn-danger rows"><i class="fas fa-trash"></i></a>', 
-              '<input type="text" class="form-control" id="qty_karton'+counter+'" 			name="qty_karton[]" required onkeyup="sumKarton(' + counter + ')">',
-			  '<input type="text" class="form-control" id="qty_karton_rsk'+counter+'" 		name="qty_karton_rsk[]" required required onkeyup="sumKartonRusak(' + counter + ')"> ',                  
-              '<input type="text" class="form-control" id="qty_perkarton'+counter+'" 		name="qty_perkarton[]" required onkeyup="sumKarton(' + counter + ')"> ',                  
-              '<input type="text" class="form-control" id="qty_perkarton_rsk'+counter+'" 	name="qty_perkarton_rsk[]" required required onkeyup="sumKartonRusak(' + counter + ')"> ',                   
-              '<input type="text" class="form-control" id="total'+counter+'" 				name="total[]" required onkeyup="sumSubtotal(' + counter + ')">',               
-              '<input type="text" class="form-control" id="total_rsk'+counter+'" 			name="total_rsk[]" required>',                 
-              '<input type="text" class="form-control" id="qty'+counter+'" 					name="stok[]" readonly >',                 
-              '<input type="text" class="form-control" id="qty_rsk'+counter+'" 				name="stok_rsk[]" readonly>',
-              '<input type="text" class="form-control" id="harga_jual'+counter+'" 			name="harga_jual[]" onkeyup="sumSubtotal(' + counter + ')" readonly>',
-              '<input type="text" class="form-control" id="subtotal'+counter+'" 			name="subtotal[]" readonly>',
-			]).draw( false );
-		//console.log('<input type="text" name="kode[]" id="kode'+counter+'"  class="form-control form-control-sm" data-toggle="modal" data-target="#myModal1"  />');
-		counter ++;
-    }
-	
-	$(".addCF").click(function(){
-	  console.log('exip');
-      drawrowb();
-      drawrowt();
-
-	    
-	});
-    $("#tbarang_wrapper").on('click','.remCF',function(){
-        // console.log('awdasd');
-        // $(this).parent().parent().remove();
-        $(this).parent();
-        b.row(':last').remove().draw();
-        t.row(':last').remove().draw();
-        selektorb -- ;
-        selektor -- ;
-        sumAllSubtotal();
-        console.log('drain selektor' + selektorb);
-    });
-    // $("#tkirim").on('click','.remCF',function(){
-    //     $(this).parent().parent().remove();
-    //     t.row(':last').remove().draw();
-    //     selektor -- ;
-    // });
-  
-  //  data-toggle="modal" data-target="#myModal1" 
-  console.log('selektor add 1 row' + selektor);
-
-</script>
-<script>
-function sumKarton(lokasi) {
-	
-    console.log('pilih barang kunci dan selektor =' + lokasi);
-    
-			var qty_karton  	= document.getElementById("qty_karton" + lokasi).value;	
-            var qty_perkarton 	= document.getElementById("qty_perkarton" + lokasi).value;	
-            var jumlah		 	= document.getElementById("total" + lokasi);	
-			
-			 var total = parseInt(qty_karton) * parseInt(qty_perkarton);
-             if (!isNaN(total)) {
-				//$("#total'+ lokasi'" ).val(total);
-				jumlah.value = total;
-             }
-             sumSubtotal(lokasi)
-  }  
-function sumKartonRusak(lokasi) {
-	
-    console.log('pilih barang kunci dan selektor =' + lokasi);
-    
-			var qty_karton  	= document.getElementById("qty_karton_rsk" + lokasi).value;	
-            var qty_perkarton 	= document.getElementById("qty_perkarton_rsk" + lokasi).value;	
-            var jumlah		 	= document.getElementById("total_rsk" + lokasi);	
-			
-			 var total = parseInt(qty_karton) * parseInt(qty_perkarton);
-             if (!isNaN(total)) {
-				//$("#total'+ lokasi'" ).val(total);
-				jumlah.value = total;
-             }
-} 
-
-function sumSubtotal(lokasi) {
-	
-    console.log('pilih barang kunci dan selektor =' + lokasi);
-    
-    var stok  	    = document.getElementById("total" + lokasi).value;	
-    var harga_jual 	= document.getElementById("harga_jual" + lokasi).value;	
-    var result 	    = document.getElementById("subtotal" + lokasi);
-
-    var total = parseInt(stok) * parseInt(harga_jual);
-
-    if (!isNaN(total)) {
-        
-        result.value = parseFloat(total);
-        sumAllSubtotal();
-    }
-}
-
-function sumAllSubtotal() {
-	
-    console.log('sum all subtotal');
-
-    var subtotal    = $('input[name="subtotal[]"]');
-    var pengiriman  = document.getElementById("total_pengiriman");
-    var total       = 0;
-    
-    $(subtotal).each(function () {
-        total += parseFloat(this.value)
-    });
-
-    if (!isNaN(total)) {
-        pengiriman.value = parseFloat(total);
-    }
-}
-
-function saveData() {
-        let databarang = [];
-        
-        $("input[name='nama[]']").each(function (i, val) {
-            databarang.push({
-                kode: $("input[name='kode[]']").eq(i).val(),
-                nama: $("input[name='nama[]']").eq(i).val(),
-                gudang_asal: $("input[name='gudang_asal[]']").eq(i).val(),
-                gudang_tujuan: $("input[name='gudang_tujuan[]']").eq(i).val(),
-                qty_karton: $("input[name='qty_karton[]']").eq(i).val(),
-                qty_karton_rsk: $("input[name='qty_karton_rsk[]']").eq(i).val(),
-                qty_perkarton: $("input[name='qty_perkarton[]']").eq(i).val(),
-                qty_perkarton_rsk: $("input[name='qty_perkarton_rsk[]']").eq(i).val(),
-                harga_jual: $("input[name='harga_jual[]']").eq(i).val(),
-                subtotal: $("input[name='subtotal[]']").eq(i).val(),
-                total: $("input[name='total[]']").eq(i).val(),
-                total_rsk: $("input[name='total_rsk[]']").eq(i).val(),
-                stok: $("input[name='stok[]']").eq(i).val(),
-                stok_rsk: $("input[name='stok_rsk[]']").eq(i).val(),
-            });
-        });
-
+    function saveData() {
         let data = {
             kode_id: $('input[name=kode_id]').val(),
-            setupjurnal: $('select[name=setupjurnal]').val(),
-            jenis_transaksi: $('select[name=jenis_transaksi]').val(),
-            tanggaljt: $('input[name=tanggaljt]').val(),
             kepada: $('input[name=kepada]').val(),
             alamat: $('input[name=alamat]').val(),
             kota: $('input[name=kota]').val(),
@@ -615,7 +398,19 @@ function saveData() {
             no_do: $('input[name=no_do]').val(),
             manager_gudang: $('input[name=manager_gudang]').val(),
             no_kontainer: $('input[name=no_kontainer]').val(),
-            no_segel: $('input[name=no_segel]').val(), //$("input[name='total_harga[[]']"]").val("");    
+            no_segel: $('input[name=no_segel]').val(),
+            kode: $('input[name=kode]').val(),
+            nama: $('input[name=nama]').val(),
+            gudang_asal: $('input[name=gudang_asal]').val(),
+            gudang_tujuan: $('input[name=gudang_tujuan]').val(),
+            qty_karton: $('input[name=qty_karton]').val(),
+            qty_karton_rsk: $('input[name=qty_karton_rsk]').val(),
+            qty_perkarton: $('input[name=qty_perkarton]').val(),
+            qty_perkarton_rsk: $('input[name=qty_perkarton_rsk]').val(),
+            total: $('input[name=total]').val(),
+            total_rsk: $('input[name=total_rsk]').val(),
+            stok: $('input[name=stok]').val(),
+            stok_rsk: $('input[name=stok_rsk]').val(),
             nama_expedisi: $('input[name=nama_expedisi]').val(),
             berat_ongkir: $('input[name=berat_ongkir]').val(),
             ongkir: $('input[name=ongkir]').val(),
@@ -624,12 +419,13 @@ function saveData() {
             driver: $('input[name=driver]').val(),
             total_qty: $('input[name=total_qty]').val(),
             total_ongkir: $('input[name=total_ongkir]').val(),
-            pembayaran: $('select[name=pembayaran]').val(),
-            total_pengiriman: $('select[name=total_pengiriman]').val(),
-            barang : databarang
+            pembayaran: $('select[name=pembayaran]').val()
         };
-        console.log(data);
-        let alert_success = '<div class="alert alert-success alert-dismissible fade show alert-success" role="alert">Data Pengiriman <strong>berhasil</strong> ditambahkan!<button type="submit" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+
+        let alert_success = `
+        <div class="alert alert-success alert-dismissible fade show alert-success" role="alert">Data Pengiriman <strong>berhasil</strong> ditambahkan!
+        <button type="submit" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>`;
 
         $.ajax({
             type: "POST",
@@ -638,7 +434,10 @@ function saveData() {
             data: data,
             success: function(result) {
                 if (result['errors']) {
-                    let alert_danger = '<div class="alert alert-danger alert-dismissible fade show alert-success" role="alert">' + result['errors']   + '</div>';
+                    let alert_danger = `
+                    <div class="alert alert-danger alert-dismissible fade show alert-success" role="alert">
+                        ${result['errors']}
+                    </div>`;
 
                     $('#alert-space').html(alert_danger);
                 } else {
@@ -650,19 +449,19 @@ function saveData() {
                     $('input[name=tanggal]').val('');
                     $('input[name=manager_gudang]').val('');
                     $('input[name=no_kontainer]').val('');
-                    $('input[name=no_segel]').val(''); 
-                    $("input[name='kode[]']").val('');
-                    $("input[name='nama[]']").val('');
-                    $("input[name='gudang_asal[]']").val('');
-                    $("input[name='gudang_tujuan[]']").val('');
-                    $("input[name='qty_karton[]']").val('');
-                    $("input[name='qty_karton_rsk[]']").val(''); 
-                    $("input[name='qty_perkarton[]']").val('');
-                    $("input[name='qty_perkarton_rsk[]']").val('');
-                    $("input[name='total[]']").val('');
-                    $("input[name='total_rsk[]']").val('');     
-                    $("input[name='stok[]']").val('');
-                    $("input[name='stok_rsk[]']").val('');
+                    $('input[name=no_segel]').val('');
+                    $('input[name=kode]').val('');
+                    $('input[name=nama]').val('');
+                    $('input[name=gudang_asal]').val('');
+                    $('input[name=gudang_tujuan]').val('');
+                    $('input[name=qty_karton]').val('');
+                    $('input[name=qty_karton_rsk]').val('');
+                    $('input[name=qty_perkarton]').val('');
+                    $('input[name=qty_perkarton_rsk]').val('');
+                    $('input[name=total]').val('');
+                    $('input[name=total_rsk]').val('');
+                    $('input[name=stok]').val('');
+                    $('input[name=stok_rsk]').val('');
                     $('input[name=nama_expedisi]').val('');
                     $('input[name=berat_ongkir]').val('');
                     $('input[name=ongkir]').val('');
@@ -672,65 +471,11 @@ function saveData() {
                     $('input[name=total_qty]').val('');
                     $('input[name=total_ongkir]').val('');
                     $('select[name=pembayaran]').val('');
-                    $('input[name=total_pengiriman]').val('');
                     getLatestNoDO();
                     $('#alert-space').html(alert_success);
                     setTimeout(() => $('.alert-success').alert('close'), 5000);
                 }
             }
         });
-    }  
-	// $(".addBARANG").click(function(){
-	//   console.log('exip barang');
-	//     b.row.add(
-	// 		[ <!--a href="javascript:void(0);" class="remCF rows"><i class="fas fa-trash"></i></a--> 
-	// 		//data-toggle="modal" data-target="#myModal1"			
-	// 		'<a href="javascript:void(0);" class="remCF rows btn btn-danger"><i class="fas fa-trash"></i></a>', 
-	// 		'<input type="text" class="form-control" id="kode'+counterb+'" 		name="kode[]" onclick="get_barang(this.value,' + counterb + ')"  required>', 
-	// 		'<input type="text" class="form-control" id="namabrg'+counterb+'" 	name="nama[]" required>', 
-	// 		'<input type="text" class="form-control" id="gudang'+counterb+'" 	name="gudang_asal[]" required>', 
-	// 		'<input type="text" class="form-control" id="gudang1'+counterb+'" 	name="gudang_tujuan[]" required>'
-	// 		]).draw( false );
-	// 	//console.log('<input type="text" name="kode[]" id="kode'+counter+'"  class="form-control form-control-sm" data-toggle="modal" data-target="#myModal1"  />');
-	// 	counterb ++;
-	// });
-    // $('#tbarang_wrapper').dataTable({searching: false, paging: false, info: false});
-    // $("#tbarang_wrapper").on('click','.remCF',function(){
-    //     // console.log('awdasd');
-    //     $(this).parent().parent().remove();
-    //     b.row(':last').remove().draw();
-    //     selektorb -- ;
-    //     console.log('drain selektor' + selektorb);
-    // });
-  
-   $('.addCF').click();
-   $('.addBARANG').click();
-   
-   function barangtambah(lokasi) {
-				harga = document.getElementById("harga");	
-			//  + selektorb console.log("harga" + selektorb + '=' = harga.value);
-            document.getElementById("kode" + lokasi).value = $(this).attr('data-kode'); 
-			
-            $('#myModal1').modal('hide');
-    		
-    		document.getElementById("namabrg" + lokasi).value = $(this).attr('data-nama');
-            $('#myModal1').modal('hide');
-    		
-    		document.getElementById("gudang" + lokasi).value = $(this).attr('data-gudang');
-            $('#myModal1').modal('hide');
-    		
-    		document.getElementById("qty" + lokasi).value = $(this).attr('data-qty');
-            $('#myModal1').modal('hide');
-            
-            document.getElementById("qty_rsk" + lokasi).value = $(this).attr('data-qtyr');
-            $('#myModal1').modal('hide');
-    };
-	
-	function get_barang(kunci, lokasi) {
-		$('#myModal1').modal('show');
-		selektorb = lokasi;
-	};
+    }
 </script>
-
-
-
