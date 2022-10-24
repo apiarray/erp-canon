@@ -21,7 +21,7 @@
                     </select>
                     <small><span class="text-danger"><?= form_error('id_coa'); ?></span></small>
                 </div>
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label for="">Tabulasi</label>
                     <select class="form-control" name="tabulasi" id="tabulasi">
                         <option value="" selected="" disabled>- Select Formulir -</option>
@@ -37,7 +37,7 @@
                         <option value="uangMukaPembelian">Uang Muka Pembelian</option>
                     </select>
                     <small><span class="text-danger"><?= form_error('id_coa'); ?></span></small>
-                </div>
+                </div> -->
                 <div class="form-group">
                     <label for="">Deskripsi</label>
                     <input type="text" name="keterangan" placeholder="Masukkan Deskripsi" class="form-control">
