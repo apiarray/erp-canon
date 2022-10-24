@@ -89,6 +89,13 @@
           <input type="text" name="no_segel" class="form-control form-control-sm">
           <!-- <input type="text" name="namawin2mgr" id="namawin2mgr" class="form-control form-control-sm"> -->
         </div>
+        <div class="input-group input-group-sm">
+          <div class="input-group-prepend">
+            <label for="weekending" class="input-group-text">Setup Jurnal :</label>
+          </div>
+          <input type="text" disabled value="<?= $setupJurnal['kode_jurnal'] ?>" class="form-control form-control-sm">
+          <input type="hidden" name="setup_jurnal_id" value="<?= $setupJurnal['id'] ?>">
+        </div>
       </div>
     </div>
 

@@ -178,6 +178,7 @@ class M_penerimaan extends CI_Model
 
 	public function ubahDataPenerimaan($dataPenerimaan, $dataPenerimaanItem)
 	{
+		$this->db->where('id', $this->input->post('id'));
 		$this->db->update('penerimaan', $dataPenerimaan);
 		$totalHarga = 0;
 

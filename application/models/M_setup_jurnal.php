@@ -51,6 +51,11 @@ class M_setup_jurnal extends CI_Model
     return $this->db->get_where('tbl_setup_jurnal_finansial', ['setup_jurnal_id' => $id])->result_array();
   }
 
+  public function getSetupJurnalByFormulir($formulir)
+  {
+    return $this->db->get_where('tbl_setup_jurnal', ['formulir' => $formulir])->row_array();
+  }
+
   public function hapusDataSetupJurnal($id)
   {
     $this->db->where('id', $id);
