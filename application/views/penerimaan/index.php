@@ -213,6 +213,7 @@
 
                         <?php
                         $no = 1;
+                        $total_seluruh = 0;
                         foreach ($data1->result_array() as $i) :
                             $id = $i['id'];
                             $no_lpb = $i['no_lpb'];
@@ -220,6 +221,7 @@
                             $no_sj = $i['no_sj'];
                             $tanggal = $i['tanggal'];
                             $total = $i['total_harga'];
+                            $total_seluruh += $total;
                         ?>
                             <tr>
                                 <td style="text-align:center;">
@@ -257,5 +259,12 @@
                         <?php endforeach; ?>
 
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <th style="text-align:center;" colspan="4">Total</th>
+                                <th style="text-align:center;"><?php echo number_format($total_seluruh, 2, ',', '.'); ?></th>
+                                <th colspan="2"></th>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
