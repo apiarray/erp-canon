@@ -15,138 +15,40 @@
                         <!-- form start -->
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-5">
+                                <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>Nomor:</label>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <input type="text" class="form-control" name="nomor_kas_bank" id="nomor" placeholder="AUTO" readonly value="">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <input type="checkbox" name="" id="penomoran_otomatis" style="margin-top: 5%" checked> automatic_numbering
-                                            </div>
+                                        <label>Nomor</label>
+                                        <div class="input-group">
+                                            <input type="hidden" class="form-control" name="error" id="error" readonly>
+                                            <input type="text" class="form-control" name="nomor_kas_bank" id="nomor_kas_bank" placeholder="AUTO" readonly>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>Tanggal:</label>
+                                        <label>Tanggal</label>
                                         <div class="input-group">
-                                            <input type="date" class="form-control datepicker" name="tanggal" required value="{tanggal}">
+                                            <input type="date" class="form-control datepicker" name="tanggal" id="tanggal" required value="<?= date('Y-m-d') ?>">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-8">
                                     <div class="form-group">
-                                        <label>Perusahaan:</label>
-                                        <select id="id_perusahaan" class="form-control id_perusahaan" name="perusahaan" required></select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>PIC:</label>
-                                        <select id="pejabat" class="form-control" name="pejabat" required></select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Information:</label>
-                                        <textarea class="form-control" name="keterangan" rows="3"></textarea>
+                                        <label>Keterangan</label>
+                                        <textarea class="form-control" name="keterangan" id="keterangan" rows="3"></textarea>
                                     </div>
                                 </div>
                             </div>
 
-                            <?php $menu = array(
-                                'rincian_buku_kas_umum',
-                                'saldo_sumber_dana',
-                            ) ?>
-                            <ul class="nav nav-tabs" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" href="#rincian_buku_kas_umum" role="tab" data-toggle="tab">Rincian Buku Kas Umum</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#saldo_sumber_dana" role="tab" data-toggle="tab">Saldo Sumber Dana</a>
-                                </li>
-                            </ul>
+                            <!-- load file nav tab list -->
+                            <?php $this->load->view("KasBank/Tambah/component/navTabList") ?>
 
-                            <!-- Tab panes -->
-                            <div class="tab-content">
-                                <div role="tabpanel" class="tab-pane active" id="rincian_buku_kas_umum">
-
-                                    <div class="text-center">
-
-                                    </div>
-
-                                    <div class="mb-3 mt-3 table-responsive">
-                                        <table class="table table-bordered" id="table_detail_rincian_buku_kas_umum">
-                                            <thead class="{bg_header}" id="atastabel" hidden>
-                                                <tr>
-                                                    <th>No.</th>
-                                                    <th>Tipe</th>
-                                                    <th>Tanggal</th>
-                                                    <th>No. Aktivitas</th>
-                                                    <th>Penerimaan</th>
-                                                    <th>Pengeluaran</th>
-                                                    <th>Nomor Akun</th>
-                                                    <th>Kode Unit</th>
-                                                    <th>Departemen</th>
-                                                    <th>Sumber Dana</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="isitabel"></tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div role="tabpanel" class="tab-pane" id="saldo_sumber_dana">
-                                    <div class="mb-3 mt-3 table-responsive">
-                                        <table class="table table-bordered" id="table_detail_rincian_buku_kas_umum">
-                                            <thead class="bg-secondary" id="atastabel">
-                                                <tr>
-                                                    <th>No.</th>
-                                                    <th>Tipe</th>
-                                                    <th>Tanggal</th>
-                                                    <th>No. Aktivitas</th>
-                                                    <th>Penerimaan</th>
-                                                    <th>Pengeluaran</th>
-                                                    <th>Nomor Akun</th>
-                                                    <th>Kode Unit</th>
-                                                    <th>Departemen</th>
-                                                    <th>Sumber Dana</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="isitabel"></tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <br>
-                            <div class="row">
-                                <div class="col-md-2"></div>
-                                <div class="col-md-2 text-right" style="margin-top: 1%">Total Penerimaan</div>
-                                <div class="col-md-3">
-                                    <input type="text" id="penerimaan_sementara" class="form-control decimalnumber text-right" name="" readonly>
-                                    <input type="hidden" id="penerimaan" class="form-control decimalnumber text-right" name="penerimaan" readonly>
-                                </div>
-                                <div class="col-md-2 text-right" style="margin-top: 1%">Total Pengeluaran</div>
-                                <div class="col-md-3">
-                                    <input type="text" id="pengeluaran_sementara" class="form-control decimalnumber text-right" name="" readonly>
-                                    <input type="hidden" id="pengeluaran" class="form-control decimalnumber text-right" name="pengeluaran" readonly>
-                                </div>
-                                <div class="col-md-3">
-
-                                </div>
-
-                            </div>
-
-                            <br>
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
-                            <div class="text-left">
-                                <div class="btn-group">
-                                    <a href="" class="btn bg-danger">Batal</a>
-                                    <button type="submit" class="btn bg-success">Simpan</button>
-                                </div>
-                            </div>
+                            <a href="<?= base_url('Kas_bank') ?>" class="btn btn-dark">Kembali</a>
+                            <button type="button" class="btn btn-success" onclick="handleSaveData()">Simpan</button>
                         </div>
                     </div>
                     <!-- /.card -->
@@ -160,3 +62,6 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+
+<!-- load modal -->
+<?php $this->load->view("KasBank/Tambah/component/modal/showData") ?>
