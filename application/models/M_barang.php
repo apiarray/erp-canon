@@ -343,23 +343,29 @@ class M_barang extends CI_Model
         foreach($mitrapengiriman as $k => $v){
             $idpengiriman[] = $v['id'];
         }
+        // var_dump($idpengiriman);die();
         
-        $this->db->select('*, SUM(total) as total');
-        $this->db->from('pengiriman_barang');
-        $this->db->join('produk', 'produk.kode = pengiriman_barang.kode');
-        // $this->db->join('tbl_category', 'tbl_category.kode = produk.kategori', 'LEFT');
-        $this->db->where_in('pengiriman_barang.pengiriman_id', $idpengiriman);
-        $this->db->group_by('pengiriman_barang.kode, pengiriman_barang.nama');
-        if($kode_barang != ''){
-            $this->db->where('pengiriman_barang.kode', $kode_barang);
+        if(count($idpengiriman) > 0 ){
+            $this->db->select('*, SUM(total) as total');
+            $this->db->from('pengiriman_barang');
+            $this->db->join('produk', 'produk.kode = pengiriman_barang.kode');
+            // $this->db->join('tbl_category', 'tbl_category.kode = produk.kategori', 'LEFT');
+            $this->db->where_in('pengiriman_barang.pengiriman_id', $idpengiriman);
+            $this->db->group_by('pengiriman_barang.kode, pengiriman_barang.nama');
+            if($kode_barang != ''){
+                $this->db->where('pengiriman_barang.kode', $kode_barang);
+            }
+            if($nama_barang != ''){
+                $this->db->where('pengiriman_barang.nama', $nama_barang);
+            }
+            $result = $this->db->get()->result_array();
+            
+            // echo json_encode($result);die();
+            // var_dump($result[0]['kode']);
         }
-        if($nama_barang != ''){
-            $this->db->where('pengiriman_barang.nama', $nama_barang);
+        else{
+            $result = [];
         }
-        $result = $this->db->get()->result_array();
-        
-        // echo json_encode($result);die();
-        // var_dump($result[0]['kode']);
         return $result;
     }
 
