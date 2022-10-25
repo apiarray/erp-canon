@@ -11,8 +11,15 @@ class Manager2 extends CI_Controller {
 
     public function index(){
         $topik['judul'] = 'Halaman Menu Manager Lain';
-        $data['manager'] = $this->M_manager->tampil_data1();
+        
+        $dfil['faktur'] = $this->input->get('faktur', true);
+        $dfil['tgl_mulai'] = $this->input->get('tgl_mulai', true);
+        $dfil['tgl_sampai'] = $this->input->get('tgl_sampai', true);
+
+        $data['manager'] = $this->M_manager->tampil_data();
+        $data['datas'] = $this->M_manager->tampil_data_manager($dfil);
         $data['kode_barang'] = $this->M_manager->kode_barang();
+        $data['barang'] = $this->M_manager->get_barang_mitra2($this->session->userdata('kode_id'));
         $data['user'] = $this->M_manager->getMitra();
         $this->load->view('templates2/header',$topik);
         $this->load->view('manager2/index',$data);
@@ -23,8 +30,66 @@ class Manager2 extends CI_Controller {
         echo json_encode($this->M_manager->tampil_data1());
     }
 
-    public function barang($barang = NULL) {
-        echo json_encode($this->M_manager->barang($barang));
+    public function barang($kode) {
+        echo json_encode($this->M_manager->get_barang_mitra2($this->session->userdata('kode_id'), $kode));
+    }
+
+    public function priview($id) {
+        $this->db->select('*');
+        $this->db->from('weekly_manager2');
+        $this->db->where('id',"$id");
+        $data['weekly_manager2'] = $this->db->get()->result_array();
+        $ids = $data['weekly_manager2'][0]['id'];
+
+        $this->db->select('*');
+        $this->db->from('weekly_manager2_barang');
+        $this->db->where('id_weekly_manager2',"$ids");
+        $data['weekly_manager2_barang'] = $this->db->get()->result_array();
+
+        echo json_encode($data);
+    }
+
+    public function editwm($id) {
+        $this->db->select('*');
+        $this->db->from('weekly_manager2');
+        $this->db->where('id',"$id");
+        $data['weekly_manager2'] = $this->db->get()->result_array();
+        $ids = $data['weekly_manager2'][0]['id'];
+
+        $this->db->select('*');
+        $this->db->from('weekly_manager2_barang');
+        $this->db->where('id_weekly_manager2',"$ids");
+        $data['weekly_manager2_barang'] = $this->db->get()->result_array();
+
+        echo json_encode($data);
+    }
+
+    public function editDataPenjualanManager() {
+        $id = $this->input->post('id', true);
+        $wd['nominal_total'] = $this->input->post('total_penjualan', true);
+        
+        $this->db->set($wd);
+        $this->db->where('id', $id);
+        $this->db->update('weekly_manager2');
+
+        $this->db->delete('weekly_manager2_barang', ['id_weekly_manager2' => $id]);
+        for($i=0;$i<=count($this->input->post('kode',true))-1;$i++){
+            $barang = $this->M_manager->get_barang_mitra2($this->session->userdata('kode_id'), $this->input->post('kode',true)[$i]);
+
+            $data['id_weekly_manager2'] = $id;
+            $data['kode'] = $this->input->post('kode',true)[$i];
+            $data['nama'] = $barang[0]['nama'];
+            $data['stok'] = $this->input->post('stok',true)[$i];
+            $data['qty_terjual'] = $this->input->post('qty',true)[$i];
+            $data['fc'] = $this->input->post('fc',true)[$i];
+            $data['harga_setor'] = $this->input->post('harga_setor',true)[$i];
+            $data['total_item'] = $this->input->post('total_item',true)[$i];
+
+            $this->db->insert('weekly_manager2_barang', $data);
+        }
+
+        $this->session->set_flashdata('flash','Berhasil Diubah');
+        redirect('manager2');
     }
 
     public function cari() {
@@ -72,7 +137,43 @@ class Manager2 extends CI_Controller {
     }
 
     public function tambahDataPenjualanManager() {
-        $this->M_manager->tambahDataPenjualanManager();
+        $latest_no_invoice = ((int)"00999" + 1);
+        $latest_no_invoice = (string)$latest_no_invoice;
+        $no_invoice = "INV/".date('ymd')."/";
+        $jmlNol = 0;
+
+        for ($i = 0; $i < strlen($latest_no_invoice); $i++) {
+            if ($latest_no_invoice[$i] != "0") {
+                $no_invoice .= str_repeat("0", $jmlNol).((int)substr($latest_no_invoice, $i) + 1);
+            break;
+            } else {
+                $jmlNol++;
+            }
+        }
+        $wd['kode_id'] = $this->session->userdata('kode_id');
+        $wd['tgl'] = date('Y-m-d');
+        $wd['no_invoice'] = $no_invoice;
+        $wd['nominal_total'] = $this->input->post('total_penjualan',true);
+        $wd['validasi'] = 'N';
+        
+        $this->db->insert('weekly_manager2', $wd);
+        $wid = $this->db->insert_id();
+
+        for($i=0;$i<=count($this->input->post('kode',true))-1;$i++){
+            $barang = $this->M_manager->get_barang_mitra2($this->session->userdata('kode_id'), $this->input->post('kode',true)[$i]);
+
+            $data['id_weekly_manager2'] = $wid;
+            $data['kode'] = $this->input->post('kode',true)[$i];
+            $data['nama'] = $barang[0]['nama'];
+            $data['stok'] = $this->input->post('stok',true)[$i];
+            $data['qty_terjual'] = $this->input->post('qty',true)[$i];
+            $data['fc'] = $this->input->post('fc',true)[$i];
+            $data['harga_setor'] = $this->input->post('harga_setor',true)[$i];
+            $data['total_item'] = $this->input->post('total_item',true)[$i];
+
+            $this->db->insert('weekly_manager2_barang', $data);
+        }
+
         $this->session->set_flashdata('flash','Ditambahkan');
         redirect('manager2');
     }
@@ -85,8 +186,10 @@ class Manager2 extends CI_Controller {
     // }
     public function hapus($id){
         $this->M_manager->hapusDataManager($id);
+        $this->M_manager->hapusDataBarangManager($id);
+
         $this->session->set_flashdata('flash2','Dihapus');
-        redirect('manager');
+        redirect('manager2');
     }
 
     public function edit($id){

@@ -7,17 +7,6 @@
 </head>
 
 <body>
-    <?php
-    date_default_timezone_set('Asia/Jakarta');
-    $no_do = $this->db->from('pengiriman')->order_by('pengiriman.no_do', 'DESC')->get()->row();
-
-    $pieces = explode("/", $no_do->no_do);
-    $angka = (int)$pieces[2] + 1;
-
-    $no_do_new = $pieces[0] . '/' . $pieces[1] . '/0000' . $angka;
-    ?>
-
-
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -140,7 +129,6 @@
             else{
                 ts.setAttribute('disabled');
             }
-            console.log(tm.value);
         })
         // $('#tanggal_mulai').on('change', function(){
         //     $('#tanggal_sampai').val($(this).val());
@@ -255,7 +243,7 @@
                             <div class="input-group-prepend">
                                 <label for="taggal" class="input-group-text">Set Up Jurnal :</label>
                             </div>
-                            <input type="text" name="setup_jurnal" class="form-control form-control-sm">
+                            <input type="text" name="setup_jurnal" value="<?= count($setup_jurnal) > 0 ? $setup_jurnal[0]['kode_jurnal'] : '-'?>" readonly class="form-control form-control-sm">
                         </div>
                     </div>
                     <div class="input-group input-group-sm mt-1">

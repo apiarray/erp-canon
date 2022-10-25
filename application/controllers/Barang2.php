@@ -11,24 +11,43 @@ class Barang2 extends CI_Controller {
     }
     
     // code refactor
+    // public function index() {
+    //     // var_dump($this->session->userdata('kode_id'));die();
+    //     $topik['judul'] = 'Halaman Menu Produk';
+    //     $gudangId = $this->session->userdata('gudang');
+    //     $username = $this->session->userdata('username');
+    //     // var_dump($username);
+
+    //     if ($this->input->post('show')) {
+    //         $viewPath = 'barang2/show';
+
+    //         $data['curfmt'] = $this->curfmt;
+    //         //$data['produk'] = $this->M_barang->showBarangClient();
+    //         $data['produk'] = $this->M_barang->get_barang_mitra2($this->session->userdata('kode_id'));
+    //     } else {
+    //         $viewPath = 'barang2/index';
+    //         $data['produk'] = $this->M_barang->get_barang_mitra2($this->session->userdata('kode_id'));
+    //     }
+
+    //     $this->load->view('templates2/header',$topik);
+    //     $this->load->view($viewPath, $data);
+    //     $this->load->view('templates2/footer');
+    // }
     public function index() {
+        // var_dump($this->session->userdata('kode_id'));die();
         $topik['judul'] = 'Halaman Menu Produk';
         $gudangId = $this->session->userdata('gudang');
         $username = $this->session->userdata('username');
+        // var_dump($username);
 
-        if ($this->input->post('show')) {
-            $viewPath = 'barang2/show';
-
-            $data['curfmt'] = $this->curfmt;
-            //$data['produk'] = $this->M_barang->showBarangClient();
-            $data['produk'] = $this->M_barang->get_barang_mitra($gudangId, $username);
+        if ($this->input->get('kode') != '' || $this->input->get('barang') != '') {
+            $data['produk'] = $this->M_barang->get_barang_mitra2($this->session->userdata('kode_id'), $this->input->get('kode'), $this->input->get('barang'));
         } else {
-            $viewPath = 'barang2/index';
-            $data['produk'] = $this->M_barang->get_barang_mitra($gudangId, $username);
+            $data['produk'] = $this->M_barang->get_barang_mitra2($this->session->userdata('kode_id'));
         }
 
         $this->load->view('templates2/header',$topik);
-        $this->load->view($viewPath, $data);
+        $this->load->view('barang2/index', $data);
         $this->load->view('templates2/footer');
     }
     

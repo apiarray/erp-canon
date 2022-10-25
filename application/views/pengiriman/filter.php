@@ -255,7 +255,7 @@
                             <div class="input-group-prepend">
                                 <label for="taggal" class="input-group-text">Set Up Jurnal :</label>
                             </div>
-                            <input type="text" name="setup_jurnal" value="<?= $df['setup_jurnal'] ?>" class="form-control form-control-sm">
+                            <input type="text" name="setup_jurnal" value="<?= count($setup_jurnal) > 0 ? $setup_jurnal[0]['kode_jurnal'] : '-'?>" readonly class="form-control form-control-sm">
                         </div>
                     </div>
                     <div class="input-group input-group-sm mt-1">

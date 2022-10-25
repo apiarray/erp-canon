@@ -15,6 +15,12 @@ class Pengiriman extends CI_Controller
     $x['data1'] = $this->m_pengiriman->tampil_data();
     $x['kode'] = $this->m_pengiriman->kode();
     $x['data'] = $this->m_pengiriman->tampil_datamitra();
+
+    $this->db->select('*');
+    $this->db->from('tbl_setup_jurnal');
+    $this->db->where('formulir',"pengiriman_barang");
+    $x['setup_jurnal'] = $this->db->get()->result_array();
+
     $this->load->view('templates/header', $topik);
     $this->load->view('pengiriman/index', $x);
     $this->load->view('templates/footer');
@@ -39,6 +45,11 @@ class Pengiriman extends CI_Controller
     $dfil['jenis_transaksi'] = $this->input->get('jenis_transaksi', true);
     $dfil['tanggal_jt'] = $this->input->get('tanggal_jt', true);
 
+    $this->db->select('*');
+    $this->db->from('tbl_setup_jurnal');
+    $this->db->where('formulir',"pengiriman_barang");
+    $x['setup_jurnal'] = $this->db->get()->result_array();
+
     $x['df'] = $dfil;
     $x['data1'] = $this->m_pengiriman->filter_data($dfil);
     $x['kode'] = $this->m_pengiriman->kode();
@@ -52,18 +63,70 @@ class Pengiriman extends CI_Controller
   public function cetak_faktur($id = null)
   {
     ob_start();
-    // $data['pengiriman'] = $this->m_pengiriman->tampil_cetak();
+
+		$this->load->library('dompdf_gen');
     $data['pengiriman'] = $this->m_pengiriman->getPengirimanById($id);
     $data['barang'] = $this->m_pengiriman->getBarangByPengirimanId($id);
-    //  var_dump($data['pengiriman']);die();
-    $this->load->view('pengiriman/print_faktur', $data);
-    // die();
-    $html = ob_get_contents();
+
+    // $html = $this->load->view('pengiriman/print_faktur', $data);
+    $html = $this->load->view('pengiriman/print_faktur', $data);
+    
+    $this->dompdf->set_paper('A4', 'potrait');
+		
+		// $html = $this->output->get_output();
+    // libxml_use_internal_errors(true);
+		$this->dompdf->load_html($html);
+		$this->dompdf->render();
+		$this->dompdf->stream("Data Pengiriman.pdf", array('Attachment' =>0));
+
     ob_end_clean();
-    require_once('./asset/html2pdf/html2pdf.class.php');
-    $pdf = new HTML2PDF('P', 'A4', 'en');
-    $pdf->WriteHTML($html);
-    $pdf->Output('Data Pengiriman.pdf', 'D');
+    
+    // $this->load->library('pdfGenerator');
+        
+    // // $this->data['title_pdf'] = 'Laporan Penjualan Toko Kita';
+    
+    // $file_pdf = 'Data Pengiriman';
+    // $paper = 'A4';
+    // $orientation = "portrait";
+    
+    // $html = $this->load->view('pengiriman/print_faktur',$data, true);	    
+    
+    // $this->pdfgenerator->generate($html, $file_pdf,$paper,$orientation);
+    
+    
+    // $this->load->library('dompdf_gen');
+
+    // $html= $this->output->get_output();
+    // $this->dompdf->set_paper('A4', 'potrait');
+    // $this->dompdf->load_html($html);
+    // $this->dompdf->render();
+    // $this->dompdf->stream("Data Pengiriman.pdf", ['Attachment' => 0]);
+    
+
+
+
+    //  var_dump($data['pengiriman']);die();
+    // $this->load->library('Pdf');
+    // $this->pdf->filename = "Data Pengiriman.pdf";
+    // $this->pdf->load_view('pengiriman/print_faktur', $data);
+    
+    // die();
+    // $html = ob_get_contents();
+    // ob_end_clean();
+    // require_once('./asset/html2pdf/html2pdf.class.php');
+    // $pdf = new HTML2PDF('P', 'A4', 'en');
+    // $pdf->WriteHTML($html);
+    // $pdf->Output('Data Pengiriman.pdf', 'D');
+
+
+
+    // $this->load->view('pengiriman/print_faktur', $data);
+    // die();
+    // $html = ob_get_contents();
+    // require_once('./asset/html2pdf/html2pdf.class.php');
+    // $pdf = new HTML2PDF('P', 'A4', 'en');
+    // $pdf->WriteHTML($html);
+    // $pdf->Output('Data Pengiriman.pdf', 'D');
   }
 
   public function cetak_alamat()
@@ -108,6 +171,11 @@ class Pengiriman extends CI_Controller
     $x['kode'] = $this->m_pengiriman->kode();
     $x['data'] = $this->m_pengiriman->tampil_datamitra();
     $x['gdg'] = $this->m_pengiriman->allGdg();
+
+    $this->db->select('*');
+    $this->db->from('tbl_setup_jurnal');
+    $this->db->where('formulir',"pengiriman_barang");
+    $x['setup_jurnal'] = $this->db->get()->result_array();
 
     $this->load->view('templates/header', $data);
     $this->load->view('pengiriman/tambah', $x);
@@ -236,6 +304,11 @@ class Pengiriman extends CI_Controller
     $x['pengiriman'] = $this->m_pengiriman->getPengirimanById($id);
     $x['barang'] = $this->m_pengiriman->getBarangByPengirimanId($id);
     // var_dump($x['barang']);die();
+
+    $this->db->select('*');
+    $this->db->from('tbl_setup_jurnal');
+    $this->db->where('formulir',"pengiriman_barang");
+    $x['setup_jurnal'] = $this->db->get()->result_array();
 
     $x['stok'] = $this->m_pengiriman->cekStok($id);
 

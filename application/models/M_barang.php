@@ -331,6 +331,38 @@ class M_barang extends CI_Model
         return $query->result();
     }
 
+    public function get_barang_mitra2($kode_mitra, $kode_barang = '', $nama_barang = '')
+    {
+        $this->db->select('id');
+        $this->db->from('pengiriman');
+        $this->db->where('kode_id', $kode_mitra);
+        $mitrapengiriman = $this->db->get()->result_array();
+
+        $idpengiriman = [];
+        
+        foreach($mitrapengiriman as $k => $v){
+            $idpengiriman[] = $v['id'];
+        }
+        
+        $this->db->select('*, SUM(total) as total');
+        $this->db->from('pengiriman_barang');
+        $this->db->join('produk', 'produk.kode = pengiriman_barang.kode');
+        // $this->db->join('tbl_category', 'tbl_category.kode = produk.kategori', 'LEFT');
+        $this->db->where_in('pengiriman_barang.pengiriman_id', $idpengiriman);
+        $this->db->group_by('pengiriman_barang.kode, pengiriman_barang.nama');
+        if($kode_barang != ''){
+            $this->db->where('pengiriman_barang.kode', $kode_barang);
+        }
+        if($nama_barang != ''){
+            $this->db->where('pengiriman_barang.nama', $nama_barang);
+        }
+        $result = $this->db->get()->result_array();
+        
+        // echo json_encode($result);die();
+        // var_dump($result[0]['kode']);
+        return $result;
+    }
+
     public function get_barang_mitra($gudang, $manager)
     {
         $this->db->select('
