@@ -18,7 +18,7 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label for="">Kode Jurnal</label>
-                    <input type="text" required value="-" value="<?= $pengeluaran['kode_jurnal'] ?>" name="kode_jurnal" class="form-control">
+                    <input type="text" name="kode_jurnal" value="<?= count($setup_jurnal) > 0 ? $setup_jurnal[0]['kode_jurnal'] : '-'?>" readonly class="form-control">
                 </div>
             </div>
             <div class="form-row">

@@ -33,7 +33,7 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="">Kode Jurnal</label>
-                        <input type="text" required value="-" name="kode_jurnal" class="form-control">
+                        <input type="text" name="kode_jurnal" value="<?= count($setup_jurnal) > 0 ? $setup_jurnal[0]['kode_jurnal'] : '-'?>" readonly class="form-control form-control-sm">
                         <small><span class="text-danger"><?=form_error('kode_jurnal');?></span></small>
                     </div>
                 </div>

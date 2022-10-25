@@ -36,6 +36,11 @@ class Pendapatan extends CI_Controller {
         $cekkodependapatan = floatval($nourut) + floatval("1");
         $data2 = array('no_faktur' => $cekkodependapatan);
 
+        $this->db->select('*');
+        $this->db->from('tbl_setup_jurnal');
+        $this->db->where('formulir',"pendapatan_lain");
+        $data2['setup_jurnal'] = $this->db->get()->result_array();
+
         $this->form_validation->set_rules('tgl','Tgl','required');
         $this->form_validation->set_rules('no_faktur','No Faktur','required');
         $this->form_validation->set_rules('kode_jurnal','Kode Jurnal','required');
@@ -86,6 +91,11 @@ class Pendapatan extends CI_Controller {
         $data['coa'] = $this->M_account->tampil_data(NULL);
         $data['coaedit'] = $this->M_pendapatanlain->getcoaByPendapatanId($id);
         // $data['program'] = ['Teknik Informatika','Teknik Elektro','Bahasa Indonesia','Bahasa Inggris','Matematika','PKN'];
+
+        $this->db->select('*');
+        $this->db->from('tbl_setup_jurnal');
+        $this->db->where('formulir',"pendapatan_lain");
+        $data['setup_jurnal'] = $this->db->get()->result_array();
 
         $this->form_validation->set_rules('tgl','Tgl','required');
         $this->form_validation->set_rules('no_faktur','No Faktur','required');

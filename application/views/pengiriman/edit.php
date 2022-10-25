@@ -68,20 +68,22 @@
     })
     var t = $("#tkirim").DataTable({searching: false, paging: false, info: false, ordering: false});
 	var b = $("#tbarang").DataTable({searching: false, paging: false, info: false, ordering: false});
-	var counter = 0 ;
+	var counter = 0;
+	var counterb = 0;
 	var selektor = 0 ;
-	var counterb = 0 ;
 	var selektorb = 0;
+    var kodebarangdipilih = '';
+    var defaultkodeedit = '';
 	var pose = 0;
 
     function drawrowb(){
         b.row.add(
             [ 
             //data-toggle="modal" data-target="#myModal1"			
-            '<a href="javascript:void(0);" data-c="'+counterb+'" class="remCF rows btn btn-danger"><i class="fas fa-trash"></i></a>', 
-            '<input type="text" class="form-control" id="kode'+counterb+'" 		name="kode[]" onclick="get_barang(this.value, '+counterb+')"  required>', 
-            '<input type="text" class="form-control" id="namabrg'+counterb+'" 	name="nama[]" required>', 
-            '<input type="text" class="form-control" id="gudang'+counterb+'" 	name="gudang_asal[]" required>', 
+            '<a href="javascript:void(0);" data-barang-kode-delete="" data-c="'+counterb+'" class="remCF remCF'+counterb+' rows btn btn-danger"><i class="fas fa-trash"></i></a>', 
+            '<input type="text" class="form-control kode-input" id="kode'+counterb+'" 		name="kode[]" onclick="get_barang(this.value, '+counterb+')"  required>', 
+            '<input type="text" class="form-control" id="namabrg'+counterb+'" 	name="nama[]" required readonly>', 
+            '<input type="text" class="form-control" id="gudang'+counterb+'" 	name="gudang_asal[]" required readonly>', 
             '<input type="text" class="form-control" id="gudang1'+counterb+'" 	name="gudang_tujuan[]" required>'
             ]).draw( false );
         //console.log('<input type="text" name="kode[]" id="kode'+counter+'"  class="form-control form-control-sm" data-toggle="modal" data-target="#myModal1"  />');
@@ -112,25 +114,46 @@
         drawrowt();
         
     });
+    $('#tbarang').on('keydown', ".kode-input", function (evt) {
+        evt.preventDefault();
+        return false;
+    });
     $("#tbarang_wrapper").on('click','.remCF',function(){
-        // console.log('awdasd');
-        // $(this).parent().parent().remove();
-        $(this).parent();
-        b.row(':last').remove().draw();
-        t.row(':last').remove().draw();
+        var kodebarang = $(this).attr('data-barang-kode-delete');
+        if(kodebarang != ''){
+            $("[data-kode='"+kodebarang+"']").attr('data-on', 0);
+            $("[data-kode='"+kodebarang+"']").find(".bdg-pin").addClass("d-none");
+        }
+        var pose = $(this).attr('data-barang-kode-delete');
+        if(pose != ''){
+            $("[data-posee='"+pose+"']").attr('data-on', 0);
+            $("[data-posee='"+pose+"']").find(".bdg-pin").addClass("d-none");
+        }
+        b.row( b.row($(this).parent().parent()).index() ).remove().draw();
+        t.row( b.row($(this).parent().parent()).index() ).remove().draw();
         selektorb -- ;
         selektor -- ;
         sumAllSubtotal();
         console.log('drain selektor' + selektorb);
     });
     $("#tbarang_wrapper").on('click','.remCFE',function(){
-        // console.log('awdasd');
-        $(this).parent().parent().remove();
-        b.row(':last').remove().draw();
-        t.row(':last').remove().draw();
-        // $(this).parent();
-        // selektorb -- ;
-        // selektor -- ;
+        var th = $(this).parent().parent();
+        console.log(b.row(th).index());
+
+        var pose = $(this).attr('data-barang-kode-delete');
+        if(pose != ''){
+            $("[data-posee='"+pose+"']").attr('data-on', 0);
+            $("[data-posee='"+pose+"']").find(".bdg-pin").addClass("d-none");
+        }
+        var kodebarang = $(this).attr('data-barang-kode-delete');
+        if(kodebarang != ''){
+            $("[data-kode='"+kodebarang+"']").attr('data-on', 0);
+            $("[data-kode='"+kodebarang+"']").find(".bdg-pin").addClass("d-none");
+        }
+        b.row( b.row($(this).parent().parent()).index() ).remove().draw();
+        t.row( b.row($(this).parent().parent()).index() ).remove().draw();
+        selektorb -- ;
+        selektor -- ;
         sumAllSubtotal();
         console.log('drain selektor e');
     });
@@ -356,7 +379,10 @@
                 <label for="setupjurnal" class="input-group-text">Set Up Jurnal :</label>
             </div>
             <select class="form-control" id="setupjurnal" name="setupjurnal">
-                <option value="-" <?php $pengiriman['setup_jurnal'] == '-' ? 'selected' : '';?>>-</option>
+                <?php foreach($setup_jurnal as $k => $v){ ?>
+                    <option value="<?= $v['kode_jurnal']?>" <?= $pengiriman['setup_jurnal'] == $v['kode_jurnal'] ? 'selected' : '';?>><?= $v['kode_jurnal']?></option>
+
+                <?php } ?>
             </select>
         </div>
         <div class="input-group input-group-sm mt-1">
@@ -419,17 +445,17 @@
             <?php foreach($barang as $k => $v){  ?>
                 <tr>
                     <td style="text-align:center;">
-                        <a href="javascript:void(0);" data-id="<?= $v['id'] ?>" class="remCFE rows btn btn-danger"><i class="fas fa-trash"></i></a>
+                        <a href="javascript:void(0);" data-id="<?= $v['id'] ?>" data-c="<?= $k ?>" data-barang-kode-delete="<?= $v['kode'] ?>" class="remCFE remCFE<?= $v['kode'];?> rows btn btn-danger"><i class="fas fa-trash"></i></a>
                     </td>
                     <td style="text-align:center;">
-                    <input type="text" class="form-control kodee" data-id="<?= $v['kode'] ?>" id="kodee<?= $v['kode'] ?>" value="<?= $v['kode'];?>" name="kode[]" required>
+                    <input type="text" class="form-control kodee kode-input" data-id="<?= $v['kode'] ?>" id="kodee<?= $v['kode'] ?>" value="<?= $v['kode'];?>" name="kode[]" required>
                     </td>
                     <td>
-                    <input type="text" class="form-control" id="namabrge<?= $v['kode'] ?>" value="<?= $v['nama'];?>" name="nama[]" required>
+                    <input type="text" class="form-control" id="namabrge<?= $v['kode'] ?>" value="<?= $v['nama'];?>" name="nama[]" required readonly>
                     </td>
                     
                     <td>
-                    <input type="text" class="form-control" id="gudange<?= $v['kode'] ?>" value="<?= $v['gudang_asal'];?>" name="gudang_asal[]" required>
+                    <input type="text" class="form-control" id="gudange<?= $v['kode'] ?>" value="<?= $v['gudang_asal'];?>" name="gudang_asal[]" required readonly>
                     </td>
                     <td style="text-align:center;">
                         <input type="text" class="form-control" id="gudang1e<?= $v['kode'] ?>" value="<?= $v['gudang_tujuan'];?>" name="gudang_tujuan[]" required>
@@ -495,14 +521,20 @@
     </div>
     
 	<script type="text/javascript"> 
-    function get_barang(kunci, lokasi) {
+        function get_barang(kunci, lokasi) {
             $('#myModal1').modal('show');
             selektorb = lokasi;
+            kodebarangdipilih = kunci;
+            pose = kunci;
+            console.log(pose, kodebarangdipilih);
         };
-    $('.kodee').on('click', function(){
-        $('#myModale1').modal('show');
-        pose = $(this).attr('data-id');
-    })
+        $('.kodee').on('click', function(){
+            $('#myModale1').modal('show');
+            defaultkodeedit = $(this).attr('data-id')
+            pose = $(this).val();
+            kodebarangdipilih = pose;
+            console.log(pose, kodebarangdipilih);
+        })
 </script>
     </div>
     <!-- Footer Pengiriman -->
@@ -615,7 +647,11 @@
                                 </tr>
                             </thead>
                                 <?php 
-							$no = 1;				   
+							$no = 1;	
+                            $kodebaranglist = [];		   
+							foreach($barang as $i):
+                                $kodebaranglist[] = $i['kode'];
+                            endforeach;			   
 							foreach($data2->result_array() as $i):
 								$kode=$i['kode'];
 								$namabrg=$i['nama'];
@@ -624,8 +660,8 @@
 								$qtyr=$i['unitrusak'];
                                 $harga_jual=floatval($i['setelahpajak']);
 						     ?>
-                                    <tr class="pilih1" data-harga_jual="<?php echo $harga_jual; ?>" data-kode="<?php echo $kode; ?>" data-nama="<?php echo $namabrg; ?>" data-gudang="<?php echo $gudang; ?>" data-qty="<?php echo $qty; ?>" data-qtyr="<?php echo $qtyr; ?>">
-                                        <td><?php echo $kode; ?></td>
+                                    <tr class="pilih1" data-on="<?= in_array($kode, $kodebaranglist) ? 1 : 0 ?>" data-harga_jual="<?php echo $harga_jual; ?>" data-kode="<?php echo $kode; ?>" data-nama="<?php echo $namabrg; ?>" data-gudang="<?php echo $gudang; ?>" data-qty="<?php echo $qty; ?>" data-qtyr="<?php echo $qtyr; ?>">
+                                        <td><?php echo $kode; ?> <span class="badge badge-success <?= in_array($kode, $kodebaranglist) ? '' : 'd-none' ?> bdg-pin">telah ditambahkan</span></td>
                                         <td><?php echo $namabrg; ?></td>
                                         <td><?php echo $gudang; ?></td>
                                     </tr>
@@ -634,8 +670,6 @@
                         </table>  
                     </div>
                 </div>
-		
-				
             </div>
         </div>
 
@@ -656,7 +690,12 @@
                                 </tr>
                             </thead>
                                 <?php 
-							$no = 1;				   
+							$no = 1;		
+                            // $barang
+                            $kodebaranglist = [];		   
+							foreach($barang as $i):
+                                $kodebaranglist[] = $i['kode'];
+                            endforeach;
 							foreach($data2->result_array() as $i):
 								$kode=$i['kode'];
 								$namabrg=$i['nama'];
@@ -665,8 +704,8 @@
 								$qtyr=$i['unitrusak'];
                                 $harga_jual=floatval($i['setelahpajak']);
 						     ?>
-                                    <tr class="pilih2" data-harga_jual="<?php echo $harga_jual; ?>" data-kode="<?php echo $kode; ?>" data-nama="<?php echo $namabrg; ?>" data-gudang="<?php echo $gudang; ?>" data-qty="<?php echo $qty; ?>" data-qtyr="<?php echo $qtyr; ?>">
-                                        <td><?php echo $kode; ?></td>
+                                    <tr class="pilih2" data-posee="<?php echo $kode; ?>" data-on="<?= in_array($kode, $kodebaranglist) ? 1 : 0 ?>" data-harga_jual="<?php echo $harga_jual; ?>" data-kode="<?php echo $kode; ?>" data-nama="<?php echo $namabrg; ?>" data-gudang="<?php echo $gudang; ?>" data-qty="<?php echo $qty; ?>" data-qtyr="<?php echo $qtyr; ?>">
+                                        <td><?php echo $kode; ?>  <span class="badge badge-success <?= in_array($kode, $kodebaranglist) ? '' : 'd-none' ?> bdg-pin">telah ditambahkan</span></td>
                                         <td><?php echo $namabrg; ?></td>
                                         <td><?php echo $gudang; ?></td>
                                     </tr>
@@ -696,48 +735,90 @@
         <script type="text/javascript">
 
 //            jika dipilih, nim akan masuk ke input dan modal di tutup
-            $(document).on('click', '.pilih1', function (e) {
-                document.getElementById("kode"+selektorb).value = $(this).attr('data-kode');
-                $('#myModal1').modal('hide');
-				
-				document.getElementById("namabrg"+selektorb).value = $(this).attr('data-nama');
-                $('#myModal1').modal('hide');
-				
-				document.getElementById("gudang"+selektorb).value = $(this).attr('data-gudang');
-                $('#myModal1').modal('hide');
-				
-				document.getElementById("qty"+selektorb).value = $(this).attr('data-qty');
-                $('#myModal1').modal('hide');
-                
-                document.getElementById("qty_rsk"+selektorb).value = $(this).attr('data-qtyr');
-                $('#myModal1').modal('hide');
+                $(document).on('click', '.pilih1', function (e) {
+                    var pin = $(this).attr('data-on');
+                    if(pin == 1){
+                        alert("barang sudah ada dalam daftar");
+                    }
+                    else{
+                        $(this).attr('data-on', 1);
+                        $(this).find(".bdg-pin").removeClass("d-none");
+                        if(kodebarangdipilih != ''){
+                            $("[data-kode='"+kodebarangdipilih+"']").attr('data-on', 0);
+                            $("[data-kode='"+kodebarangdipilih+"']").find(".bdg-pin").addClass("d-none");
+                        }
+                        var kd = $(this).attr('data-kode');
+                        $("[data-posee='"+kd+"']").attr('data-on', 1);
+                        $("[data-posee='"+kd+"']").find(".bdg-pin").removeClass("d-none");
+                        if(pose != ''){
+                            $("[data-posee='"+pose+"']").attr('data-on', 0);
+                            $("[data-posee='"+pose+"']").find(".bdg-pin").addClass("d-none");
+                        }
+                        $('.remCF'+selektorb).attr('data-barang-kode-delete', $(this).attr('data-kode'));
 
-				document.getElementById("harga_jual"+selektorb).value = $(this).attr('data-harga_jual');
-                $('#myModal1').modal('hide');
-				
+                        document.getElementById("kode"+selektorb).value = $(this).attr('data-kode');
+                        $('#myModal1').modal('hide');
+                        
+                        document.getElementById("namabrg"+selektorb).value = $(this).attr('data-nama');
+                        $('#myModal1').modal('hide');
+                        
+                        document.getElementById("gudang"+selektorb).value = $(this).attr('data-gudang');
+                        $('#myModal1').modal('hide');
+                        
+                        document.getElementById("qty"+selektorb).value = $(this).attr('data-qty');
+                        $('#myModal1').modal('hide');
+                        
+                        document.getElementById("qty_rsk"+selektorb).value = $(this).attr('data-qtyr');
+                        $('#myModal1').modal('hide');
+
+                        document.getElementById("harga_jual"+selektorb).value = $(this).attr('data-harga_jual');
+                        $('#myModal1').modal('hide');
+                    
+                }
             });
             $(document).on('click', '.pilih2', function (e) {
-                console.log(
-                    document.getElementById("qtye"+pose),
-                    document.getElementById("qty_rske"+pose),
-                );
-                document.getElementById("kodee"+pose).value = $(this).attr('data-kode');
-                $('#myModale1').modal('hide');
-				
-				document.getElementById("namabrge"+pose).value = $(this).attr('data-nama');
-                $('#myModale1').modal('hide');
-				
-				document.getElementById("gudange"+pose).value = $(this).attr('data-gudang');
-                $('#myModale1').modal('hide');
-				
-				document.getElementById("qtye"+pose).value = $(this).attr('data-qty');
-                $('#myModale1').modal('hide');
-                
-                document.getElementById("qty_rske"+pose).value = $(this).attr('data-qtyr');
-                $('#myModale1').modal('hide');
-				
-                document.getElementById("harga_jual"+pose).value = $(this).attr('data-harga_jual');
-                $('#myModale1').modal('hide');
+                var pin = $(this).attr('data-on');
+                if(pin == 1){
+                    alert("barang sudah ada dalam daftar");
+                }
+                else{
+                    $(this).attr('data-on', 1);
+                    $(this).find(".bdg-pin").removeClass("d-none");
+                    if(pose != ''){
+                        $("[data-posee='"+pose+"']").attr('data-on', 0);
+                        $("[data-posee='"+pose+"']").find(".bdg-pin").addClass("d-none");
+                    }
+                    var kd = $(this).attr('data-kode');
+                    
+                    $("[data-kode='"+kd+"']").attr('data-on', 1);
+                    $("[data-kode='"+kd+"']").find(".bdg-pin").removeClass("d-none");
+                    if(kodebarangdipilih != ''){
+                        console.log(kodebarangdipilih);
+                        $("[data-kode='"+kodebarangdipilih+"']").attr('data-on', 0);
+                        $("[data-kode='"+kodebarangdipilih+"']").find(".bdg-pin").addClass("d-none");
+                        // console.log($("[data-kode='"+kodebarangdipilih+"']"));
+                    }
+
+                    $('.remCFE'+defaultkodeedit).attr('data-barang-kode-delete', $(this).attr('data-kode'));
+                    // console.log(document.getElementById("kodee"+pose));
+                    document.getElementById("kodee"+defaultkodeedit).value = $(this).attr('data-kode');
+                    $('#myModale1').modal('hide');
+                    
+                    document.getElementById("namabrge"+defaultkodeedit).value = $(this).attr('data-nama');
+                    $('#myModale1').modal('hide');
+                    
+                    document.getElementById("gudange"+defaultkodeedit).value = $(this).attr('data-gudang');
+                    $('#myModale1').modal('hide');
+                    
+                    document.getElementById("qtye"+defaultkodeedit).value = $(this).attr('data-qty');
+                    $('#myModale1').modal('hide');
+                    
+                    document.getElementById("qty_rske"+defaultkodeedit).value = $(this).attr('data-qtyr');
+                    $('#myModale1').modal('hide');
+                    
+                    document.getElementById("harga_juale"+defaultkodeedit).value = $(this).attr('data-harga_jual');
+                    $('#myModale1').modal('hide');
+                }
             });
 			
 

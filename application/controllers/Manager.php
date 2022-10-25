@@ -12,11 +12,84 @@ class Manager extends CI_Controller {
         $topik['judul'] = 'Halaman Menu Manager Lain';
         $data['jabatan'] = $this->M_daftar->tampil_jabatan();
         $data['manager'] = $this->m_manager->tampil_data();
+        $data['mitra'] = $this->m_manager->tampil_data_mitra();
+        $data['managerpl'] = $this->m_manager->tampil_data_pl_valid();
+       
         $data['kode_barang'] = $this->m_manager->kode_barang();
         $data['latest_no_invoice'] = $this->m_manager->latest_no_invoice();
         $this->load->view('templates/header',$topik);
         $this->load->view('manager/index',$data);
         $this->load->view('templates/footer');
+    }
+
+    public function priview($id) {
+        $this->db->select('*');
+        $this->db->from('weekly_manager2');
+        $this->db->where('id',"$id");
+        $data['weekly_manager2'] = $this->db->get()->result_array();
+        $ids = $data['weekly_manager2'][0]['id'];
+
+        $this->db->select('*');
+        $this->db->from('weekly_manager2_barang');
+        $this->db->where('id_weekly_manager2',"$ids");
+        $data['weekly_manager2_barang'] = $this->db->get()->result_array();
+
+        echo json_encode($data);
+    }
+
+    public function tambahpl(){
+        $topik['judul'] = 'Halaman Menu Manager Lain';
+        $data['jabatan'] = $this->M_daftar->tampil_jabatan();
+        $data['manager'] = $this->m_manager->tampil_data();
+        $data['mitra'] = $this->m_manager->tampil_data_mitra();
+        $data['managerpl'] = $this->m_manager->tampil_data_pl();
+
+        $nourut = count($this->m_manager->tampil_data_pl_valid()) + 1;
+        $data['no_invoice'] = 'INV/'.sprintf("%06d", $nourut).'/MGRPL/'.date('Y');
+
+        $this->db->select('*');
+        $this->db->from('weekly_manager2_barang');
+        $this->db->join('weekly_manager2', 'weekly_manager2_barang.id_weekly_manager2 = weekly_manager2.id');
+        $this->db->where('weekly_manager2.validasi', "N");
+        $this->db->where('weekly_manager2_barang.status', "disimpan");
+        $data['weekly_manager2_barang'] = $this->db->get()->result_array();
+
+        $this->db->select('id_weekly_manager2, SUM(harga_setor)');
+        $this->db->from('weekly_manager2_barang');
+        $this->db->where('status', "disimpan");
+        $this->db->group_by('id_weekly_manager2');
+
+        $data['wm2hidden'] = $this->db->get()->result_array();
+        $data['kode_barang'] = $this->m_manager->kode_barang();
+        $data['latest_no_invoice'] = $this->m_manager->latest_no_invoice();
+        $this->load->view('templates/header',$topik);
+        $this->load->view('manager/tambah',$data);
+        $this->load->view('templates/footer');
+    }
+
+    public function formtambah($mitraid){
+        $this->db->select('*');
+        $this->db->from('daftar_mitra');
+        $this->db->where(['kode' => $mitraid]);
+        $data['mitra'] = $this->db->get()->result_array();
+
+        $this->db->select('*');
+        $this->db->from('weekly_manager2');
+        $this->db->where(['kode_id' => $mitraid, 'validasi' => 'N']);
+        $data['weekly_manager2'] = $this->db->get()->result_array();
+        if(count($data['weekly_manager2']) > 0){
+            $ids = $data['weekly_manager2'][0]['id'];
+    
+            $this->db->select('*');
+            $this->db->from('weekly_manager2_barang');
+            $this->db->where('id_weekly_manager2',"$ids");
+            $data['weekly_manager2_barang'] = $this->db->get()->result_array();
+        }
+        else{
+            $data['weekly_manager2_barang'] = [];
+        }
+
+        echo json_encode($data);
     }
 
     public function managerReport() {
@@ -64,16 +137,65 @@ class Manager extends CI_Controller {
         echo json_encode($this->m_manager->fetchData(urldecode($weekending), urldecode($jabatan), urldecode($manager)));
     }
 
-    public function prosesInvoice($no_invoice) {
-        $no_invoice = explode("-", $no_invoice);
-        $no_invoice = implode("/", $no_invoice);
-        $this->m_manager->prosesInvoice(urldecode($no_invoice));
+    public function prosesInvoice() {
+        $inv = $this->input->post('noinv');
+        foreach($this->input->post('idweekly', true) as $b){
+            $this->db->set([
+                'validasi' => 'V', 
+                'tgl_validasi' => date('Y-m-d'), 
+                'no_invoice_manager' => $inv
+            ]);
+            $this->db->where('id', $b);
+            $this->db->update('weekly_manager2');
+        }
+
+        echo json_encode(['ok']);
+        // $this->session->set_flashdata('flash','Berhasil Divalidasi');
+        // redirect('manager');
+    }
+
+    public function editpl() {
+        $id = $this->input->post('id');
+        $date = $this->input->post('tgl_validasi');
+        $this->db->set([
+            'tgl_validasi' => $date
+        ]);
+        $this->db->where('id', $id);
+        $this->db->update('weekly_manager2');
+
+        $this->session->set_flashdata('flash','Berhasil Edit Data');
+        redirect('manager');
+    }
+    
+    public function batalpl($id) {
+        $this->db->set([
+            'tgl_validasi' => 'null',
+            'validasi' => 'N'
+        ]);
+        $this->db->where('id', $id);
+        $this->db->update('weekly_manager2');
+
+        $this->db->set([
+            'status' => 'belum disimpan'
+        ]);
+        $this->db->where('id_weekly_manager2', $id);
+        $this->db->update('weekly_manager2_barang');
+
+        $this->session->set_flashdata('flash','Berhasil Batalkan Validasi');
+        redirect('manager');
     }
 
     public function tambah() {
-            $this->m_manager->tambahDataPenjualanManager();
-            $this->session->set_flashdata('flash','Ditambahkan');
-            redirect('manager');
+        // $this->m_manager->tambahDataPenjualanManager();
+        $id = $this->input->post('id');
+        // var_dump($id);die();
+
+        $this->db->set(['status' => 'disimpan']);
+        $this->db->where('id_weekly_manager2', $id);
+        $this->db->update('weekly_manager2_barang');
+
+        $this->session->set_flashdata('flash','Berhasil Disimpan');
+        redirect('manager/tambahpl');
     }
 
     public function tambahInOut() {
