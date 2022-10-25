@@ -608,7 +608,7 @@
                 <div class="input-group-prepend">
                     <label for="total_pengiriman" class="input-group-text">Total Pengiriman :</label>
                 </div>
-                <input type="text" id="total_pengiriman" name="total_pengiriman" value="<?= $pengiriman['total_pengiriman']?>"  class="form-control form-control-sm">
+                <input type="text" id="total_pengiriman" readonly name="total_pengiriman" value="<?= $pengiriman['total_pengiriman']?>"  class="form-control form-control-sm">
             </div>
                 
                  
