@@ -32,7 +32,10 @@
                                 <td>${v.kode}</td>
                                 <td>${numberFormat(v.penerimaan)}</td>
                                 <td>${numberFormat(v.pengeluaran)}</td>
-                                <td>aksi edit, hapus</td>
+                                <td>
+                                    <a href="<?= base_url(); ?>Kas_bank/edit/?id=${v.id}" class="btn btn-warning btn-sm" ><i class="fas fa-edit"></i></i></a>
+                                    <a href="<?= base_url(); ?>Kas_bank/hapus/?id=${v.id}" class="btn btn-danger btn-sm"  onclick="return confirm('Yakin ingin dihapus?');"><i class="fas fa-trash"></i></a>
+                                </td>
                             </tr>
                         `);
                     });

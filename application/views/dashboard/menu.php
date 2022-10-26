@@ -119,7 +119,7 @@
         <div id="collapseTen" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <a class="collapse-item" href="<?= base_url('Piutang'); ?>">Piutang</a>
-            <a class="collapse-item" href="<?= base_url('Hutang'); ?>">Hutang</a>
+            <a class="collapse-item" href="<?= base_url('HutangMenu'); ?>">Hutang</a>
           </div>
         </div>
       </li>

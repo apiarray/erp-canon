@@ -20,14 +20,14 @@
             <table id="tableDataRincian" class="table table-striped table-bordered table-hover table-full-width" cellspacing="0" width="" style="font-size: small;">
                 <thead>
                     <tr style="text-align:center;">
-                        <th>Tanggal</th>
-                        <th>Nomor Aktivitas</th>
-                        <th>Nominal Aktivitas</th>
-                        <th>Penerimaan</th>
-                        <th>Pengeluaran</th>
-                        <th>Sisa Aktivitas</th>
-                        <th>Rekening</th>
-                        <th>Action</th>
+                        <td width="10%"><strong>Tanggal</strong></td>
+                        <td width="15%"><strong>Nomor Aktivitas</strong></td>
+                        <td width="15%"><strong>Nominal Aktivitas</strong></td>
+                        <td width="10%"><strong>Penerimaan</strong></td>
+                        <td width="10%"><strong>Pengeluaran</strong></td>
+                        <td width="13%"><strong>Sisa Aktivitas</strong></td>
+                        <td width="15%"><strong>Rekening</strong></td>
+                        <td width="7%"><strong>Action</strong></td>
                     </tr>
                 </thead>
                 <tbody></tbody>

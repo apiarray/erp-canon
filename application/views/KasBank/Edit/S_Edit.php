@@ -1,16 +1,16 @@
 <script>
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const dataId = Object.fromEntries(urlSearchParams.entries()).id;
+
+
     $(document).ready(function() {
 
         $(document).on("input", ".numeric", function(event) {
             this.value = this.value.replace(/[^0-9]/g, '');
         });
 
-
-        fetch('<?= base_url('Kas_bank/getLatestNoTf'); ?>')
-            .then(response => response.json())
-            .then((result) => {
-                $('input[name=nomor_kas_bank]').val(result);
-            });
+        getDataHeader()
+        getDataDetail()
 
         countTotal();
     });
@@ -25,6 +25,83 @@
             body: JSON.stringify(data)
         });
         return response.json();
+    }
+
+    const getDataHeader = () => {
+        postData('<?= base_url('Kas_bank/getDataHeaderById') ?>', {
+                id: dataId
+            }, 'POST')
+            .then((response) => {
+                $("#nomor_kas_bank").val(response.kode)
+                $("#tanggal").val(response.tanggal)
+                $("#keterangan").val(response.keterangan == null ? '' : response.keterangan)
+            });
+    }
+
+    const getDataDetail = () => {
+        postData('<?= base_url('Kas_bank/getDataDetailById') ?>', {
+                id: dataId
+            }, 'POST')
+            .then((response) => {
+                let arrIdx = [];
+                // console.log(response);
+
+                arrIdx = [];
+                response.forEach(function(v, i) {
+                    let idx = $("#tableDataRincian tbody tr").length;
+                    arrIdx.push({
+                        idx,
+                        rekeningId: v.rekening_id
+                    });
+
+                    const type = (v.id_penerimaan != null) ? 'penerimaan' : (v.id_pengiriman != null) ? 'pengiriman' : (v.id_piutang != null) ? 'piutang' : (v.id_hutang != null) ? 'hutang' : '';
+                    const typeId = (v.id_penerimaan != null) ? v.id_penerimaan : (v.id_pengiriman != null) ? v.id_pengiriman : (v.id_piutang != null) ? v.id_piutang : (v.id_hutang != null) ? v.id_hutang : '';
+
+                    $("#tableDataRincian > tbody").append(`
+                        <tr>
+                            <td>${v.tanggal} <input type="hidden" value="${type}, ${typeId}"></td>
+                            <td>${v.nomor_aktivitas}</td>
+                            <td>${numberFormat(v.nominal_aktivitas)}</td>
+                            <td>
+                                <input type="text" class="form-control numeric" ${v.penerimaan != null ? "" : "disabled"} onkeyup="handleCountPenerimaan(event,'${idx}', '${v.nominal_aktivitas}')" value="${v.penerimaan == null ? '' : v.penerimaan}">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control numeric" ${v.pengeluaran != null ? "" : "disabled"} onkeyup="handleCountPengeluaran(event,'${idx}', '${v.nominal_aktivitas}')" value="${v.pengeluaran == null ? '' : v.pengeluaran}">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" disabled id="sisaAktivitas_${idx}" value="${numberFormat(v.sisa_aktivitas)}">
+                            </td>
+                            <td>
+                                <select class="form-control rekening" name="rekening" id="rekening_${idx}" required></select>
+                            </td>
+                            <td>
+                                <button type="button" class="deleteItem" style="border:none;background:transparent"><i class="fas fa-trash text-danger" style="cursor: pointer"></i></button>
+                            </td>
+                        </tr>
+                    `);
+                });
+
+                fetch('<?= base_url('Kas_bank/getRekening'); ?>')
+                    .then(response => response.json())
+                    .then((result) => {
+
+                        $.each(arrIdx, function(i, v) {
+                            $(`#rekening_${v.idx}`).empty();
+                            let html = '';
+                            html += "<option value=''>--Pilih Rekening--</option>";
+                            result.forEach((value) => {
+                                if (v.rekeningId == value.id) {
+                                    html += `<option value="${value.id}" selected>${value.name}</option>`;
+                                } else {
+                                    html += `<option value="${value.id}">${value.name}</option>`;
+                                }
+                            });
+                            $(`#rekening_${v.idx}`).append(html);
+                        })
+                    });
+
+                countTotal();
+            });
     }
 
     const countTotal = () => {
@@ -69,12 +146,11 @@
         $("#showData").modal('show');
         $(".modal-title").html("Data Pengiriman");
 
-        fetch('<?= base_url('Kas_bank/getDataPengiriman'); ?>')
-            .then(response => response.json())
-            .then((result) => {
-
-                initData(result);
-
+        postData('<?= base_url('Kas_bank/getDataPengirimanById'); ?>', {
+                id: dataId
+            }, 'POST')
+            .then((response) => {
+                initData(response)
             });
     }
 
@@ -83,11 +159,11 @@
         $("#showData").modal('show');
         $(".modal-title").html("Data Penerimaan");
 
-        fetch('<?= base_url('Kas_bank/getDataPenerimaan'); ?>')
-            .then(response => response.json())
-            .then((result) => {
-
-                initData(result)
+        postData('<?= base_url('Kas_bank/getDataPenerimaanById'); ?>', {
+                id: dataId
+            }, 'POST')
+            .then((response) => {
+                initData(response)
 
             });
     }
@@ -97,10 +173,12 @@
         $("#showData").modal('show');
         $(".modal-title").html("Data Piutang");
 
-        fetch('<?= base_url('Kas_bank/getDataPiutang'); ?>')
-            .then(response => response.json())
-            .then((result) => {
-                initData(result)
+        postData('<?= base_url('Kas_bank/getDataPiutangById'); ?>', {
+                id: dataId
+            }, 'POST')
+            .then((response) => {
+                initData(response)
+
             });
     }
 
@@ -109,22 +187,24 @@
         $("#showData").modal('show');
         $(".modal-title").html("Data Hutang");
 
-        fetch('<?= base_url('Kas_bank/getDataHutang'); ?>')
-            .then(response => response.json())
-            .then((result) => {
-                initData(result)
+        postData('<?= base_url('Kas_bank/getDataHutangById'); ?>', {
+                id: dataId
+            }, 'POST')
+            .then((response) => {
+                initData(response)
+
             });
     }
 
-    const initData = (result) => {
-        if (result.length > 0) {
+    const initData = (response) => {
+        if (response.length > 0) {
             if ($.fn.DataTable.isDataTable('#tableShowData')) {
                 $('#tableShowData').DataTable().destroy();
             }
 
             $("#tableShowData > tbody").empty();
 
-            result.forEach((v) => {
+            response.forEach((v) => {
                 $("#tableShowData > tbody").append(`
                     <tr class="text-center">
                         <td>
@@ -191,7 +271,7 @@
 
             initDataToRincian(response, type);
             $("#showData").modal('hide');
-            arr_chk.length = 0;
+            arr_chk = [];
         }
     }
 
@@ -212,7 +292,7 @@
                         <input type="text" class="form-control numeric" ${(type === "penerimaan") || (type === "hutang") ?  "disabled" : ""} onkeyup="handleCountPenerimaan(event,'${idx}', '${v.nominal}')">
                     </td>
                     <td>
-                        <input type="text" class="form-control numeric" ${(type === "pengiriman") || (type === "piutang") ? "disabled" : ""} onkeyup="handleCountPengeluaran(event,'${idx}', '${v.nominal}')">
+                        <input type="text" class="form-control numeric" ${(type === "pengiriman") || (type === "piutang") ? "disabled" : ""}  onkeyup="handleCountPengeluaran(event,'${idx}', '${v.nominal}')">
                     </td>
                     <td>
                         <input type="text" class="form-control" disabled id="sisaAktivitas_${idx}">
@@ -231,7 +311,6 @@
         fetch('<?= base_url('Kas_bank/getRekening'); ?>')
             .then(response => response.json())
             .then((result) => {
-
                 $.each(arrIdx, function(i, v) {
                     let html = '';
                     html += "<option value=''>--Pilih Rekening--</option>";
@@ -280,7 +359,6 @@
     }
 
     const handleSaveData = () => {
-
 
         let arrId = [];
         let arrTgl = [];
@@ -400,14 +478,14 @@
             }
 
             const datas = {
-                dataId: null,
+                dataId,
                 tgl: $("#tanggal").val(),
                 noKasBank: $("#nomor_kas_bank").val(),
                 keterangan: $("#keterangan").val(),
                 totPenerimaan: parseFloat($("#penerimaan_sementara").val().replace(/,/g, '')),
                 totPengeluaran: parseFloat($("#pengeluaran_sementara").val().replace(/,/g, '')),
                 detailData: finalDetailData,
-                type: "create"
+                type: "update"
             }
 
             $.ajax({
@@ -419,7 +497,7 @@
                     if (response) {
                         location.href = "<?= base_url('Kas_bank') ?>"
                     } else {
-                        alert('tambah data gagal');
+                        alert('edit data gagal');
                     }
                 }
             })
