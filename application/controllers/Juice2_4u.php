@@ -5,10 +5,14 @@ class Juice2_4u extends CI_Controller {
     public function __construct(){
         parent::__construct();
         $this->load->model('m_juice');
+        $this->load->model('M_Tahun');
+        $this->load->model('M_bulan');
         $this->load->library('form_validation');
     }
     public function index(){
         $topik['judul'] = 'Halaman Menu Juice4U';
+        $data['tahun'] = $this->M_Tahun->tampil_data();
+        $data['bulan'] = $this->M_bulan->tampil_data();
         // $data['produk'] = $this->m_juice->get_by_role();
         // if ($this->input->post('keyword')) {
         //     $data['produk'] = $this->m_jurnalumum->cariDataBarang();
@@ -32,6 +36,9 @@ class Juice2_4u extends CI_Controller {
 
     public function tampil_data($weekending = NULL) {
         echo json_encode($this->m_juice->tampil_data($weekending));
+    }
+    public function tampil_data_bulanan($bulan = NULL) {
+        echo json_encode($this->m_juice->tampil_data_like($bulan));
     }
 
     public function tambah(){

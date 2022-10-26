@@ -44,22 +44,41 @@
 </div>
 <?php endif;?>
 <div class="row">
-  <div class="col-lg-6">
+  <div class="col-lg-4">
     <form action="" method="post">
         <div class="form-group input-group input-group-sm">
             <div class="input-group-prepend">
-                <label class="input-group-text" for="weekending">Tahun</label>
+                <label class="input-group-text" for="tahun">Tahun</label>
             </div>
-            <select class="form-control" id="weekending">
-                <option>Pilih tanggal</option>
-                <?php foreach($tgl as $tanggal) : ?>
-                <option value="<?= $tanggal['weekending']; ?>"><?= $tanggal['weekending']; ?></option>
+            <select class="form-control" id="tahun">
+                <option value="">Pilih Tahun</option>
+                <?php foreach($tahun as $thn) : ?>
+                  <option value="<?php echo $thn['year'];?>" <?php echo ($thn['year'] ==  date("Y")) ? ' selected="selected"' : '';?>><?php echo $thn['year'];?></option>
                 <?php endforeach; ?>
             </select>
         </div>
     </form>
   </div>
 </div>
+
+<div class="row">
+  <div class="col-lg-4">
+    <form action="" method="post">
+        <div class="form-group input-group input-group-sm">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="bulan">Bulan</label>
+            </div>
+            <select class="form-control" id="bulan">
+                <option value="">Pilih Bulan</option>
+                <?php foreach($bulan as $bln) : ?>
+                  <option value="<?php echo $bln['id'];?>" <?php echo ($bln['id'] ==  date("m")) ? ' selected="selected"' : '';?>><?php echo $bln['name'];?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </form>
+  </div>
+</div>
+
 <div class="row mt-3">
     <div class="col-lg-6">
         <form action="" method="post">
@@ -68,8 +87,8 @@
                     <label class="input-group-text" for="weekending">Weekending</label>
                 </div>
                 <select class="form-control" id="weekending">
-                    <option>Pilih tanggal</option>
-                    <option value="up">Weekending Up</option>
+                    <option value="">Pilih tanggal</option>
+                    
                     <?php foreach($tgl as $tanggal) : ?>
                     <option value="<?= $tanggal['weekending']; ?>"><?= $tanggal['weekending']; ?></option>
                     <?php endforeach; ?>
@@ -122,7 +141,7 @@
                 <div class="input-group-prepend">
                     <label class="input-group-text" for="weekending">Total Point</label>
                 </div>
-               <input type="text" name="" id="" class="form-control">
+               <input type="text" name="" id="total-point" class="form-control">
             </div>
         </form>
     </div>
@@ -132,7 +151,7 @@
                 <div class="input-group-prepend">
                     <label class="input-group-text" for="weekending">Total Omzet</label>
                 </div>
-               <input type="text" name="" id="" class="form-control">
+               <input type="text" name="" id="total-omzet" class="form-control">
             </div>
         </form>
     </div>
@@ -229,21 +248,34 @@
 
 <script>
     $('.datepicker').datepicker();
-
+      $(document).ready(function(){
+        allData()
+      })
+      
+    
+  
     function allData() {
         let weekending = $('#weekending').val();
-        let fetchUrl = weekending == "" ? "juice_4u/tampil_data" : "juice_4u/tampil_data/" + weekending;
-
+        let tahun = $('#tahun').val();
+        let bulan = $('#bulan').val();
+        let date = bulan + '-' + tahun;
+        let fetchUrl = weekending != '' ?"juice_4u/tampil_data/" + weekending: (bulan != '' || tahun != '')? "juice_4u/tampil_data_bulanan/" +date :'juice_4u/tampil_data' ;
+       
         $.ajax({
             url: "<?= base_url(); ?>" + fetchUrl,
             success: function(result) {
                 let results = JSON.parse(result);
+                console.log(result)
                 let data = "";
+                let totalPoint = 0;
+                let totalOmzet = 0;
 
                 if (!results[0]) {
                     data = `<tr><td class="text-center" colspan="6">Tidak ada data ditampilkan. Silahkan pilih tanggal weekending untuk menampilkan data.</td></tr>`;
                 } else {
                     for (let i = 0; i < results.length; i++) {
+                        totalPoint = Number(results[i].point) + totalPoint
+                        totalOmzet = parseFloat(results[i].omzet) + totalOmzet
                         data += `
                         <tr>
                         <td class="text-center">
@@ -270,7 +302,8 @@
                         `;
                     }
                 }
-
+                $('#total-point').val(totalPoint)
+                $('#total-omzet').val(totalOmzet+' %')
                 $('#show_data').html(data);
             }
         });
@@ -278,7 +311,14 @@
 
     // Fetch data
     $('#weekending').on('change', function() {
+      $('#bulan').val('')
       allData();
+      
+    });
+    $('#bulan').on('change', function() {
+      $('#weekending').val('')
+      allData();
+      
     });
 
     // Tutup buku

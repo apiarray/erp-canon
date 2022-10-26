@@ -8,6 +8,11 @@ class M_juice extends CI_Model {
             return $this->db->get_where('juice', ['weekending' => $weekending])->result_array();
         }
     }
+    public function tampil_data_like($bulan) {
+        $this->db->like('weekending', $bulan);
+        $res = $this->db->get('juice');
+        return $res->result_array();
+    }
     public function tampil_semua_data(){
         return $this->db->get('juice')->result_array();
     }
