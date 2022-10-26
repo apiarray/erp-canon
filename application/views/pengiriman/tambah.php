@@ -36,25 +36,25 @@ console.log('start');
                     <div class="input-group-prepend">
                         <label for="nama" class="input-group-text">Kepada :</label>
                     </div>
-                    <input type="text" name="kepada" id="nama" class="form-control form-control-sm">
+                    <input type="text" name="kepada" id="nama" class="form-control form-control-sm" required>
                 </div>
                 <div class="input-group input-group-sm mt-1">
                     <div class="input-group-prepend">
                         <label for="alamat"  class="input-group-text">Alamat :</label>
                     </div>
-                    <input type="text" name="alamat" id="alamat" class="form-control form-control-sm">
+                    <input type="text" name="alamat" id="alamat" class="form-control form-control-sm" required>
                 </div>
                 <div class="input-group input-group-sm mt-1">
                     <div class="input-group-prepend">
                         <label for="namawin2mgr" class="input-group-text">Kota/Kec :</label>
                     </div>
-                    <input type="text" name="kota" id="kota" class="form-control form-control-sm">
+                    <input type="text" name="kota" id="kota" class="form-control form-control-sm" required>
                 </div>
                 <div class="input-group input-group-sm mt-1">
                     <div class="input-group-prepend">
                         <label for="security" class="input-group-text">No. Telepon :</label>
                     </div>
-                    <input type="text" name="no_telepon" id="telepon" class="form-control form-control-sm">
+                    <input type="text" name="no_telepon" id="telepon" class="form-control form-control-sm" required>
                 </div>
             </div>
             <div class="col-lg-4">
@@ -62,31 +62,31 @@ console.log('start');
                     <div class="input-group-prepend">
                         <label for="taggal" class="input-group-text">Tanggal :</label>
                     </div>
-                    <input type="date" name="tanggal" value="<?= date('Y-m-d')?>" id="tgl_lahir" class="form-control form-control-sm">
+                    <input type="date" name="tanggal" value="<?= date('Y-m-d')?>" id="tgl_lahir" class="form-control form-control-sm" required>
                 </div>
                 <div class="input-group input-group-sm mt-1">
                     <div class="input-group-prepend">
                         <label for="no_do" class="input-group-text">No. DO :</label>
                     </div>
-                    <input type="text" name="no_do" id="no_do" class="form-control form-control-sm" readonly />
+                    <input type="text" name="no_do" id="no_do" class="form-control form-control-sm" readonly required />
                 </div>
                 <div class="input-group input-group-sm mt-1">
                     <div class="input-group-prepend">
                         <label for="manager_gudang" class="input-group-text">Manager Gudang :</label>
                     </div>
-                    <input type="text" name="manager_gudang" id="manager_gudang" class="form-control form-control-sm">
+                    <input type="text" name="manager_gudang" id="manager_gudang" required class="form-control form-control-sm">
                 </div>
                 <div class="input-group input-group-sm mt-1">
                     <div class="input-group-prepend">
                         <label for="no_kontainer" class="input-group-text">No. Kontainer :</label>
                     </div>
-                    <input type="text" name="no_kontainer" id="no_kontainer" class="form-control form-control-sm">
+                    <input type="text" name="no_kontainer" required id="no_kontainer" class="form-control form-control-sm">
                 </div>
                 <div class="input-group input-group-sm mt-1">
                     <div class="input-group-prepend">
                         <label for="no_segel" class="input-group-text">No. Segel :</label>
                     </div>
-                    <input type="text" name="no_segel" id="no_segel" class="form-control form-control-sm">
+                    <input type="text" name="no_segel" required id="no_segel" class="form-control form-control-sm">
                 </div>
             </div>
             <div class="col-lg-4">
@@ -94,16 +94,19 @@ console.log('start');
                     <div class="input-group-prepend">
                         <label for="setupjurnal" class="input-group-text">Set Up Jurnal :</label>
                     </div>
-                    <select class="form-control" id="setupjurnal" name="setupjurnal">
-                        <option value="-" >-</option>
+                    <select class="form-control" id="setupjurnal" required name="setupjurnal">
+                        <?php foreach($setup_jurnal as $k => $v){ ?>
+                            <option selected value="<?= $v['kode_jurnal']?>" ><?= $v['kode_jurnal']?></option>
+
+                        <?php } ?>
                     </select>
                 </div>
                 <div class="input-group input-group-sm mt-1">
                     <div class="input-group-prepend">
                         <label for="jenis_t" class="input-group-text">Jenis Transaksi</label>
                     </div>
-                    <select class="form-control" id="jenis_t" name="jenis_transaksi">
-                        <option value="cash" >Cash</option>
+                    <select class="form-control" id="jenis_t" required name="jenis_transaksi">
+                        <option value="cash" selected >Cash</option>
                         <option value="kredit" >Kredit</option>
                     </select>
                 </div>
@@ -111,7 +114,7 @@ console.log('start');
                     <div class="input-group-prepend">
                         <label for="tanggaljt" class="input-group-text">Tanggal J/T :</label>
                     </div>
-                    <input type="date" name="tanggaljt" id="tanggaljt" value="<?= date('Y-m-d')?>" min="<?= date('Y-m-d')?>" class="form-control form-control-sm">
+                    <input type="date" name="tanggaljt" required  id="tanggaljt" value="<?= date('Y-m-d')?>" min="<?= date('Y-m-d')?>" class="form-control form-control-sm">
                 </div>
             </div> 
         </div>
@@ -204,36 +207,36 @@ console.log('start');
                     <div class="input-group-prepend">
                         <label for="weekending" class="input-group-text">Nama Expedisi :</label>
                     </div>
-                    <input type="text" id="nama_expedisi" name="nama_expedisi"  class="form-control form-control-sm">
+                    <input required type="text" id="nama_expedisi" name="nama_expedisi"  class="form-control form-control-sm">
                 </div>
                 <div class="input-group input-group-sm mt-1">
                     <div class="input-group-prepend">
                         <label for="taggal" class="input-group-text">Total QTY :</label>
                     </div>
-                    <input type="text" id="total_qty" name="total_qty" class="form-control form-control-sm">
+                    <input type="text" id="total_qty" name="total_qty" required class="form-control form-control-sm">
                 </div>
                 <div class="input-group input-group-sm mt-1">
                     <div class="input-group-prepend">
                         <label for="ongkir" class="input-group-text">Ongkir/Kg :</label>
                     </div>
-                    <input type="text" id="berat_ongkir" name="berat_ongkir"  class="form-control form-control-sm col-lg-2">
+                    <input type="text" id="berat_ongkir" name="berat_ongkir"  required class="form-control form-control-sm col-lg-2">
                     <div class="input-group-prepend">
                         <label for="ongkir" class="input-group-text">Kg</label>
                     </div>
-                    <input type="text" id="ongkir" name="ongkir"  class="form-control form-control-sm">
+                    <input type="text" id="ongkir" name="ongkir"  required class="form-control form-control-sm">
                 </div>
                 <div class="input-group input-group-sm mt-1">
                     <div class="input-group-prepend">
                         <label for="total_ongkir" class="input-group-text">Total Ongkir :</label>
                     </div>
-                    <input type="text" id="total_ongkir" name="total_ongkir"  class="form-control form-control-sm">
+                    <input type="text" id="total_ongkir" required name="total_ongkir"  class="form-control form-control-sm">
                 </div>
                 <div class="input-group input-group-sm mt-1">
                     <div class="input-group-prepend">
                         <label for="pembayaran" class="input-group-text">Pembayaran :</label>
                     </div>
-                    <select id="pembayaran" name="pembayaran" class="form-control">
-                        <option value="">JNE</option>
+                    <select id="pembayaran" name="pembayaran" required class="form-control">
+                        <option selected value="">JNE</option>
                         <option value="">JNt</option>
                         <option value="">Si Cepat</option>
                     </select>
@@ -244,25 +247,25 @@ console.log('start');
                     <div class="input-group-prepend">
                         <label for="jenis_kendaraan" class="input-group-text">Jenis Kendaraan :</label>
                     </div>
-                    <input type="text" id="jenis_kendaraan" name="jenis_kendaraan"  class="form-control form-control-sm">
+                    <input type="text" id="jenis_kendaraan" name="jenis_kendaraan" required class="form-control form-control-sm">
                 </div>
                 <div class="input-group input-group-sm mt-1">
                     <div class="input-group-prepend">
                         <label for="security" class="input-group-text">No. Polisi :</label>
                     </div>
-                    <input type="text" id="no_polisi" name="no_polisi"  class="form-control form-control-sm">
+                    <input type="text" id="no_polisi" name="no_polisi"  required class="form-control form-control-sm">
                 </div>
                 <div class="input-group input-group-sm mt-1">
                     <div class="input-group-prepend">
                         <label for="driver" class="input-group-text">Nama Driver :</label>
                     </div>
-                    <input type="text" id="driver" name="driver"  class="form-control form-control-sm">
+                    <input type="text" id="driver" name="driver" required class="form-control form-control-sm">
                 </div>
                 <div class="input-group input-group-sm mt-1">
                     <div class="input-group-prepend">
                         <label for="total_pengiriman" class="input-group-text">Total Pengiriman :</label>
                     </div>
-                    <input type="text" id="total_pengiriman" name="total_pengiriman"  class="form-control form-control-sm">
+                    <input type="text" id="total_pengiriman" required  readonly name="total_pengiriman"  class="form-control form-control-sm">
                 </div>
 
             </div>
@@ -349,8 +352,8 @@ console.log('start');
         						$harga_jual=floatval($i['setelahpajak']);
         				    ?>
                             
-                            <tr class="pilih1" data-harga_jual="<?= $harga_jual?>" data-kode="<?php echo $kode; ?>" data-nama="<?php echo $namabrg; ?>" data-gudang="<?php echo $gudang; ?>" data-qty="<?php echo $qty; ?>" data-qtyr="<?php echo $qtyr; ?>">
-                                <td><?php echo $kode; ?></td>
+                            <tr class="pilih1" data-on="0" data-harga_jual="<?= $harga_jual?>" data-kode="<?php echo $kode; ?>" data-nama="<?php echo $namabrg; ?>" data-gudang="<?php echo $gudang; ?>" data-qty="<?php echo $qty; ?>" data-qtyr="<?php echo $qtyr; ?>">
+                                <td><?php echo $kode; ?> <span class="badge badge-success d-none bdg-pin">telah ditambahkan</span></td>
                                 <td><?php echo $namabrg; ?></td>
                                 <td><?php echo $gudang; ?></td>
                             </tr>
@@ -373,6 +376,7 @@ console.log('start');
 	var selektor = 0 ;
 	var counterb = 0 ;
 	var selektorb = 0;
+	var kodebarangdipilih = '';
     getLatestNoDO();
 	console.log('start');
 	var erpus;
@@ -398,27 +402,42 @@ console.log('start');
         });
 
         $(document).on('click', '.pilih1', function (e) {
-			console.log($(this).attr('data-kode'));
-			harga = document.getElementById("harga");	
-			//  + selektorb console.log("harga" + selektorb + '=' = harga.value);
-            document.getElementById("kode" + selektorb).value = $(this).attr('data-kode'); 
-			
-            $('#myModal1').modal('hide');
-    		
-    		document.getElementById("namabrg" + selektorb).value = $(this).attr('data-nama');
-            $('#myModal1').modal('hide');
-    		
-    		document.getElementById("gudang" + selektorb).value = $(this).attr('data-gudang');
-            $('#myModal1').modal('hide');
-    		
-    		document.getElementById("qty" + selektorb).value = $(this).attr('data-qty');
-            $('#myModal1').modal('hide');
-            
-            document.getElementById("qty_rsk" + selektorb).value = $(this).attr('data-qtyr');
-            $('#myModal1').modal('hide');
-            
-            document.getElementById("harga_jual" + selektorb).value = $(this).attr('data-harga_jual');
-            $('#myModal1').modal('hide');
+			// console.log($(this).attr('data-kode'));
+            var pin = $(this).attr('data-on');
+            if(pin == 1){
+                alert("barang sudah ada dalam daftar");
+            }
+            else{
+                $(this).attr('data-on', 1);
+                $(this).find(".bdg-pin").removeClass("d-none");
+                if(kodebarangdipilih != ''){
+                    $("[data-kode='"+kodebarangdipilih+"']").attr('data-on', 0);
+                    $("[data-kode='"+kodebarangdipilih+"']").find(".bdg-pin").addClass("d-none");
+                }
+                $('.remCF'+selektorb).attr('data-barang-kode-delete', $(this).attr('data-kode'));
+
+                harga = document.getElementById("harga");	
+                //  + selektorb console.log("harga" + selektorb + '=' = harga.value);
+                document.getElementById("kode" + selektorb).value = $(this).attr('data-kode'); 
+                
+                $('#myModal1').modal('hide');
+                
+                document.getElementById("namabrg" + selektorb).value = $(this).attr('data-nama');
+                $('#myModal1').modal('hide');
+                
+                document.getElementById("gudang" + selektorb).value = $(this).attr('data-gudang');
+                $('#myModal1').modal('hide');
+                
+                document.getElementById("qty" + selektorb).value = $(this).attr('data-qty');
+                $('#myModal1').modal('hide');
+                
+                document.getElementById("qty_rsk" + selektorb).value = $(this).attr('data-qtyr');
+                $('#myModal1').modal('hide');
+                
+                document.getElementById("harga_jual" + selektorb).value = $(this).attr('data-harga_jual');
+                $('#myModal1').modal('hide');
+
+            }
         });
 
         $("#qty_karton2, #qty_perkarton2").keyup(function() {
@@ -459,10 +478,10 @@ console.log('start');
         b.row.add(
 			[ 
 			//data-toggle="modal" data-target="#myModal1"			
-			'<a href="javascript:void(0);" data-c="'+counterb+'" class="remCF rows btn btn-danger"><i class="fas fa-trash"></i></a>', 
-			'<input type="text" class="form-control" id="kode'+counterb+'" 		name="kode[]" onclick="get_barang(this.value,' + counterb + ')"  required>', 
-			'<input type="text" class="form-control" id="namabrg'+counterb+'" 	name="nama[]" required>', 
-			'<input type="text" class="form-control" id="gudang'+counterb+'" 	name="gudang_asal[]" required>', 
+			'<a href="javascript:void(0);"  data-barang-kode-delete="" data-c="'+counterb+'" class="remCF remCF'+counterb+' rows btn btn-danger"><i class="fas fa-trash"></i></a>', 
+			'<input type="text" class="form-control kode-input" id="kode'+counterb+'" 		name="kode[]" onclick="get_barang(this.value,' + counterb + ')"  required>', 
+			'<input type="text" class="form-control" id="namabrg'+counterb+'" 	name="nama[]" required readonly>', 
+			'<input type="text" class="form-control" id="gudang'+counterb+'" 	name="gudang_asal[]" required readonly>', 
 			'<input type="text" class="form-control" id="gudang1'+counterb+'" 	name="gudang_tujuan[]" required>'
 			]).draw( false );
 		//console.log('<input type="text" name="kode[]" id="kode'+counter+'"  class="form-control form-control-sm" data-toggle="modal" data-target="#myModal1"  />');
@@ -478,10 +497,10 @@ console.log('start');
               '<input type="text" class="form-control" id="qty_perkarton_rsk'+counter+'" 	name="qty_perkarton_rsk[]" required required onkeyup="sumKartonRusak(' + counter + ')"> ',                   
               '<input type="text" class="form-control" id="total'+counter+'" 				name="total[]" required onkeyup="sumSubtotal(' + counter + ')">',               
               '<input type="text" class="form-control" id="total_rsk'+counter+'" 			name="total_rsk[]" required>',                 
-              '<input type="text" class="form-control" id="qty'+counter+'" 					name="stok[]" readonly >',                 
-              '<input type="text" class="form-control" id="qty_rsk'+counter+'" 				name="stok_rsk[]" readonly>',
-              '<input type="text" class="form-control" id="harga_jual'+counter+'" 			name="harga_jual[]" onkeyup="sumSubtotal(' + counter + ')" readonly>',
-              '<input type="text" class="form-control" id="subtotal'+counter+'" 			name="subtotal[]" readonly>',
+              '<input type="text" class="form-control" id="qty'+counter+'" 					name="stok[]" readonly required >',                 
+              '<input type="text" class="form-control" id="qty_rsk'+counter+'" 				name="stok_rsk[]" readonly required>',
+              '<input type="text" class="form-control" id="harga_jual'+counter+'" 			name="harga_jual[]" onkeyup="sumSubtotal(' + counter + ')" readonly required>',
+              '<input type="text" class="form-control" id="subtotal'+counter+'" 			name="subtotal[]" readonly required>',
 			]).draw( false );
 		//console.log('<input type="text" name="kode[]" id="kode'+counter+'"  class="form-control form-control-sm" data-toggle="modal" data-target="#myModal1"  />');
 		counter ++;
@@ -494,12 +513,18 @@ console.log('start');
 
 	    
 	});
+    $('#tbarang').on('keydown', ".kode-input", function (evt) {
+        evt.preventDefault();
+        return false;
+    });
     $("#tbarang_wrapper").on('click','.remCF',function(){
-        // console.log('awdasd');
-        // $(this).parent().parent().remove();
-        $(this).parent();
-        b.row(':last').remove().draw();
-        t.row(':last').remove().draw();
+        var kodebarang = $(this).attr('data-barang-kode-delete');
+        if(kodebarang != ''){
+            $("[data-kode='"+kodebarang+"']").attr('data-on', 0);
+            $("[data-kode='"+kodebarang+"']").find(".bdg-pin").addClass("d-none");
+        }
+        b.row( ':eq('+$(this).attr('data-c')+')' ).remove().draw();
+        t.row( ':eq('+$(this).attr('data-c')+')' ).remove().draw();
         selektorb -- ;
         selektor -- ;
         sumAllSubtotal();
@@ -729,6 +754,7 @@ function saveData() {
 	function get_barang(kunci, lokasi) {
 		$('#myModal1').modal('show');
 		selektorb = lokasi;
+        kodebarangdipilih = kunci;
 	};
 </script>
 

@@ -1,7 +1,5 @@
-	
-<html>
-<head>
-  <title>Print Faktur</title>
+<!DOCTYPE html>
+<html><head><title>Print Faktur</title>
   <style>
     table {
       border-collapse:collapse;
@@ -9,17 +7,12 @@
 	  font-size: 11pt;
 	  font-style: Times new roman;
     }
-	
 	 table td {
       word-wrap:break-word;
       width:40%;
     }
-    
-	
   </style>
-  
-</head>
-<body>
+</head><body>
   <div style="place-items: flex-end;display: flex;">
     <div style="width: 49%;margin-right: 1%;">
       <h4>Kepada Yth</h4>
@@ -144,5 +137,4 @@
   </tr>
   </table>
   <font>lembar putih:kantor pusat lembar merah:gudang lembar kuning:Accounting lembar hijau:logistic lembar biru:penerima</font>
-</body>
-</html>
+</body></html>

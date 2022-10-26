@@ -2,66 +2,66 @@
 
 class Setup_Jurnal extends CI_Controller
 {
-    public function __construct(){
+    public function __construct()
+    {
         parent::__construct();
-        $this->load->model('M_mapping_coa');
-        $this->load->model('M_account');
+        $this->load->model('M_setup_jurnal');
     }
-    public function index(){
+    public function index()
+    {
         $topik['judul'] = 'Halaman Menu Setup Jurnal';
-        $data['mapping_coa'] = $this->M_mapping_coa->tampil_data();
-        foreach ($data['mapping_coa'] as $key => $value) {
-            $data['mapping_coa'][$key]['akun'] = $this->M_account->getDataById($value['id_coa']);
-            $data['mapping_coa'][$key]['akun_1'] = $this->M_account->getDataById($value['id_coa_1']);
-            $data['mapping_coa'][$key]['akun_2'] = $this->M_account->getDataById($value['id_coa_2']);
-            $data['mapping_coa'][$key]['akun_3'] = $this->M_account->getDataById($value['id_coa_3']);
-        }
-        $this->load->view('templates/header',$topik);
-        $this->load->view('mapping_coa/index',$data);
+        $data['setup_jurnal'] = $this->M_setup_jurnal->tampil_data();
+        $this->load->view('templates/header', $topik);
+        $this->load->view('setup_jurnal/index', $data);
         $this->load->view('templates/footer');
     }
-    public function tambah(){
+    public function tambah()
+    {
         $data['judul'] = 'Form Tambah Data Setup Jurnal';
-        $data['akun'] = $this->M_account->tampil_data("up");
-        
-        $this->form_validation->set_rules('id_coa','Kode Akun','required');
-        $this->form_validation->set_rules('id_coa_1','Mapping Kode Akun 1','required');
-        $this->form_validation->set_rules('id_coa_2','Mapping Kode Akun 2','required');
-        $this->form_validation->set_rules('id_coa_3','Mapping Kode Akun 3','required');
 
-        if ($this->form_validation->run() == FALSE) {
-            $this->load->view('templates/header',$data);
-            $this->load->view('mapping_coa/tambah');
-        }else {
-            $this->M_mapping_coa->tambahDataMappingCOA();
-            $this->session->set_flashdata('flash','Ditambahkan');
-            redirect('mapping_coa');
+        $dataSetupJurnal = [
+            "kode_jurnal" => $this->input->post('kode_jurnal', true),
+            "formulir" => $this->input->post('formulir', true),
+            "tabulasi" => $this->input->post('tabulasi', true),
+            "keterangan" => $this->input->post('keterangan', true)
+        ];
+
+        if ($this->input->server('REQUEST_METHOD') === 'GET') {
+            $this->load->view('templates/header', $data);
+            $this->load->view('setup_jurnal/tambah');
+        } else {
+            $this->M_setup_jurnal->tambahDataSetupJurnal($dataSetupJurnal);
+            $this->session->set_flashdata('flash', 'Ditambahkan');
+            redirect('setup_jurnal');
         }
-        
     }
-    public function hapus($id){
-        $this->M_mapping_coa->hapusDataMappingCOA($id);
-        $this->session->set_flashdata('flash2','Dihapus');
-        redirect('mapping_coa');
-
+    public function hapus($id)
+    {
+        $this->M_setup_jurnal->hapusDataSetupJurnal($id);
+        $this->session->set_flashdata('flash2', 'Dihapus');
+        redirect('setup_jurnal');
     }
-    public function edit($id){
+    public function edit($id)
+    {
         $topik['judul'] = 'Edit Data Dosen';
-        $data['mapping_coa'] = $this->M_mapping_coa->getMappingCOAById($id);
-        $data['akun'] = $this->M_account->tampil_data("up");
+        $data['setup_jurnal'] = $this->M_setup_jurnal->getSetupJurnalById($id);
+        $data['setup_jurnal_anggaran'] = $this->M_setup_jurnal->getSetupJurnalAnggaranById($id);
+        $data['setup_jurnal_finansial'] = $this->M_setup_jurnal->getSetupJurnalFinansialById($id);
 
-        $this->form_validation->set_rules('id_coa','Kode Akun','required');
-        $this->form_validation->set_rules('id_coa_1','Mapping Kode Akun 1','required');
-        $this->form_validation->set_rules('id_coa_2','Mapping Kode Akun 2','required');
-        $this->form_validation->set_rules('id_coa_3','Mapping Kode Akun 3','required');
+        $dataSetupJurnal = [
+            "kode_jurnal" => $this->input->post('kode_jurnal', true),
+            "formulir" => $this->input->post('formulir', true),
+            "tabulasi" => $this->input->post('tabulasi', true),
+            "keterangan" => $this->input->post('keterangan', true)
+        ];
 
-        if ($this->form_validation->run() == FALSE) {
-            $this->load->view('templates/header',$topik);
-            $this->load->view('mapping_coa/edit',$data);
-        }else {
-            $this->M_mapping_coa->ubahDataMappingCOA();
-            $this->session->set_flashdata('flash','Diubah');
-            redirect('mapping_coa');
+        if ($this->input->server('REQUEST_METHOD') === 'GET') {
+            $this->load->view('templates/header', $topik);
+            $this->load->view('setup_jurnal/edit', $data);
+        } else {
+            $this->M_setup_jurnal->ubahDataSetupJurnal($dataSetupJurnal);
+            $this->session->set_flashdata('flash', 'Diubah');
+            redirect('setup_jurnal');
         }
     }
 }

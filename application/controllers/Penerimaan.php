@@ -7,6 +7,7 @@ class Penerimaan extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model('m_penerimaan');
+		$this->load->model('m_setup_jurnal');
 		$this->load->library('form_validation');
 	}
 	public function index()
@@ -85,6 +86,7 @@ class Penerimaan extends CI_Controller
 		$x['data1'] = $this->m_penerimaan->tampil_data();
 		$x['data'] = $this->m_penerimaan->tampil_supplier();
 		$x['data2'] = $this->m_penerimaan->tampil_barang();
+		$x['setupJurnal'] = $this->m_setup_jurnal->getSetupJurnalByFormulir('penerimaan_barang');
 
 		$this->load->view('templates/header', $data);
 		$this->load->view('penerimaan/tambah', $x);
@@ -115,6 +117,7 @@ class Penerimaan extends CI_Controller
 			"total_harga" => 0,
 			"jenis_transaksi" => $this->input->post('jenis_transaksi', true),
 			"tanggal_jatuh_tempo" => $this->input->post('tanggal_jatuh_tempo', true),
+			"setup_jurnal_id" => $this->input->post('setup_jurnal_id', true),
 		];
 
 		$dataPenerimaanItem = [
@@ -217,6 +220,7 @@ class Penerimaan extends CI_Controller
 		$x['data'] = $this->m_penerimaan->tampil_supplier();
 		$x['data2'] = $this->m_penerimaan->tampil_barang();
 		$x['kode1'] = $this->m_penerimaan->kode1();
+		$x['setupJurnal'] = $this->m_setup_jurnal->getSetupJurnalByFormulir('penerimaan_barang');
 
 		// $this->form_validation->set_rules('kode', 'Kode', 'required');
 		// $this->form_validation->set_rules('nama', 'Nama', 'required');
@@ -243,6 +247,7 @@ class Penerimaan extends CI_Controller
 			"total_harga" => 0,
 			"jenis_transaksi" => $this->input->post('jenis_transaksi', true),
 			"tanggal_jatuh_tempo" => $this->input->post('tanggal_jatuh_tempo', true),
+			"setup_jurnal_id" => $this->input->post('setup_jurnal_id', true),
 		];
 
 		$dataPenerimaanItem = [

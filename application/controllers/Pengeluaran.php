@@ -36,6 +36,11 @@ class Pengeluaran extends CI_Controller {
         $this->form_validation->set_rules('kode_jurnal','Kode Jurnal','required');
         $this->form_validation->set_rules('rekening','Rekening','required');
 
+        $this->db->select('*');
+        $this->db->from('tbl_setup_jurnal');
+        $this->db->where('formulir',"pengeluaran");
+        $data['setup_jurnal'] = $this->db->get()->result_array();
+
         if ($this->form_validation->run() == FALSE) {
             $data['rekening'] = $this->M_Rekening->tampil_data();
             $data['coa'] = $this->M_account->tampil_data(NULL);
@@ -97,6 +102,11 @@ class Pengeluaran extends CI_Controller {
         $this->form_validation->set_rules('reff','Reff','required');
         $this->form_validation->set_rules('kode_jurnal','Kode Jurnal','required');
         $this->form_validation->set_rules('rekening','Rekening','required');
+
+        $this->db->select('*');
+        $this->db->from('tbl_setup_jurnal');
+        $this->db->where('formulir',"pengeluaran");
+        $data['setup_jurnal'] = $this->db->get()->result_array();
 
         if ($this->form_validation->run() == FALSE) {
             $data['rekening'] = $this->M_Rekening->tampil_data();

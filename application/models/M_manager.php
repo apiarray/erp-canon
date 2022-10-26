@@ -5,6 +5,42 @@ class M_manager extends CI_Model {
       return $this->db->get('manager')->result_array();
     }
 
+    public function tampil_data_mitra()
+    {
+      return $this->db->get('daftar_mitra')->result_array();
+    }
+
+    public function tampil_data_pl()
+    {
+      $this->db->select('*, daftar_mitra.name');
+      $this->db->from('weekly_manager2');
+      $this->db->join('daftar_mitra', 'weekly_manager2.kode_id = daftar_mitra.kode');
+      $query = $this->db->get();
+
+      return $query->result_array();
+    }
+
+    public function tampil_data_pl_valid()
+    {
+      $this->db->select('*, daftar_mitra.name,weekly_manager2.id as wmid');
+      $this->db->from('weekly_manager2');
+      $this->db->join('daftar_mitra', 'weekly_manager2.kode_id = daftar_mitra.kode');
+      $this->db->where('weekly_manager2.validasi', 'V');
+      $query = $this->db->get();
+      return $query->result_array();
+    }
+
+    public function tampil_data_pl_novalid()
+    {
+      $this->db->select('*, daftar_mitra.name');
+      $this->db->from('weekly_manager2');
+      $this->db->join('daftar_mitra', 'weekly_manager2.kode_id = daftar_mitra.kode');
+      $this->db->where('weekly_manager2.validasi', 'V');
+      $query = $this->db->get();
+
+      return $query->result_array();
+    }
+
     public function allMgr($jabatan) {
       $this->db->select('daftarmitra.nama, daftarmitra.kode_id');
       // $this->db->distinct();
@@ -12,6 +48,45 @@ class M_manager extends CI_Model {
       // $this->db->join('manager', 'manager.kode_id=daftarmitra=kode_id');
       $this->db->where('daftarmitra.jabatan', $jabatan);
       return $this->db->get()->result_array();
+    }
+
+    public function get_barang_mitra2($kode_mitra, $kode_barang = '', $nama_barang = '')
+    {
+        $this->db->select('id');
+        $this->db->from('pengiriman');
+        $this->db->where('kode_id', $kode_mitra);
+        $mitrapengiriman = $this->db->get()->result_array();
+
+        $idpengiriman = [];
+        
+        foreach($mitrapengiriman as $k => $v){
+            $idpengiriman[] = $v['id'];
+        }
+
+        if(count($idpengiriman) > 0){
+          $this->db->select('*, SUM(total) as total');
+          $this->db->from('pengiriman_barang');
+          $this->db->join('produk', 'produk.kode = pengiriman_barang.kode');
+          // $this->db->join('tbl_category', 'tbl_category.kode = produk.kategori', 'LEFT');
+          $this->db->where_in('pengiriman_barang.pengiriman_id', $idpengiriman);
+          $this->db->group_by('pengiriman_barang.kode, pengiriman_barang.nama');
+          if($kode_barang != ''){
+              $this->db->where('pengiriman_barang.kode', $kode_barang);
+          }
+          if($nama_barang != ''){
+              $this->db->where('pengiriman_barang.nama', $nama_barang);
+          }
+          $result = $this->db->get()->result_array();
+          
+          // echo json_encode($result);die();
+          // var_dump($result[0]['kode']);
+          
+        }
+        else{
+            $result = [];
+        }
+        return $result;
+        
     }
 
     public function invoiceMgr($weekending, $kode_id) {
@@ -68,6 +143,36 @@ class M_manager extends CI_Model {
 	 $this->db->join('manager','manager.kode_id=users.kode_id');
 	 $query = $this->db->get();
 	 return $query->result_array();
+	}
+
+	function tampil_data_manager($fil) {
+    $kodeid=$this->session->userdata("kode_id");
+    $this->db->select('*');
+    $this->db->from('weekly_manager2');
+
+    if($fil['faktur'] != ''){
+      $this->db->where('no_invoice', $fil['faktur']);
+    }
+    if($fil['tgl_mulai'] != ''){
+      $this->db->where('tgl >= ', $fil['tgl_mulai']);
+    }
+    if($fil['tgl_sampai'] != ''){
+      $this->db->where('tgl <= ', $fil['tgl_sampai']);
+    }
+    
+    $this->db->where('kode_id',"$kodeid");
+    $query = $this->db->get();
+	 return $query->result_array();
+	}
+
+	function hapusDataManager($id) {
+    $this->db->where('id', $id);
+		$this->db->delete('weekly_manager2');
+	}
+
+	function hapusDataBarangManager($weeklymid) {
+    $this->db->where('id_weekly_manager2', $weeklymid);
+		$this->db->delete('weekly_manager2_barang');
 	}
 
   public function getDataSearch()
@@ -186,6 +291,10 @@ class M_manager extends CI_Model {
 
         $this->db->insert('manager', $data);
         $this->db->insert('deposit', $data2);
+    }
+
+    public function tambahDataPenjualanManagerBaru($data) {
+      $this->db->insert('manager', $data);
     }
 
     public function tambahInOut($kode_id, $no_invoice, $keterangan, $jenis, $jumlah, $akun) {

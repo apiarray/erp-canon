@@ -831,8 +831,10 @@ class Frame {
  */
 class FrameList implements IteratorAggregate {
   protected $_frame;
-
+  
+  #[\ReturnTypeWillChange]
   function __construct($frame) { $this->_frame = $frame; }
+  #[\ReturnTypeWillChange]
   function getIterator() { return new FrameListIterator($this->_frame); }
 }
   
@@ -867,7 +869,7 @@ class FrameListIterator implements Iterator {
     $this->_cur = $frame->get_first_child();
     $this->_num = 0;
   }
-
+  #[\ReturnTypeWillChange]
   function rewind() { 
     $this->_cur = $this->_parent->get_first_child();
     $this->_num = 0;
@@ -876,20 +878,24 @@ class FrameListIterator implements Iterator {
   /**
    * @return bool
    */
+  #[\ReturnTypeWillChange]
   function valid() {
     return isset($this->_cur);// && ($this->_cur->get_prev_sibling() === $this->_prev);
   }
   
+  #[\ReturnTypeWillChange]
   function key() { return $this->_num; }
   
   /**
    * @return Frame
    */
+  #[\ReturnTypeWillChange]
   function current() { return $this->_cur; }
 
   /**
    * @return Frame
    */
+  #[\ReturnTypeWillChange]
   function next() {
 
     $ret = $this->_cur;
@@ -921,6 +927,7 @@ class FrameTreeList implements IteratorAggregate {
   /**
    * @return FrameTreeIterator
    */
+  #[\ReturnTypeWillChange]
   function getIterator() { return new FrameTreeIterator($this->_root); }
 }
 
@@ -949,6 +956,7 @@ class FrameTreeIterator implements Iterator {
     $this->_num = 0;
   }
 
+  #[\ReturnTypeWillChange]
   function rewind() {
     $this->_stack = array($this->_root);
     $this->_num = 0;
@@ -957,21 +965,25 @@ class FrameTreeIterator implements Iterator {
   /**
    * @return bool
    */
+  #[\ReturnTypeWillChange]
   function valid() { return count($this->_stack) > 0; }
   
   /**
    * @return int
    */
+  #[\ReturnTypeWillChange]
   function key() { return $this->_num; }
   
   /**
    * @var Frame
    */
+  #[\ReturnTypeWillChange]
   function current() { return end($this->_stack); }
 
   /**
    * @var Frame
    */
+  #[\ReturnTypeWillChange]
   function next() {
     $b = end($this->_stack);
     

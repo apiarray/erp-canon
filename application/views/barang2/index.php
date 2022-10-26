@@ -27,18 +27,18 @@
 <!-- <div class="btn-group"> -->
 <div class="row mt-3">
         <div class="col-lg-4">
-            <form action="" method="post">
-                <div class="input-group input-group-sm">
+            <form action="" method="get">
+                <div class="input-group input-group-sm mb-1">
                     <div class="input-group-prepend">
                         <label for="weekending" class="input-group-text">Kode :</label>
                     </div>
-                    <input type="text" name="kode" id="kode" class="form-control form-control-sm">
+                    <input type="text" name="kode" id="kode" value="<?= isset($_GET['kode']) ? $_GET['kode'] : ''; ?>" class="form-control form-control-sm">
                 </div>
-                <div class="input-group input-group-sm mt-1">
+                <div class="input-group input-group-sm mb-3">
                     <div class="input-group-prepend">
                         <label for="noinv" class="input-group-text">Barang :</label>
                     </div>
-                    <input type="text" name="barang" id="barang" class="form-control form-control-sm">
+                    <input type="text" name="barang" id="barang" value="<?= isset($_GET['barang']) ? $_GET['barang'] : ''; ?>" class="form-control form-control-sm">
                 </div>
                 <!-- <div class="input-group input-group-sm mt-1">
                     <div class="input-group-prepend">
@@ -54,6 +54,8 @@
                     <input type="text" name="security" id="security" class="form-control form-control-sm">
                     <input type="text" name="security" id="security" class="form-control form-control-sm">
                 </div> -->
+                <a href="<?= base_url('barang2'); ?>" class="btn btn-danger" >Reset</a>
+                <button type="submit" class="btn btn-secondary" >Cari</button>
             </form>
         </div>
         <div class="col-lg-2">
@@ -108,38 +110,39 @@
     </div>
     
 <!-- <a href="<?= base_url('barang/laporan_pdf');?>" class="btn btn-danger mb-2">Export PDF</a> -->
-<br>
+
+<hr>
 
 <!-- </div> -->
 <div class="">
- <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-    <thead>
-        <tr >
-            <th>Kode Barang</th>
-            <th>Nama Barang</th>
-            <th>Kategori</th>
-            <th>QTY Masuk</th>
-            <th>QTY Keluar</th>
-            <th>Saldo Barang</th>
-            <th>Harga Setoran</th>
-            <th>Aksi</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach($produk as $item): ?>
-            <tr>
-                <td><?= $item['kode'] ?></td>
-                <td><?= $item['nama'] ?></td>
-                <td><?= $item['kategori'] ?></td>
-                <td><?= $item['total_in'] ?></td>
-                <td><?= $item['total_out'] ?></td>
-                <td><?= $item['total_in'] - $item['total_out'] ?></td>
-                <td>Rp <?= number_format($item['hargasetoran'], 0, ',', '.') ?></td>
-                <td></td>
+    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+            <tr >
+                <th>Kode Barang</th>
+                <th>Nama Barang</th>
+                <th>Kategori</th>
+                <th>QTY Masuk</th>
+                <th>QTY Keluar</th>
+                <th>Saldo Barang</th>
+                <th>Harga Setoran</th>
+                <th>Aksi</th>
             </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            <?php foreach($produk as $item): ?>
+                <tr>
+                    <td><?= $item['kode'] ?></td>
+                    <td><?= $item['nama'] ?></td>
+                    <td>-</td>
+                    <td><?= $item['total'] ?></td>
+                    <td>-</td>
+                    <td><?= $item['total'] ?></td>
+                    <td>Rp <?= number_format($item['hargasetoran'], 0, ',', '.') ?></td>
+                    <td></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
 
     <!-- Untuk Footer Bawah -->
     </div>
