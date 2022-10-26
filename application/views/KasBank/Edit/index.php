@@ -29,7 +29,7 @@
                                     <div class="form-group">
                                         <label>Tanggal</label>
                                         <div class="input-group">
-                                            <input type="date" class="form-control datepicker" name="tanggal" id="tanggal" required value="<?= date('Y-m-d') ?>">
+                                            <input type="date" class="form-control datepicker" name="tanggal" id="tanggal" required>
                                         </div>
                                     </div>
                                 </div>
