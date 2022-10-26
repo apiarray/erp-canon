@@ -12,7 +12,6 @@ class Juice_4u extends CI_Controller {
     }
     public function index(){
         $topik['judul'] = 'Halaman Menu Juice4U';
-        $data['tahun'] = $this->M_Tahun->tampil_data();
         // $data['produk'] = $this->m_juice->get_by_role();
         // if ($this->input->post('keyword')) {
         //     $data['produk'] = $this->m_jurnalumum->cariDataBarang();

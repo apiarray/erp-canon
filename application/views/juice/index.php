@@ -48,11 +48,10 @@
     <form action="" method="post">
         <div class="form-group input-group input-group-sm">
             <div class="input-group-prepend">
-                <label class="input-group-text" for="weekending">Weekending</label>
+                <label class="input-group-text" for="weekending">Tahun</label>
             </div>
             <select class="form-control" id="weekending">
                 <option>Pilih tanggal</option>
-                <option value="up">Weekending Up</option>
                 <?php foreach($tgl as $tanggal) : ?>
                 <option value="<?= $tanggal['weekending']; ?>"><?= $tanggal['weekending']; ?></option>
                 <?php endforeach; ?>
