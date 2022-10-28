@@ -5,13 +5,13 @@ class M_menu extends CI_Model {
 
   public function getMenu()
   {
-    $query = $this->db->get('tbl_menu')->result_array();
+    $query = $this->db->get('menu')->result_array();
     return $query;
   }
 
   public function getSubMenu()
   {
-      $query = $this->db->get('tbl_submenu')->result_array();
+      $query = $this->db->get('tbl_sub_menu')->result_array();
       return $query;
   }
 

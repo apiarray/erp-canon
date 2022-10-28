@@ -193,6 +193,7 @@
               <a class="collapse-item" href="<?= base_url('users'); ?>">User Login</a>
               <a class="collapse-item" href="<?= base_url('users/changepassword'); ?>">Ganti Password</a>
               <a class="collapse-item" href="<?= base_url('hakakses'); ?>">Hak Akses User</a>
+              <a class="collapse-item" href="<?= base_url('roleakses'); ?>">Role Akses</a>
               <a class="collapse-item" href="<?= base_url('activity'); ?>">Activity Record</a>
             <?php else : ?>
               <a class="collapse-item" href="<?= base_url('users/changepassword'); ?>">Ganti Password</a>
