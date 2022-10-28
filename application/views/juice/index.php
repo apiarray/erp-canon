@@ -51,10 +51,8 @@
                 <label class="input-group-text" for="tahun">Tahun</label>
             </div>
             <select class="form-control" id="tahun">
-                <option value="">Pilih Tahun</option>
-                <?php foreach($tahun as $thn) : ?>
-                  <option value="<?php echo $thn['year'];?>" <?php echo ($thn['year'] ==  date("Y")) ? ' selected="selected"' : '';?>><?php echo $thn['year'];?></option>
-                <?php endforeach; ?>
+                <!-- <option value="">Pilih Tahun</option> -->
+                  <option value="<?php echo $tahun['year'];?>"><?php echo $tahun['year'];?></option>
             </select>
         </div>
     </form>
@@ -100,14 +98,14 @@
     <form action="" method="post">
             <div class="form-group input-group input-group-sm">
                 <div class="input-group-prepend">
-                    <label class="input-group-text" for="weekending">Organization</label>
+                    <label class="input-group-text" for="mitra">Mitra</label>
                 </div>
-                <select class="form-control">
-                    <option>Show All</option>
-                    <option>29 September 2020</option>
-                    <option>22 September 2020</option>
-                    <option>15 September 2020</option>
-                    <option>8 September 2020</option>
+                <select class="form-control" id="mitra">
+                    <option value="">Pilih Mitra</option>
+                    <option value="">Show All</option>
+                   <?php foreach($mitra as $row):?>
+                    <option value="<?=$row['tgl_validasi']?>"><?=$row['nama_mitra']?></option>
+                    <?php endforeach;?>
                 </select>
             </div>
         </form>
@@ -256,16 +254,16 @@
   
     function allData() {
         let weekending = $('#weekending').val();
+        let mitra = $('#mitra').val();
         let tahun = $('#tahun').val();
         let bulan = $('#bulan').val();
         let date = bulan + '-' + tahun;
-        let fetchUrl = weekending != '' ?"juice_4u/tampil_data/" + weekending: (bulan != '' || tahun != '')? "juice_4u/tampil_data_bulanan/" +date :'juice_4u/tampil_data' ;
-       
+        let fetchUrl = weekending != '' ?"juice_4u/tampil_data/" + weekending: (bulan != '' && tahun != '')? "juice_4u/tampil_data_bulanan/" +date:(mitra != '')?"juice_4u/tampil_data/" + mitra:'juice_4u/tampil_data' ;
+
         $.ajax({
             url: "<?= base_url(); ?>" + fetchUrl,
             success: function(result) {
                 let results = JSON.parse(result);
-                console.log(result)
                 let data = "";
                 let totalPoint = 0;
                 let totalOmzet = 0;
@@ -312,11 +310,20 @@
     // Fetch data
     $('#weekending').on('change', function() {
       $('#bulan').val('')
+      $('#mitra').val('')
       allData();
       
     });
     $('#bulan').on('change', function() {
       $('#weekending').val('')
+      $('#mitra').val('')
+      allData();
+      
+    });
+    $('#mitra').on('change', function() {
+      $('#weekending').val('')
+      // $('#tahun').val('')
+      $('#bulan').val('')
       allData();
       
     });

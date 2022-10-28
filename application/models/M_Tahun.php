@@ -12,9 +12,13 @@ class M_tahun extends CI_Model{
     ];
     $this->db->insert('tbl_tahun',$data);
     }
-    public function getTahunById($id){
+  public function getTahunById($id){
       return $this->db->get_where('tbl_tahun',['id'=>$id])->row_array();
   }
+  public function getTahunByActive(){
+    return $this->db->get_where('tbl_tahun',['is_active'=> 1])->row_array();
+  }
+
   public function hapusDataTahun($id){
       $this->db->where('id',$id);
       $this->db->delete('tbl_tahun');

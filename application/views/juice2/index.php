@@ -99,14 +99,14 @@
     <form action="" method="post">
             <div class="form-group input-group input-group-sm">
                 <div class="input-group-prepend">
-                    <label class="input-group-text" for="weekending">Organization</label>
+                    <label class="input-group-text" for="mitra">Mitra</label>
                 </div>
-                <select class="form-control" id="weekending">
-                    <option>Show All</option>
-                    <option>29 September 2020</option>
-                    <option>22 September 2020</option>
-                    <option>15 September 2020</option>
-                    <option>8 September 2020</option>
+                <select class="form-control" id="mitra">
+                    <option value="">Pilih Mitra</option>
+                    <option value="">Show All</option>
+                   <?php foreach($mitra as $row):?>
+                    <option value="<?=$row['tgl_validasi']?>"><?=$row['nama_mitra']?></option>
+                    <?php endforeach;?>
                 </select>
             </div>
         </form>
@@ -253,10 +253,11 @@
 
     function allData() {
         let weekending = $('#weekending').val();
+        let mitra = $('#mitra').val();
         let tahun = $('#tahun').val();
         let bulan = $('#bulan').val();
         let date = bulan + '-' + tahun;
-        let fetchUrl = weekending != '' ?"juice2_4u/tampil_data/" + weekending: (bulan != '' || tahun != '')? "juice2_4u/tampil_data_bulanan/" +date :'juice2_4u/tampil_data' ;
+        let fetchUrl = weekending != '' ?"juice_4u/tampil_data/" + weekending: (bulan != '' && tahun != '')? "juice_4u/tampil_data_bulanan/" +date:(mitra != '')?"juice_4u/tampil_data/" + mitra:'juice_4u/tampil_data' ;
 
         $.ajax({
             url: "<?= base_url(); ?>" + fetchUrl,
@@ -306,12 +307,23 @@
     }
 
     // Fetch data
+    // Fetch data
     $('#weekending').on('change', function() {
       $('#bulan').val('')
+      $('#mitra').val('')
       allData();
-  });
-  $('#bulan').on('change', function() {
+      
+    });
+    $('#bulan').on('change', function() {
       $('#weekending').val('')
+      $('#mitra').val('')
+      allData();
+      
+    });
+    $('#mitra').on('change', function() {
+      $('#weekending').val('')
+      // $('#tahun').val('')
+      $('#bulan').val('')
       allData();
       
     });
