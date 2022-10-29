@@ -9,6 +9,7 @@ class Dashboard extends CI_Controller {
         $this->load->model('M_kategori');
         $this->load->model('M_gudang');
         $this->load->model('M_karyawan');
+        $this->load->model('M_override');
         // $this->check_login();
         if ($this->session->userdata('id_role') != 1) {
             redirect('auth/login', 'refresh');
@@ -25,6 +26,26 @@ class Dashboard extends CI_Controller {
 		$this->load->view('templates/header',$topik);
         $this->load->view('dashboard/index',$data);
         // $this->load->view('dashboard/index');
+        $this->load->view('templates/footer');
+    }
+
+    public function Override() {
+        $topik['judul'] = 'Override';
+        $data['judul'] = $topik['judul'];       
+        $data['overrides'] = $this->M_override->getAllData();       
+
+		$this->load->view('templates/header',$topik);
+        $this->load->view('dashboard/override',$data);
+        $this->load->view('templates/footer');
+    }
+
+    public function Override_Saldo(){
+        $topik['judul'] = 'Saldo Override';
+        $data['judul'] = $topik['judul'];       
+        $data['overrides'] = $this->M_override->getAllData();       
+
+		$this->load->view('templates/header',$topik);
+        $this->load->view('dashboard/override_saldo',$data);
         $this->load->view('templates/footer');
     }
    
