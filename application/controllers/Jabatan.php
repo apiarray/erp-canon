@@ -90,7 +90,6 @@ class Jabatan extends CI_Controller
       $this->form_validation->set_rules('name', 'Nama Jabatan', 'required');
       if ($this->form_validation->run() == TRUE)
       {
-        // echo "OK";
         $this->M_JabatanMitra->create(array(
           'kode' => $post['kode'],
           'name' => $post['name']
@@ -98,8 +97,10 @@ class Jabatan extends CI_Controller
         
         // $this->session->set_flashdata('success', 'Update Jabatan berhasil!');
         // redirect('jabatan', 'refresh');
+
+        // response as ajax
         $response = array(
-          'msg' => 'Tmbah Jabatan berhasil!',
+          'msg' => 'Jabatan berhasil tersimpan!',
           'success' => true,
         );
 
@@ -113,6 +114,20 @@ class Jabatan extends CI_Controller
 
       echo json_encode($response);
     }
+  }
+
+  public function hapus($id)
+  {
+    $query = $this->M_JabatanMitra->delete($id);        
+    // $this->session->set_flashdata('success', 'Jabatan berhasil dihapus!');
+    // redirect('jabatan', 'refresh');
+
+    $response = array(
+      'msg' => 'Jabatan berhasil dihapus!',
+      'success' => true,
+    );
+
+    echo json_encode($response);
   }
 
   public function getkode()
