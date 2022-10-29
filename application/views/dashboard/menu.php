@@ -76,7 +76,7 @@
             <div id="collapseTwoSub" class="collapse" aria-labelledby="headingTwo" data-parent="#collapseTwo">
               <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="<?= base_url('dashboard/override'); ?>">Override</a>
-                <a class="collapse-item" href="#">Saldo Awal Override</a>
+                <a class="collapse-item" href="<?= base_url('dashboard/override_saldo'); ?>">Saldo Awal Override</a>
               </div>
             </div>
             
