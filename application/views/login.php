@@ -37,7 +37,9 @@
     <div class="login-area">
         <div class="container">
             <div class="login-box ptb--50">
-                <form action="<?= base_url('login/login_aksi');?>" method="post">
+                <!-- <form action="<?= base_url('login/login_aksi');?>" method="post"> -->
+                <?php echo form_open('login/login_aksi'); ?>
+                    <!-- <input type="hidden" name="<?=$this->security->get_csrf_token_name();?>" value="<?=$this->security->get_csrf_hash();?>"> -->
                     <div class="login-form-head">
                         <h4>Login System</h4>
                         <!-- <p>Hello there, Sign in and start managing your Admin Template</p> -->
