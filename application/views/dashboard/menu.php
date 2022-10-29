@@ -69,7 +69,18 @@
             <a class="collapse-item" href="<?= base_url('ekspedisi'); ?>">Daftar Ekspedisi</a>
             <a class="collapse-item" href="<?= base_url('tahun'); ?>">Tahun</a>
             <a class="collapse-item" href="<?= base_url('rekening'); ?>">Rekening</a>
-
+            
+            <a class="collapse-item" href="#" data-toggle="collapse" data-target="#collapseTwoSub" aria-expanded="true" aria-controls="collapseTwo">
+              Manager P&L
+            </a>
+            <div id="collapseTwoSub" class="collapse" aria-labelledby="headingTwo" data-parent="#collapseTwo">
+              <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="#">Override</a>
+                <a class="collapse-item" href="#">Saldo Awal Override</a>
+              </div>
+            </div>
+            
+            <a class="collapse-item" href="<?= base_url('jabatan'); ?>">Jabatan</a>
           </div>
         </div>
       </li>
