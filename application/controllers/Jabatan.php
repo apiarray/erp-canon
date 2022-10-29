@@ -33,8 +33,14 @@ class Jabatan extends CI_Controller
   }
 
   public function index()
-  {
-    echo "Jabatanmitra";
+  {    
+    $topik['judul'] = 'Jabatan Mitra';
+    $data['judul'] = $topik['judul'];       
+    $data['overrides'] = $this->M_jabatanmitra->getAllData();       
+
+		$this->load->view('templates/header',$topik);
+    $this->load->view('jabatan/index',$data);
+    $this->load->view('templates/footer');
   }
 
 }
