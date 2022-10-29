@@ -11,6 +11,10 @@
             </div>
         </div>
         <div class="card-body">
+        <?php if($this->session->flashdata('success')) echo '<div class="alert alert-success alert-dismissible fade show" role="alert">' . $this->session->flashdata('success') . '<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button></div>'; ?>
+
         <div class="table-responsive table table-hover">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
@@ -32,7 +36,7 @@
                             <td><?=$jabatan['name']; ?></td>
                             <td>
                                 <a href="<?=base_url();?>jabatan/edit/<?=$jabatan['id'];?>" class="btn btn-success" style="margin-left:42px"><i class="fa fa-edit"></i>Edit</i></a>
-                                <a href="<?=base_url();?>jabatan/hapus/<?=$jabatan['id'];?>" class="btn btn-danger " onclick="return confirm('Yakin ingin dihapus?');"><i class="fa fa-trash"></i>Hapus</a>
+                                <a href="#" class="btn btn-danger tagHapus" data-id="<?=$jabatan['id'];?>"><i class="fa fa-trash"></i>Hapus</a>
                             </td>
                         </tr>
                         <?php
@@ -80,8 +84,28 @@
     </div>
 </div>
 
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript">
     var deferred = new $.Deferred(), promise = deferred.promise();
+
+    $('.tagHapus').on('click', function(e) {
+        e.preventDefault();
+        if(confirm('Yakin ingin dihapus?')) {
+            var id = $(this).data("id");
+            $.get("<?=base_url();?>jabatan/hapus/" + id, function(data, status){
+                console.log(data);
+                var obj = JSON.parse(data);
+                if(obj.success){
+                    Swal.fire({
+                        icon: 'error',
+                        text: obj.msg
+                    });
+                }
+            });
+            $(this).closest("tr").remove();
+        }
+
+    });
 
     $('#tagSubmit').on('click', function(e) {
         e.preventDefault();
@@ -93,7 +117,21 @@
             data: $('form#jabatanform').serialize(),
             success: function(response) {
                 console.log(response);
-                // alert(response['response']);
+                var obj = JSON.parse(response);
+                if(obj.success){
+                    $('#jabatanModal').modal('hide');
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: obj.msg,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+
+                setTimeout(function(){
+                    window.location.reload();
+                },2000);
             },
             error: function() {
                 alert('Error');
@@ -107,5 +145,13 @@
             // console.log(data);
             $('input[name=kode]').val(data).attr('disabled', 'disabled');
         });
-    })
+    });
+
+    setTimeout(function(){
+        $(".alert").each(function(index){
+            $(this).delay(200*index).fadeTo(1500,0).slideUp(500,function(){
+                $(this).remove();
+            });
+        });
+    },2000);
 </script>

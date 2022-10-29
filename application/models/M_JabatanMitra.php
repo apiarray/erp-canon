@@ -38,6 +38,16 @@ class M_JabatanMitra extends CI_Model {
 
   public function create($data)
   {
+    // $this->db->db_debug = false;
+    // $query = $this->db->insert($this->table,$data);
+    // if(!@$this->db->query($query))
+    // {
+    //   $error = $this->db->error();
+    //   // do something in error case
+    // }else{
+    //   // do something in success case
+    // }
+
     return $this->db->insert($this->table,$data);
   }
 
@@ -54,7 +64,8 @@ class M_JabatanMitra extends CI_Model {
 
   public function delete($id)
   {
-    return $this->db->delete($this->table)->where(array('id' => $id));
+    $this->db->where('id', $id);
+    return $this->db->delete($this->table);
   }
 
   public function getLastIndex(){
