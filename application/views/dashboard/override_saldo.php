@@ -18,7 +18,7 @@
                         <th>Nama</th>
                         <th>Kantor</th>
                         <th>Summary</th>
-                        <th>Total</th>
+                        <th>Saldo</th>
                     </tr>
                 </thead>
                 <tbody>
