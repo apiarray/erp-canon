@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  *
- * Model M_override_model
+ * Model M_override
  *
  * This Model for ...
  * 
@@ -18,7 +18,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class M_override extends CI_Model {
 
-  // ------------------------------------------------------------------------
+  protected $table = 'overrides';
 
   public function __construct()
   {
@@ -31,7 +31,7 @@ class M_override extends CI_Model {
   // ------------------------------------------------------------------------
   public function getAllData()
   {
-    return $this->db->get('overrides')->result_array();
+    return $this->db->get($this->table)->result_array();
   }
 
   // ------------------------------------------------------------------------
