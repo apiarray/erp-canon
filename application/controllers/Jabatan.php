@@ -43,7 +43,7 @@ class Jabatan extends CI_Controller
   {
     $topik['judul'] = 'Jabatan Mitra';
     $data['judul'] = $topik['judul'];       
-    $data['jabatanList'] = $this->M_JabatanMitra->getAllData();       
+    $data['jabatanList'] = $this->M_JabatanMitra->getAllData();
 
 		$this->load->view('templates/header',$topik);
     $this->load->view('jabatan/index',$data);
