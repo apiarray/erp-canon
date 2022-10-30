@@ -51,7 +51,12 @@ class Dashboard extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
-    public function getkode_override()
+    public function Override_Create()
+    {
+
+    }
+
+    public function override_getkode()
     {
         // OV-00001
         $jsonArr = $this->M_JabatanMitra->getLastIndex();

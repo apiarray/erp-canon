@@ -61,25 +61,72 @@
                 </button>
             </div>
             <div class="modal-body">
-                <?=form_open('jabatan/create', array(
+                <?=form_open('dashboard/override_create', array(
                     'id' => 'jabatanform',
                     'class' => 'form-inline',
                     'method'=>'post'
                 )); ?>
-                    <div class="form-group col-sm-6">
-                        <label class="my-1 mr-2">Kode</label>
-                        <input type="text" class="form-control" name="kode" />
-                    </div>
+                    <div class="row mb-3">
+                        <div class="form-group col-sm-6">
+                            <label class="my-1 mr-2">Kode</label>
+                            <input type="text" class="form-control" name="kode" />
+                        </div>
 
-                    <div class="form-group col-sm-6">
-                        <label class="my-1 mr-2">Nama Jabatan</label>
-                        <select class="form-control" name="name">
-                            <option value="">-- Pilih --</option>
-                            <?php foreach($jabatanList as $jabtan) {
-                                echo '<option value="' . $jabtan['id'] . '">' . $jabtan['name'] . '</option>';
-                            } ?>
-                        </select>
+                        <div class="form-group col-sm-6">
+                            <label class="my-1 mr-2">Nama Jabatan</label>
+                            <select class="form-control" name="name">
+                                <option value="">-- Pilih --</option>
+                                <?php foreach($jabatanList as $jabtan) {
+                                    echo '<option value="' . $jabtan['id'] . '">' . $jabtan['name'] . '</option>';
+                                } ?>
+                            </select>
+                        </div>
                     </div>
+                    
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th width="50%">Omset Penjualan</th>
+                                <th>Persen (%)</th>
+                                <th>Checklist</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Kurang dari 15 Juta</td>
+                                <td>
+                                    <input type="text" class="form-control" name="persen" value="2" />
+                                </td>
+                                <td>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="check" />
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Lebih dari 15 Juta</td>
+                                <td>
+                                    <input type="text" class="form-control" name="persen" value="3" />
+                                </td>
+                                <td>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="check" />
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Berapapun Omzet</td>
+                                <td>
+                                    <input type="text" class="form-control" name="persen" value="4" />
+                                </td>
+                                <td>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="check" />
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </form>
             </div>
             <div class="modal-footer">
@@ -93,6 +140,10 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript">
     var deferred = new $.Deferred(), promise = deferred.promise();
+
+    $(document).on('click', 'input[type="checkbox"]', function() {      
+        $('input[type="checkbox"]').not(this).prop('checked', false);      
+    });
 
     $('.tagHapus').on('click', function(e) {
         e.preventDefault();
@@ -147,7 +198,7 @@
     });
 
     $('#overrideModal').on('shown.bs.modal', function (e) {
-        $.get("<?=base_url('dashboard/getkode_override');?>", function(data, status){
+        $.get("<?=base_url('dashboard/override_getkode');?>", function(data, status){
             // console.log(data);
             $('input[name=kode]').val(data).attr('disabled', 'disabled');
         });
