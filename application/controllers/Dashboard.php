@@ -11,6 +11,10 @@ class Dashboard extends CI_Controller {
         $this->load->model('M_karyawan');
         $this->load->model('M_override');
         $this->load->model('M_JabatanMitra');
+
+        $this->load->library('form_validation');
+        $this->load->helper('form');
+
         // $this->check_login();
         if ($this->session->userdata('id_role') != 1) {
             redirect('auth/login', 'refresh');
@@ -53,6 +57,32 @@ class Dashboard extends CI_Controller {
 
     public function Override_Create()
     {
+        $post = $this->input->post();
+        // echo json_encode($post);
+        // {"kode":"OV00006","name":"1","persen":"4","check":"on"}
+
+        $this->form_validation->set_rules('kode', 'Kode', 'required');
+        $this->form_validation->set_rules('name', 'Nama Jabatan', 'required');
+        $this->form_validation->set_rules('persen', 'Persen', 'required');
+        if ($this->form_validation->run() == TRUE)
+        {
+
+            // response as ajax
+            $response = array(
+                'msg' => 'Overide Mitra berhasil tersimpan!',
+                'data' => ($post),
+                'success' => true,
+            );
+        } else {
+            // echo validation_errors();
+            $response = array(
+                'msg' => 'Error!',
+                'data' => validation_errors(),
+                'success' => false,
+            );
+        }
+
+        echo json_encode($response);
 
     }
 

@@ -61,6 +61,14 @@
                 </button>
             </div>
             <div class="modal-body">
+                <?php if($this->session->flashdata('success')) echo '<div class="alert alert-success alert-dismissible fade show" role="alert">' . $this->session->flashdata('success') . '<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button></div>'; ?>
+
+                <?=validation_errors('<div class="alert alert-danger alert-dismissible fade show" role="alert">', '<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button></div>'); ?>
+
                 <?=form_open('dashboard/override_create', array(
                     'id' => 'jabatanform',
                     'class' => 'form-inline',
@@ -184,11 +192,17 @@
                         showConfirmButton: false,
                         timer: 1500
                     });
-                }
 
-                setTimeout(function(){
-                    window.location.reload();
-                },2000);
+                    // setTimeout(function(){
+                    //     window.location.reload();
+                    // },2000);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: obj.msg,
+                        text: obj.data
+                    });
+                }
             },
             error: function() {
                 alert('Error');
