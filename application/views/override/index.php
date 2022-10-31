@@ -164,7 +164,7 @@
         e.preventDefault();
         if(confirm('Yakin ingin dihapus?')) {
             var id = $(this).data("id");
-            $.get("<?=base_url();?>jabatan/hapus/" + id, function(data, status){
+            $.get("<?=base_url();?>override/hapus/" + id, function(data, status){
                 console.log(data);
                 var obj = JSON.parse(data);
                 if(obj.success){

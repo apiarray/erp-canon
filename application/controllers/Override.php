@@ -96,6 +96,20 @@ class Override extends CI_Controller
 
   }
 
+  public function hapus($id)
+  {
+    $query = $this->M_overridemitra->delete($id);        
+    // $this->session->set_flashdata('success', 'Jabatan berhasil dihapus!');
+    // redirect('jabatan', 'refresh');
+
+    $response = array(
+      'msg' => 'Jabatan berhasil dihapus!',
+      'success' => true,
+    );
+
+    echo json_encode($response);
+  }
+
   public function override_getkode()
   {
       // OV-00001
