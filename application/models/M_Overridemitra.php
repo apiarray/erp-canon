@@ -31,11 +31,21 @@ class M_Overridemitra extends CI_Model {
   // ------------------------------------------------------------------------
   public function index()
   {
-    // 
+    if ($this->db->table_exists($this->table))
+    {
+      $this->up();
+    }
   }
+
   public function getAllData()
   {
-    return $this->db->get($this->table)->result_array();
+    $this->db->select('*');
+    $this->db->from($this->table . ' om');
+    $this->db->join('jabatan_mitra jm', 'jm.kode = om.kode_jabatan');
+    $query = $this->db->get()->result_array();
+    // echo $this->db->last_query();
+    return $query;
+    // return $this->db->get($this->table)->result_array();
   }
 
   public function create($data)
@@ -76,9 +86,10 @@ class M_Overridemitra extends CI_Model {
       'id' => array('type' => 'INT', 'auto_increment' => TRUE),
       'kode' => array('type' => 'VARCHAR', 'constraint' => 10, 'null' => TRUE),
       'kode_jabatan' => array('type' => 'VARCHAR', 'constraint' => 50,'null' => TRUE),
-      'omsetless_15' => array('type' => 'VARCHAR', 'null' => TRUE),
-      'omsetmore_15' => array('type' => 'VARCHAR', 'null' => TRUE),
-      'omsetall' => array('type' => 'VARCHAR', 'null' => TRUE),
+      'persen' => array('type' => 'INT', 'constraint' => 10,'null' => TRUE),
+      'omsetless_15' => array('type' => 'ENUM', 'null' => TRUE),
+      'omsetmore_15' => array('type' => 'ENUM', 'null' => TRUE),
+      'omsetall' => array('type' => 'ENUM', 'null' => TRUE),
     );
 
     $this->dbforge->add_column($this->table, $fields);

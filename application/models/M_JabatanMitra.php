@@ -28,9 +28,15 @@ class M_JabatanMitra extends CI_Model {
   }
 
   // ------------------------------------------------------------------------
+  public function index()
+  {
+    // table exist
+    if ($this->db->table_exists($this->table))
+    {
+      $this->up();
+    }
+  }
 
-
-  // ------------------------------------------------------------------------
   public function getAllData()
   {
     return $this->db->get($this->table)->result_array();
@@ -78,16 +84,20 @@ class M_JabatanMitra extends CI_Model {
 
   public function up()
   {
-    $fields = array(
-      'kode' => array(
-        'type' => 'VARCHAR',
-        'constraint' => 10,
-        'after' => 'id',
-        'unique' => TRUE
-      )
-    );
-    // echo json_encode($fields);
-    return $this->dbforge->add_column($this->table, $fields);
+    // field kode, not exist
+    if (!$this->db->field_exists('kode', $this->table))
+    {
+      $fields = array(
+        'kode' => array(
+          'type' => 'VARCHAR',
+          'constraint' => 10,
+          'after' => 'id',
+          'unique' => TRUE
+        )
+      );
+      // echo json_encode($fields);
+      return $this->dbforge->add_column($this->table, $fields);
+    }
   }
 
   public function down()

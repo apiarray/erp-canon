@@ -11,14 +11,19 @@
         </div>
         <div class="card-body">
         <div class="table-responsive table table-hover">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <table class="table table-bordered" id="xdataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th width="5%">No</th>
-                        <th>Nama</th>
-                        <th>Kantor</th>
-                        <th>Summary</th>
-                        <th>Total</th>
+                        <th rowspan="2">No</th>
+                        <th rowspan="2">Jabatan</th>
+                        <th rowspan="2">Persen (%)</th>
+                        <th colspan="3" class="text-center">Batasan Penjualan</th>
+                        <th rowspan="2" class="text-center">Aksi</th>
+                    </tr>
+                    <tr>
+                        <th>< 15 Juta</th>
+                        <th>> 15 Juta</th>
+                        <th>Semua</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,10 +33,15 @@
                         ?>
                         <tr>
                             <td><?=$no;?>.</td>
-                            <td><?=$override['nama']; ?></td>
-                            <td><?=$override['kantor']; ?></td>
-                            <td><?=$override['summary']; ?></td>
-                            <td><?=$override['total_saving']; ?></td>
+                            <td><?=$override['name']; ?></td>
+                            <td class="text-center"><?=$override['persen']; ?></td>
+                            <td class="text-center"><?=$override['omsetless_15']; ?></td>
+                            <td class="text-center"><?=$override['omsetmore_15']; ?></td>
+                            <td class="text-center"><?=$override['omsetall']; ?></td>
+                            <td>
+                                <a href="<?=base_url();?>override/edit/<?=$override['id'];?>" class="btn btn-success" style="margin-left:42px"><i class="fa fa-edit"></i>Edit</i></a>
+                                <a href="#" class="btn btn-danger tagHapus" data-id="<?=$override['id'];?>"><i class="fa fa-trash"></i>Hapus</a>
+                            </td>
                         </tr>
                         <?php
                             $no++;
@@ -190,9 +200,9 @@
                         timer: 1500
                     });
 
-                    // setTimeout(function(){
-                    //     window.location.reload();
-                    // },2000);
+                    setTimeout(function(){
+                        window.location.reload();
+                    },2000);
                 } else {
                     Swal.fire({
                         icon: 'error',
