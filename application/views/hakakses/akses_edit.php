@@ -1,4 +1,4 @@
-<form action="/product/save" method="post">
+<form action="<?php echo site_url('hakakses/'); ?>simpan" method="post">
     <div class="modal fade" class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
 
@@ -33,36 +33,30 @@
                                     <th>U</th>
                                     <th>D</th>
                                 </tr>
-                            </thead>
+                            </thead> 
                             <tbody>
+                                <input type="hidden" name="id_role" value="<?= $this->input->post('id_role')  ?>">
                                 <?php
-                                foreach ($list_menu as $lm) {
-                                    $no = 0;
-                                    echo '<tr>';
-                                    echo '<td>' . $lm['nama_sub_menu'] . '</td>';
-                                    echo '<td><input name="tambah' . $no . '"' . ($lm['tambah'] == '1'
-                                        ? 'checked' : '') . '
-                             type="checkbox" 
-                             class="form-control size-check">
-                             </td>';
-                                    echo '<td><input name="akses' . $no . '"' . ($lm['akses'] == '1'
-                                        ? 'checked' : '') . '
-                          type="checkbox" 
-                          class="form-control size-check">
-                          </td>';
-                                    echo '<td><input name="update' . $no . '"' . ($lm['update'] == '1'
-                                        ? 'checked' : '') . '
-                             type="checkbox" 
-                             class="form-control size-check">
-                             </td>';
-                                    echo '<td><input name="delete' . $no . '"' . ($lm['delete'] == '1'
-                                        ? 'checked' : '') . '
-                          type="checkbox" 
-                          class="form-control size-check">
-                          </td>';
-                                    echo '</tr>';
+                                function input($no, $aktif, $jenis)
+                                {
+                                    return '<td>
+                                        <input type="checkbox" name="' . $jenis . $no . '" value="1" ' . ($aktif == 1 ? 'checked' : '') . '></td>';
                                 }
                                 ?>
+
+                                <?php $i = 0; ?>
+                                <?php foreach ($list_menu as $lm) : ?>
+                                    <?php
+                                    echo '<tr>';
+                                    echo '<td>' . $lm['nama_sub_menu'] . $i . '</td>';
+                                    echo input($i, $lm['tambah'], 'tambah');
+                                    echo input($i, $lm['akses'], 'akses');
+                                    echo input($i, $lm['update'], 'update');
+                                    echo input($i, $lm['delete'], 'delete');
+                                    echo '</tr>';
+                                    ?>
+                                    <?php $i++; ?>
+                                <?php endforeach; ?>
                             </tbody>
                         </table>
                     </div>

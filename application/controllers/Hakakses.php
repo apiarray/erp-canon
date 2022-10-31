@@ -8,6 +8,8 @@ class Hakakses extends CI_Controller
         $this->load->model('M_Akses', 'm_akses');
         $this->load->model('M_menu');
         $this->load->model('m_role');
+        $this->load->model('m_login');
+
 
         $this->load->library('form_validation');
     }
@@ -43,20 +45,36 @@ class Hakakses extends CI_Controller
 
     public function simpan()
     {
-        $this->M_akses->tambahHakAkses();
-        $this->session->set_flashdata('flash', 'Ditambahkan');
-        redirect('users');
+        $where = ['username' => 'admin'];
+        $cekUsername = $this->m_login->cek_login($where)->row_array();
+        if ($cekUsername > 1) {
+            $this->m_akses->simpan();
+            $this->session->set_flashdata('flash', 'DI Perbarui');
+            redirect('hakakses');
+        } else {
+            echo ('Anda Tidak Memiliki Akses');
+        }
     }
 
     public function edit()
     {
-        if ($this->session->set_userdata('role_id') == 1) {
-            $this->session->set_flashdata('gagal', 'Anda Tidak Memiliki Akses');
-            redirect('unautorized');
-        } else {
+        // if ($this->session->set_userdata('users')) {
+        //     $data['list_menu'] = $this->m_akses->list_menu();
+        //     $data['list_user'] = $this->m_akses->list_user();
+        //     $this->load->view('hakakses/akses_edit', $data);
+        // } else {
+        //     $this->session->set_flashdata('gagal', 'Anda Tidak Memiliki Akses');
+        //     redirect('unautorized');
+        // }
+        // $data = $this->m_login->cek_login($where)->row_array();
+        $where = ['username' => 'admin'];
+        $cekUsername = $this->m_login->cek_login($where)->row_array();
+        if ($cekUsername > 1) {
             $data['list_menu'] = $this->m_akses->list_menu();
-            $data['list_user'] = $this->m_akses->list_user();
+            $data['list_user'] = $this->m_akses->list_name();
             $this->load->view('hakakses/akses_edit', $data);
+        } else {
+            echo ('Anda Tidak Memiliki Akses');
         }
     }
 
@@ -66,12 +84,6 @@ class Hakakses extends CI_Controller
         $this->session->set_flashdata('flash', 'Dihapus');
         redirect('users');
     }
-
-    public function simpan_akses()
-    {
- 
-        return 'jembot';
-     }
 
     public function update()
     {
