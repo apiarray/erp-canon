@@ -43,6 +43,40 @@
     </div>    
 </div>
 <?php endif;?>
+<div class="row">
+  <div class="col-lg-4">
+    <form action="" method="post">
+        <div class="form-group input-group input-group-sm">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="tahun">Tahun</label>
+            </div>
+            <select class="form-control" id="tahun">
+                <!-- <option value="">Pilih Tahun</option> -->
+                  <option value="<?php echo $tahun['year'];?>"><?php echo $tahun['year'];?></option>
+            </select>
+        </div>
+    </form>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-4">
+    <form action="" method="post">
+        <div class="form-group input-group input-group-sm">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="bulan">Bulan</label>
+            </div>
+            <select class="form-control" id="bulan">
+                <option value="">Pilih Bulan</option>
+                <?php foreach($bulan as $bln) : ?>
+                  <option value="<?php echo $bln['id'];?>" <?php echo ($bln['id'] ==  date("m")) ? ' selected="selected"' : '';?>><?php echo $bln['name'];?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </form>
+  </div>
+</div>
+
 <div class="row mt-3">
     <div class="col-lg-6">
         <form action="" method="post">
@@ -51,8 +85,8 @@
                     <label class="input-group-text" for="weekending">Weekending</label>
                 </div>
                 <select class="form-control" id="weekending">
-                    <option>Pilih tanggal</option>
-                    <option value="up">Weekending Up</option>
+                    <option value="">Pilih tanggal</option>
+                    
                     <?php foreach($tgl as $tanggal) : ?>
                     <option value="<?= $tanggal['weekending']; ?>"><?= $tanggal['weekending']; ?></option>
                     <?php endforeach; ?>
@@ -64,14 +98,14 @@
     <form action="" method="post">
             <div class="form-group input-group input-group-sm">
                 <div class="input-group-prepend">
-                    <label class="input-group-text" for="weekending">Organization</label>
+                    <label class="input-group-text" for="mitra">Mitra</label>
                 </div>
-                <select class="form-control">
-                    <option>Show All</option>
-                    <option>29 September 2020</option>
-                    <option>22 September 2020</option>
-                    <option>15 September 2020</option>
-                    <option>8 September 2020</option>
+                <select class="form-control" id="mitra">
+                    <option value="">Pilih Mitra</option>
+                    <option value="">Show All</option>
+                   <?php foreach($mitra as $row):?>
+                    <option value="<?=$row['tgl_validasi']?>"><?=$row['nama_mitra']?></option>
+                    <?php endforeach;?>
                 </select>
             </div>
         </form>
@@ -105,7 +139,7 @@
                 <div class="input-group-prepend">
                     <label class="input-group-text" for="weekending">Total Point</label>
                 </div>
-               <input type="text" name="" id="" class="form-control">
+               <input type="text" name="" id="total-point" class="form-control">
             </div>
         </form>
     </div>
@@ -115,7 +149,7 @@
                 <div class="input-group-prepend">
                     <label class="input-group-text" for="weekending">Total Omzet</label>
                 </div>
-               <input type="text" name="" id="" class="form-control">
+               <input type="text" name="" id="total-omzet" class="form-control">
             </div>
         </form>
     </div>
@@ -212,21 +246,34 @@
 
 <script>
     $('.datepicker').datepicker();
-
+      $(document).ready(function(){
+        allData()
+      })
+      
+    
+  
     function allData() {
         let weekending = $('#weekending').val();
-        let fetchUrl = weekending == "" ? "juice_4u/tampil_data" : "juice_4u/tampil_data/" + weekending;
+        let mitra = $('#mitra').val();
+        let tahun = $('#tahun').val();
+        let bulan = $('#bulan').val();
+        let date = bulan + '-' + tahun;
+        let fetchUrl = weekending != '' ?"juice_4u/tampil_data/" + weekending: (bulan != '' && tahun != '')? "juice_4u/tampil_data_bulanan/" +date:(mitra != '')?"juice_4u/tampil_data/" + mitra:'juice_4u/tampil_data' ;
 
         $.ajax({
             url: "<?= base_url(); ?>" + fetchUrl,
             success: function(result) {
                 let results = JSON.parse(result);
                 let data = "";
+                let totalPoint = 0;
+                let totalOmzet = 0;
 
                 if (!results[0]) {
                     data = `<tr><td class="text-center" colspan="6">Tidak ada data ditampilkan. Silahkan pilih tanggal weekending untuk menampilkan data.</td></tr>`;
                 } else {
                     for (let i = 0; i < results.length; i++) {
+                        totalPoint = Number(results[i].point) + totalPoint
+                        totalOmzet = parseFloat(results[i].omzet) + totalOmzet
                         data += `
                         <tr>
                         <td class="text-center">
@@ -245,7 +292,6 @@
                         ${results[i].omzet}
                         </td>
                         <td style="text-align:center">
-
                         <a onclick="getDataById(${results[i].id})" class="btn btn-success text-white" style=""><i class="fa fa-edit"></i>Edit</i></a>
                         <a href="<?= base_url(); ?>juice_4u/hapus/${results[i].id}" class="btn btn-danger " style="" onclick="return confirm('Yakin ingin dihapus?');"><i class="fa fa-trash"></i>Hapus</a>
                         </td>
@@ -253,7 +299,8 @@
                         `;
                     }
                 }
-
+                $('#total-point').val(totalPoint)
+                $('#total-omzet').val(totalOmzet+' %')
                 $('#show_data').html(data);
             }
         });
@@ -261,7 +308,23 @@
 
     // Fetch data
     $('#weekending').on('change', function() {
+      $('#bulan').val('')
+      $('#mitra').val('')
       allData();
+      
+    });
+    $('#bulan').on('change', function() {
+      $('#weekending').val('')
+      $('#mitra').val('')
+      allData();
+      
+    });
+    $('#mitra').on('change', function() {
+      $('#weekending').val('')
+      // $('#tahun').val('')
+      $('#bulan').val('')
+      allData();
+      
     });
 
     // Tutup buku
