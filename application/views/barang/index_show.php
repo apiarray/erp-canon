@@ -149,7 +149,9 @@
                     $jumlah = $dt['jumlah'];
                     $id = $dt['id'];
 
-                    $akun = $this->M_account->getDataById($dt['id_coa']);
+                    if ($dt['id_coa'] != 0) {
+                        $akun = $this->M_account->getDataById($dt['id_coa']);
+                    }
                 ?>
                     <tr data-kode="<?= $kode; ?>" data-barang="<?= $nama; ?>" data-gudang="<?= $gudang; ?>" data-qty="<?= $qty; ?>" class="t-row">
                         <td>
@@ -175,7 +177,9 @@
                             ?>
                         </td>
                         <td>
-                            <?= "K-" . $akun['kode'] . " - " . $akun['nama']; ?>
+                            <?php if ($dt['id_coa'] != 0) { ?>
+                                <?= "K-" . $akun['kode'] . " - " . $akun['nama']; ?>
+                            <?php } ?>
                         </td>
                         <!-- <td>
                     <?= $manager; ?>
@@ -216,7 +220,7 @@
                                     Action
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a data-toggle="modal" data-target="#modal_edit<?= $id; ?>" class="btn btn-success mt-2" style="margin-left:42px"><i class="fa fa-edit"></i>Edit</i></a>
+                                    <a data-toggle="modal" onclick="handleEditData('<?= $id ?>')" class="btn btn-success mt-2" style="margin-left:42px"><i class="fa fa-edit"></i>Edit</i></a>
                                     <a href="<?= base_url(); ?>barang/hapus/<?= $id; ?>" class="btn btn-danger mt-2" style="margin-left:35px" onclick="return confirm('Yakin ingin dihapus?');"><i class="fa fa-trash"></i>Hapus</a>
                                 </div>
                             </div>
@@ -344,7 +348,7 @@
                         <div class="box-body">
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label for="inputKode">Kode</label>
+                                    <label for="inputKode">Kode <span class="text-danger">*</span></label>
                                     <input class="form-control" id="inputKode" name="kode" autocomplete="off" />
                                     <table class="table table-bordered table-sm table-hover" id="tabelKode" style="position: absolute; background-color: white; z-index: 10; display: none;">
                                         <thead>
@@ -359,17 +363,17 @@
                                     </table>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="inputBarang">Nama Barang</label>
+                                    <label for="inputBarang">Nama Barang <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="inputBarang" name="nama" required>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label for="inputKategori">Kategori</label>
+                                    <label for="inputKategori">Kategori <span class="text-danger">*</span></label>
                                     <select class="form-control" id="inputKategori" name="kategori" required>
                                         <option value="">Pilih</option>
                                         <?php foreach ($get_category as $row) { ?>
-                                            <option value="<?php echo $row->name; ?>"><?php echo $row->name; ?></option>
+                                            <option value="<?php echo $row->kode; ?>"><?php echo $row->name; ?></option>
                                         <?php } ?>
                                     </select>
                                 </div>
@@ -380,7 +384,7 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label for="inputGudang">Gudang</label>
+                                    <label for="inputGudang">Gudang <span class="text-danger">*</span></label>
                                     <select class="form-control" id="inputGudang" name="gudang" required>
                                         <option value="">Pilih</option>
                                         <?php foreach ($get_category1 as $row) { ?>
@@ -391,7 +395,7 @@
 
                                 <div class="form-group col-md-6">
                                     <label for="inputSebelumPajak">Harga Sebelum Pajak</label>
-                                    <input type="text" class="form-control" id="inputSebelumPajak" name="sebelumpajak" oninput="hitungHargaPPN()" required>
+                                    <input type="text" class="form-control numeric" id="inputSebelumPajak" name="sebelumpajak" oninput="hitungHargaPPN()" onchange="handlerFormat(event, '#inputSebelumPajak')">
                                 </div>
                             </div>
 
@@ -399,57 +403,52 @@
                                 <div class="form-group col-md-6">
                                     <label for="inputPpn">PPN</label>
                                     <div class="d-flex align-items-center">
-                                        <input type="text" class="form-control mr-1" id="inputPpn" name="ppn" oninput="hitungHargaPPN()" required>
+                                        <input type="text" class="form-control mr-1 numeric" id="inputPpn" name="ppn" oninput="hitungHargaPPN()">
                                         <span>%</span>
                                     </div>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="inputSetelahPajak">Harga Setelah Pajak</label>
-                                    <input type="text" class="form-control" id="inputSetelahPajak" name="setelahpajak" required>
+                                    <input type="text" class="form-control numeric" id="inputSetelahPajak" name="setelahpajak" readonly>
                                 </div>
                             </div>
 
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="inputBagus">Unit Bagus</label>
-                                    <input type="text" class="form-control" id="inputBagus" name="unitbagus" required>
+                                    <input type="text" class="form-control" id="inputBagus" name="unitbagus">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="inputRusak">Unit Rusak</label>
-                                    <input type="text" class="form-control" id="inputRusak" name="unitrusak" required>
+                                    <input type="text" class="form-control" id="inputRusak" name="unitrusak">
                                 </div>
                             </div>
 
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="inputSetoran">Harga Setoran</label>
-                                    <input type="text" class="form-control" id="inputSetoran" name="hargasetoran" required>
+                                    <input type="text" class="form-control numeric" id="inputSetoran" name="hargasetoran" onchange="handlerFormat(event, '#inputSetoran')">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="inputStok">Stok Awal</label>
-                                    <input type="text" class="form-control" id="inputStok" name="qty" required>
+                                    <input type="text" class="form-control numeric" id="inputStok" name="qty" onkeyup="hitungTotal(event)">
                                 </div>
                             </div>
 
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="hpp">HPP</label>
-                                    <input type="text" class="form-control" id="hpp" name="hpp" required>
+                                    <input type="text" class="form-control numeric" id="hpp" name="hpp" onchange="handlerFormat(event, '#hpp')">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="inputTotal">Total</label>
-                                    <input type="text" class="form-control" id="inputTotal" name="jumlah" required>
+                                    <input type="text" class="form-control numeric" id="inputTotal" name="jumlah" readonly>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="hpp">Kode Akun</label>
-                                    <select class="form-control" name="id_coa" id="id_coa">
-                                        <option value="" selected="" disabled="">- Select No Akun -</option>
-                                        <?php foreach ($akun as $key => $value) { ?>
-                                            <option value="<?= $value['id'] ?>"><?= "K-" . $value['kode'] . " - " . $value['nama'] ?></option>
-                                        <?php } ?>
-                                    </select>
+                                    <select class="form-control" name="id_coa_create" id="id_coa_create"></select>
                                 </div>
                             </div>
                         </div>
@@ -467,336 +466,294 @@
     </div>
     <!-- /.modal -->
 
-    <?php
-    if ($data != null) :
-        foreach ($data->result_array() as $i) :
-            $kode = $i['kode'];
-            $nama = $i['nama'];
-            $kategori = $i['kategori'];
-            $gudang = $i['gudang'];
-            $manager = $i['manager'];
-            $gudang = $i['gudang'];
-            $qty = $i['qty'];
-            $unitbagus = $i['unitbagus'];
-            $unitrusak = $i['unitrusak'];
-            $hpp = $i['hpp'];
-            $sebelumpajak = $i['sebelumpajak'];
-            $ppn = $i['ppn'];
-            $setelahpajak = $i['setelahpajak'];
-            $hargasetoran = $i['hargasetoran'];
-            $jumlah = $i['jumlah'];
-            $id_coa = $i['id_coa'];
-    ?>
-
-            <!-- ============ MODAL EDIT BARANG =============== -->
-            <div class="modal fade" id="modal_edit<?php echo $id; ?>" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <h4 class="modal-title"></h4>
-                        </div>
-                        <form role="form" method="post" action="<?php echo base_url() . 'barang/edit' ?>">
-                            <div class="modal-body">
-                                <section class="content">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="box-header with-border">
-                                                <h3 class="box-title"></h3>
-                                            </div>
-                                            <div class="box-body">
-                                                <div class="form-row">
-                                                    <div class="form-group col-md-6">
-                                                        <label for="inputkode">Kode</label>
-                                                        <input type="text" class="form-control" id="inputkode" name="kode" value="<?php echo $kode; ?>" required>
-                                                        <input type="hidden" name="id" maxlength="11" class="form-control" value="<?php echo $id; ?>" readonly>
-                                                    </div>
-                                                    <div class="form-group col-md-6">
-                                                        <label for="inputBarang">Nama Barang</label>
-                                                        <input type="text" class="form-control" id="inputBarang" name="nama" required value="<?php echo $nama; ?>">
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-row">
-                                                    <div class="form-group col-md-6">
-                                                        <label for="inputKategori">Kategori</label>
-                                                        <select class="form-control" name="kategori" required>
-                                                            <option value="<?php echo $kategori; ?>">Pilih</option>
-                                                            <?php foreach ($get_category as $row) { ?>
-                                                                <option value="<?php echo $row->name; ?>"><?php echo $row->name; ?></option>
-                                                            <?php } ?>
-                                                        </select>
-                                                    </div>
-                                                    <!-- <div class="form-group col-md-6">
-                                                    <label for="inputKategori">Manager</label>
-                                                    <input type="text" class="form-control" id="inputKategori" value="<?php echo $manager; ?>" name="manager">
-                                                </div> -->
-                                                </div>
-
-                                                <div class="form-row">
-                                                    <div class="form-group col-md-6">
-                                                        <label for="inputGudang">Gudang</label>
-                                                        <select class="form-control" name="gudang" required>
-                                                            <option value="<?php echo $gudang; ?>">Pilih</option>
-                                                            <?php foreach ($get_category1 as $row) { ?>
-                                                                <option value="<?php echo $row->nama; ?>"><?php echo $row->nama; ?></option>
-                                                            <?php } ?>
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="form-group col-md-6">
-                                                        <label for="inputCity">Harga Sebelum Pajak</label>
-                                                        <input type="text" class="form-control" id="inputCity" name="sebelumpajak" required value="<?php echo $sebelumpajak; ?>">
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="form-row">
-                                                    <div class="form-group col-md-6">
-                                                        <label for="inputZip">PPN</label>
-                                                        <input type="text" class="form-control" id="inputZip" name="ppn" value="<?php echo $ppn; ?>" required>
-                                                    </div>
-                                                    <div class="form-group col-md-6">
-                                                        <label for="inputZip">Harga Setelah Pajak</label>
-                                                        <input type="text" class="form-control" id="inputZip" name="setelahpajak" value="<?php echo $setelahpajak; ?>" required>
-                                                    </div>
-                                                </div>
-                                                <div class="form-row">
-                                                    <div class="form-group col-md-6">
-                                                        <label for="inputbagus">Unit Bagus</label>
-                                                        <input type="text" class="form-control" id="inputbagus" name="unitbagus" value="<?php echo $unitbagus; ?>" required>
-                                                    </div>
-                                                    <div class="form-group col-md-6">
-                                                        <label for="inputrusak">Unit Rusak</label>
-                                                        <input type="text" class="form-control" id="inputrusak" name="unitrusak" value="<?php echo $unitrusak; ?>" required>
-                                                    </div>
-                                                </div>
-                                                <div class="form-row">
-                                                    <div class="form-group col-md-6">
-                                                        <label for="inputSetoran">Harga Setoran</label>
-                                                        <input type="text" class="form-control" id="inputSetoran" name="hargasetoran" value="<?php echo $hargasetoran; ?>" required>
-                                                    </div>
-                                                    <div class="form-group col-md-6">
-                                                        <label for="inputStok">Stok Awal</label>
-                                                        <input type="text" class="form-control" id="inputStok" name="qty" value="<?php echo $qty; ?>" required>
-                                                    </div>
-                                                </div>
-                                                <div class="form-row">
-                                                    <div class="form-group col-md-6">
-                                                        <label for="inputCity">HPP</label>
-                                                        <input type="text" class="form-control" id="inputCity" name="hpp" value="<?php echo $hpp; ?>" required>
-                                                    </div>
-                                                    <div class="form-group col-md-6">
-                                                        <label for="inputTotal">Total</label>
-                                                        <input type="text" class="form-control" id="inputTotal" name="jumlah" value="<?php echo $jumlah; ?>" required>
-                                                    </div>
-                                                </div>
-                                                <div class="form-row">
-                                                    <div class="form-group col-md-6">
-                                                        <label for="hpp">Kode Akun</label>
-                                                        <select class="form-control" name="id_coa" id="id_coa">
-                                                            <?php foreach ($listakun as $key => $value) { ?>
-                                                                <option value="<?= $value['id'] ?>" <?php echo ($value['id'] == $id_coa) ? "selected" : ""; ?>><?= "K-" . $value['kode'] . " - " . $value['nama'] ?></option>
-                                                            <?php } ?>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- /.box-body -->
-                                            <div class="modal-footer">
-                                                <button type="submit" class="btn btn-info">Edit</button>
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                                            </div>
-                        </form>
-                    </div>
+    <!-- Modal Transfer Antar Gudang -->
+    <div class="modal fade" id="modalTransferAntarGdg" tabindex="-1" aria-labelledby="modalTransferAntarGdgLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTransferAntarGdgLabel">Transfer Antar Gudang</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                </section>
+                <form action="<?= base_url('transfer_gudang/tambahDataTransferGdg'); ?>" method="POST">
+                    <div class="modal-body">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="tgl_tfgdg">Tanggal</label>
+                                <input type="text" class="form-control datepicker" data-date-format="yyyy-mm-dd" id="tgl_tfgdg" name="tgl_tfgdg" required value="<?= date('Y-m-d'); ?>">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="no_transfer_tfgdg">No. Transfer</label>
+                                <input type="text" class="form-control" id="no_transfer_tfgdg" name="no_transfer_tfgdg" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="keterangan_tfgdg">Keterangan</label>
+                            <input type="text" class="form-control" id="keterangan_tfgdg" placeholder="" name="keterangan_tfgdg" value="-">
+                        </div>
+                        <div class="form-group">
+                            <label for="kode_tfgdg">Kode</label>
+                            <input type="text" class="form-control" id="kode_tfgdg" placeholder="" name="kode_tfgdg" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="barang_tfgdg">Nama Barang</label>
+                            <input type="text" class="form-control" id="barang_tfgdg" placeholder="" name="barang_tfgdg" readonly>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="gudang_asal_tfgdg">Gudang Asal</label>
+                                <input type="text" class="form-control" id="gudang_asal_tfgdg" name="gudang_asal_tfgdg" readonly>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="gudang_tujuan_tfgdg">Gudang Tujuan</label>
+                                <select name="gudang_tujuan_tfgdg" id="gudang_tujuan_tfgdg" class="form-control">
+                                    ---
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="qty_asal_tfgdg">QTY Asal</label>
+                                <input type="text" class="form-control" id="qty_asal_tfgdg" name="qty_asal_tfgdg" readonly>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="jumlah_karton_tfgdg">Jumlah Karton</label>
+                                <input type="text" class="form-control" id="jumlah_karton_tfgdg" name="jumlah_karton_tfgdg" required oninput="hitungQtyTf()">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="isi_karton_tfgdg">Isi Karton</label>
+                                <input type="text" class="form-control" id="isi_karton_tfgdg" name="isi_karton_tfgdg" required oninput="hitungQtyTf()">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="qty_tfgdg">QTY Transfer</label>
+                                <input type="text" class="form-control" id="qty_tfgdg" name="qty_tfgdg" readonly value="0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Transfer</button>
+                    </div>
+                </form>
             </div>
-            </form>
-</div>
-<!-- /.modal-content -->
-</div>
-<!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-<?php endforeach;
-    endif; ?>
-
-<!-- Modal Transfer Antar Gudang -->
-<div class="modal fade" id="modalTransferAntarGdg" tabindex="-1" aria-labelledby="modalTransferAntarGdgLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalTransferAntarGdgLabel">Transfer Antar Gudang</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="<?= base_url('transfer_gudang/tambahDataTransferGdg'); ?>" method="POST">
-                <div class="modal-body">
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="tgl_tfgdg">Tanggal</label>
-                            <input type="text" class="form-control datepicker" data-date-format="yyyy-mm-dd" id="tgl_tfgdg" name="tgl_tfgdg" required value="<?= date('Y-m-d'); ?>">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="no_transfer_tfgdg">No. Transfer</label>
-                            <input type="text" class="form-control" id="no_transfer_tfgdg" name="no_transfer_tfgdg" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="keterangan_tfgdg">Keterangan</label>
-                        <input type="text" class="form-control" id="keterangan_tfgdg" placeholder="" name="keterangan_tfgdg" value="-">
-                    </div>
-                    <div class="form-group">
-                        <label for="kode_tfgdg">Kode</label>
-                        <input type="text" class="form-control" id="kode_tfgdg" placeholder="" name="kode_tfgdg" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="barang_tfgdg">Nama Barang</label>
-                        <input type="text" class="form-control" id="barang_tfgdg" placeholder="" name="barang_tfgdg" readonly>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="gudang_asal_tfgdg">Gudang Asal</label>
-                            <input type="text" class="form-control" id="gudang_asal_tfgdg" name="gudang_asal_tfgdg" readonly>
-                        </div>
-
-                        <div class="form-group col-md-6">
-                            <label for="gudang_tujuan_tfgdg">Gudang Tujuan</label>
-                            <select name="gudang_tujuan_tfgdg" id="gudang_tujuan_tfgdg" class="form-control">
-                                ---
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="qty_asal_tfgdg">QTY Asal</label>
-                            <input type="text" class="form-control" id="qty_asal_tfgdg" name="qty_asal_tfgdg" readonly>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="jumlah_karton_tfgdg">Jumlah Karton</label>
-                            <input type="text" class="form-control" id="jumlah_karton_tfgdg" name="jumlah_karton_tfgdg" required oninput="hitungQtyTf()">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="isi_karton_tfgdg">Isi Karton</label>
-                            <input type="text" class="form-control" id="isi_karton_tfgdg" name="isi_karton_tfgdg" required oninput="hitungQtyTf()">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="qty_tfgdg">QTY Transfer</label>
-                            <input type="text" class="form-control" id="qty_tfgdg" name="qty_tfgdg" readonly value="0">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-primary">Transfer</button>
-                </div>
-            </form>
         </div>
     </div>
-</div>
-<!-- End of Modal Transfer Antar Gudang -->
+    <!-- End of Modal Transfer Antar Gudang -->
 
-<!-- Modal Return Ke Supplier -->
-<div class="modal fade" id="modalReturnKeSupplier" tabindex="-1" aria-labelledby="modalReturnKeSupplierLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalReturnKeSupplierLabel">Return Ke Supplier</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+    <!-- Modal Return Ke Supplier -->
+    <div class="modal fade" id="modalReturnKeSupplier" tabindex="-1" aria-labelledby="modalReturnKeSupplierLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalReturnKeSupplierLabel">Return Ke Supplier</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="<?= base_url('return_supplier/tambahDataReturnSupplier'); ?>" method="POST">
+                    <div class="modal-body">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="tgl_returnsuppl">Tanggal</label>
+                                <input type="text" class="form-control datepicker" data-date-format="yyyy-mm-dd" id="tgl_returnsuppl" name="tgl_returnsuppl" required value="<?= date('Y-m-d'); ?>">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="no_return_returnsuppl">No. Return</label>
+                                <input type="text" class="form-control" id="no_return_returnsuppl" name="no_return_returnsuppl" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="keterangan_returnsuppl">Keterangan</label>
+                            <input type="text" class="form-control" id="keterangan_returnsuppl" placeholder="" name="keterangan_returnsuppl" value="-">
+                        </div>
+                        <div class="form-group">
+                            <label for="jenis_kendaraan_returnsuppl">Jenis Kendaraan</label>
+                            <input type="text" class="form-control" id="jenis_kendaraan_returnsuppl" placeholder="" name="jenis_kendaraan_returnsuppl">
+                        </div>
+                        <div class="form-group">
+                            <label for="no_polisi_returnsuppl">No Polisi</label>
+                            <input type="text" class="form-control" id="no_polisi_returnsuppl" placeholder="" name="no_polisi_returnsuppl">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="nama_driver_returnsuppl">Nama Driver</label>
+                                <input type="text" class="form-control" id="nama_driver_returnsuppl" name="nama_driver_returnsuppl" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="nama_expedisi_returnsuppl">Nama Expedisi</label>
+                                <input type="text" class="form-control" id="nama_expedisi_returnsuppl" name="nama_expedisi_returnsuppl" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="kode_returnsuppl">Kode</label>
+                                <input type="text" class="form-control" id="kode_returnsuppl" name="kode_returnsuppl" readonly>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="barang_returnsuppl">Nama Barang</label>
+                                <input type="text" class="form-control" id="barang_returnsuppl" name="barang_returnsuppl" readonly>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="gudang_asal_returnsuppl">Gudang Asal</label>
+                                <input type="text" class="form-control" id="gudang_asal_returnsuppl" name="gudang_asal_returnsuppl" readonly>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="supplier_tujuan_returnsuppl">Supplier Tujuan</label>
+                                <select class="form-control" id="supplier_tujuan_returnsuppl" name="supplier_tujuan_returnsuppl">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="qty_asal_returnsuppl">Qty Asal</label>
+                                <input type="text" class="form-control" id="qty_asal_returnsuppl" name="qty_asal_returnsuppl" readonly>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="jumlah_karton_returnsuppl">Jumlah Karton</label>
+                                <input type="text" class="form-control" id="jumlah_karton_returnsuppl" name="jumlah_karton_returnsuppl" oninput="hitungQtyReturn()" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="isi_karton_returnsuppl">Isi Karton</label>
+                                <input type="text" class="form-control" id="isi_karton_returnsuppl" name="isi_karton_returnsuppl" oninput="hitungQtyReturn()" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="qty_returnsuppl">QTY Return</label>
+                                <input type="text" class="form-control" id="qty_returnsuppl" name="qty_returnsuppl" readonly value="0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Return</button>
+                    </div>
+                </form>
             </div>
-            <form action="<?= base_url('return_supplier/tambahDataReturnSupplier'); ?>" method="POST">
-                <div class="modal-body">
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="tgl_returnsuppl">Tanggal</label>
-                            <input type="text" class="form-control datepicker" data-date-format="yyyy-mm-dd" id="tgl_returnsuppl" name="tgl_returnsuppl" required value="<?= date('Y-m-d'); ?>">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="no_return_returnsuppl">No. Return</label>
-                            <input type="text" class="form-control" id="no_return_returnsuppl" name="no_return_returnsuppl" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="keterangan_returnsuppl">Keterangan</label>
-                        <input type="text" class="form-control" id="keterangan_returnsuppl" placeholder="" name="keterangan_returnsuppl" value="-">
-                    </div>
-                    <div class="form-group">
-                        <label for="jenis_kendaraan_returnsuppl">Jenis Kendaraan</label>
-                        <input type="text" class="form-control" id="jenis_kendaraan_returnsuppl" placeholder="" name="jenis_kendaraan_returnsuppl">
-                    </div>
-                    <div class="form-group">
-                        <label for="no_polisi_returnsuppl">No Polisi</label>
-                        <input type="text" class="form-control" id="no_polisi_returnsuppl" placeholder="" name="no_polisi_returnsuppl">
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="nama_driver_returnsuppl">Nama Driver</label>
-                            <input type="text" class="form-control" id="nama_driver_returnsuppl" name="nama_driver_returnsuppl" required>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="nama_expedisi_returnsuppl">Nama Expedisi</label>
-                            <input type="text" class="form-control" id="nama_expedisi_returnsuppl" name="nama_expedisi_returnsuppl" required>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="kode_returnsuppl">Kode</label>
-                            <input type="text" class="form-control" id="kode_returnsuppl" name="kode_returnsuppl" readonly>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="barang_returnsuppl">Nama Barang</label>
-                            <input type="text" class="form-control" id="barang_returnsuppl" name="barang_returnsuppl" readonly>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="gudang_asal_returnsuppl">Gudang Asal</label>
-                            <input type="text" class="form-control" id="gudang_asal_returnsuppl" name="gudang_asal_returnsuppl" readonly>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="supplier_tujuan_returnsuppl">Supplier Tujuan</label>
-                            <select class="form-control" id="supplier_tujuan_returnsuppl" name="supplier_tujuan_returnsuppl">
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="qty_asal_returnsuppl">Qty Asal</label>
-                            <input type="text" class="form-control" id="qty_asal_returnsuppl" name="qty_asal_returnsuppl" readonly>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="jumlah_karton_returnsuppl">Jumlah Karton</label>
-                            <input type="text" class="form-control" id="jumlah_karton_returnsuppl" name="jumlah_karton_returnsuppl" oninput="hitungQtyReturn()" required>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="isi_karton_returnsuppl">Isi Karton</label>
-                            <input type="text" class="form-control" id="isi_karton_returnsuppl" name="isi_karton_returnsuppl" oninput="hitungQtyReturn()" required>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="qty_returnsuppl">QTY Return</label>
-                            <input type="text" class="form-control" id="qty_returnsuppl" name="qty_returnsuppl" readonly value="0">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-primary">Return</button>
-                </div>
-            </form>
         </div>
     </div>
-</div>
-<!-- End of Modal Return Ke Supplier -->
+    <!-- End of Modal Return Ke Supplier -->
+
+
+    <!-- ============ MODAL EDIT BARANG =============== -->
+    <div class="modal fade" id="modal_edit" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <form role="form" method="post" action="<?php echo base_url() . 'barang/edit' ?>">
+                    <div class="modal-body">
+                        <section class="content">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title"></h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="inputkode_edit">Kode <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="inputkode_edit" name="kode" required>
+                                                <input type="hidden" name="id" id="id_edit" maxlength="11" class="form-control" readonly>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="inputBarang_edit">Nama Barang <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="inputBarang_edit" name="nama" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="inputKategori_edit">Kategori <span class="text-danger">*</span></label>
+                                                <select class="form-control" name="kategori" id="inputKategori_edit" required></select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="gudang_edit">Gudang <span class="text-danger">*</span></label>
+                                                <select class="form-control" name="gudang" id="gudang_edit" required></select>
+                                            </div>
+
+                                            <div class="form-group col-md-6">
+                                                <label for="inputSebelumPajak_edit">Harga Sebelum Pajak</label>
+                                                <input type="text" class="form-control" id="inputSebelumPajak_edit" name="sebelumpajak" oninput="hitungHargaPPN('_edit')" onchange="handlerFormat(event, '#inputSebelumPajak', '_edit')">
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="inputPpn_edit">PPN</label>
+                                                <input type="text" class="form-control" id="inputPpn_edit" name="ppn" oninput="hitungHargaPPN('_edit')">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="inputSetelahPajak_edit">Harga Setelah Pajak</label>
+                                                <input type="text" class="form-control" id="inputSetelahPajak_edit" name="setelahpajak" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="inputbagus_edit">Unit Bagus</label>
+                                                <input type="text" class="form-control" id="inputbagus_edit" name="unitbagus">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="inputrusak_edit">Unit Rusak</label>
+                                                <input type="text" class="form-control" id="inputrusak_edit" name="unitrusak">
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="inputSetoran_edit">Harga Setoran</label>
+                                                <input type="text" class="form-control" id="inputSetoran_edit" name="hargasetoran" onchange="handlerFormat(event, '#inputSetoran', '_edit')">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="inputStok_edit">Stok Awal</label>
+                                                <input type="text" class="form-control" id="inputStok_edit" name="qty" onkeyup="hitungTotal(event, '_edit')">
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="hpp_edit">HPP</label>
+                                                <input type="text" class="form-control" id="hpp_edit" name="hpp" onchange="handlerFormat(event, '#hpp', '_edit')">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="inputTotal_edit">Total</label>
+                                                <input type="text" class="form-control" id="inputTotal_edit" name="jumlah" readonly>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="id_coa_edit">Kode Akun</label>
+                                                <select class="form-control" name="id_coa" id="id_coa_edit"></select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <!-- /.box-body -->
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-info">Edit</button>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>>
+                        </section>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 </div>
 <!-- End of Container -->
@@ -807,6 +764,26 @@
 <script src="<?php echo base_url() . 'datatables/dataTables.bootstrap.js' ?>" type="text/javascript"></script>
 
 <script>
+    $(document).ready(function() {
+        fetch('<?= base_url('barang/getAkun'); ?>')
+            .then(response => response.json())
+            .then((result) => {
+                $("#id_coa_create").empty()
+                $("#id_coa_create").append('<option value="">--Pilih Akun--</option>')
+                $.each(result, function(i, v) {
+                    $("#id_coa_create").append(`<option value="${v.id}">K-${v.kode} - ${v.nama}</option>`)
+                });
+            });
+    })
+
+    const numberFormat = (number) => {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    $(document).on("input", ".numeric", function(event) {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+
     $('#lookup').dataTable();
     $('input[name=tgl_tfgdg]').datepicker('datepicker');
     $('input[name=tgl_returnsuppl]').datepicker('datepicker');
@@ -930,11 +907,17 @@
                 document.getElementById('inputKode').value = result.kode;
                 document.getElementById('inputBarang').value = result.nama;
                 document.getElementById('inputKategori').value = result.nama_ktg;
-                document.getElementById('inputSebelumPajak').value = result.sebelumpajak;
+                document.getElementById('inputSebelumPajak').value = numberFormat(result.sebelumpajak);
                 document.getElementById('inputPpn').value = result.ppn;
-                document.getElementById('inputSetelahPajak').value = result.setelahpajak;
-                document.getElementById('inputSetoran').value = result.hargasetoran;
-                document.getElementById('hpp').value = result.hpp;
+                document.getElementById('inputSetelahPajak').value = numberFormat(result.setelahpajak);
+                document.getElementById('inputSetoran').value = numberFormat(result.hargasetoran);
+                document.getElementById('hpp').value = numberFormat(result.hpp);
+
+                let stok = document.getElementById('inputStok');
+
+                let valStok = stok.value == "" ? 1 : parseFloat(stok.value.replace(/,/g, ''))
+
+                document.getElementById('inputTotal').value = numberFormat(valStok * parseFloat(result.setelahpajak));
 
                 document.getElementById('tabelKode').style.display = 'none';
                 // console.log(result);
@@ -953,7 +936,7 @@
                         // console.log(results);
                         results.forEach(function(e) {
                             data += `
-                            <tr onclick="getBarang(${e.id})">
+                            <tr onclick="getBarang(${e.id})" style="cursor:pointer">
                             <td>${e.kode}</td>
                             <td>${e.nama}</td>
                             <td>${e.gudang}</td>
@@ -971,15 +954,39 @@
         }
     });
 
-    function hitungHargaPPN() {
-        let inputPpn = document.getElementById('inputPpn');
-        let inputSebelumPajak = document.getElementById('inputSebelumPajak');
-        let inputSetelahPajak = document.getElementById('inputSetelahPajak');
+    function hitungHargaPPN(type = null) {
+        let inputPpn = (type == null) ? document.getElementById('inputPpn') : document.getElementById('inputPpn' + type);
+        let inputSebelumPajak = (type == null) ? document.getElementById('inputSebelumPajak') : document.getElementById('inputSebelumPajak' + type);
+        let inputSetelahPajak = (type == null) ? document.getElementById('inputSetelahPajak') : document.getElementById('inputSetelahPajak' + type);
+        let stok = (type == null) ? document.getElementById('inputStok') : document.getElementById('inputStok' + type);
+        let total = (type == null) ? document.getElementById('inputTotal') : document.getElementById('inputTotal' + type);
 
-        inputSetelahPajak.value = parseInt(inputSebelumPajak.value) + parseInt(inputSebelumPajak.value) * (parseInt(inputPpn.value) / 100);
+        let valInputPpn = inputPpn.value == "" ? 0 : parseFloat(inputPpn.value.replace(/,/g, ''));
+        let valInputSebelumPajak = inputSebelumPajak.value == "" ? 0 : parseFloat(inputSebelumPajak.value.replace(/,/g, ''))
+
+        let valueSetelahPajak = numberFormat(valInputSebelumPajak + valInputSebelumPajak * (valInputPpn / 100));
+
+        inputSetelahPajak.value = valueSetelahPajak;
+
+        let valStok = stok.value == "" ? 1 : parseFloat(stok.value.replace(/,/g, ''))
+
+        total.value = numberFormat(valStok * valueSetelahPajak == "" ? 1 : valueSetelahPajak.replace(/,/g, ''))
     }
 
+    const hitungTotal = (event, type = null) => {
+        let stok = event.currentTarget.value == "" ? 1 : parseFloat(event.currentTarget.value)
+        let inputSetelahPajak = (type == null) ? document.getElementById('inputSetelahPajak') : document.getElementById('inputSetelahPajak' + type)
+        let valInputSetelahPajak = inputSetelahPajak.value == "" ? 1 : parseFloat(inputSetelahPajak.value.replace(/,/g, ''));
 
+        let total = (type == null) ? document.getElementById('inputTotal') : document.getElementById('inputTotal' + type)
+
+        total.value = numberFormat(stok * valInputSetelahPajak)
+    }
+
+    const handlerFormat = (event, target, type = null) => {
+        let a = event.currentTarget.value == "" ? "" : numberFormat(event.currentTarget.value)
+        type == null ? $(`${target}`).val(a) : $(`${target}${type}`).val(a)
+    }
 
     // jika dipilih, nim akan masuk ke input dan modal di tutup
     $(document).on('click', '.pilih', function(e) {
@@ -995,5 +1002,58 @@
 
         var kode = document.getElementById("kode").value;
         alert('Kode ' + ket + ' berhasil tersimpan');
+    }
+
+    function handleEditData(id) {
+        fetch('<?= base_url('barang/getDataBarangById/'); ?>' + id)
+            .then(response => response.json())
+            .then((result) => {
+                $("#modal_edit").modal('show');
+
+                const produk = result.dataBarang;
+
+                $("#id_edit").val(id);
+                $("#inputkode_edit").val(produk.kode);
+                $("#inputBarang_edit").val(produk.nama);
+                $("#inputSebelumPajak_edit").val(numberFormat(produk.sebelumpajak));
+                $("#inputPpn_edit").val(produk.ppn);
+                $("#inputSetelahPajak_edit").val(numberFormat(produk.setelahpajak));
+                $("#inputbagus_edit").val(produk.unitbagus);
+                $("#inputrusak_edit").val(produk.unitrusak);
+                $("#inputSetoran_edit").val(numberFormat(produk.hargasetoran));
+                $("#inputStok_edit").val(produk.qty);
+                $("#hpp_edit").val(numberFormat(produk.hpp));
+                $("#inputTotal_edit").val(numberFormat(produk.jumlah));
+
+                $("#inputKategori_edit").empty();
+                $("#inputKategori_edit").append("<option value=''>--Pilih Kategori--</option>")
+                $.each(result.dataCategory, function(i, v) {
+                    if (v.kode == produk.kategori) {
+                        $("#inputKategori_edit").append(`<option value="${v.kode}" selected>${v.name}</option>`)
+                    } else {
+                        $("#inputKategori_edit").append(`<option value="${v.kode}">${v.name}</option>`)
+                    }
+                });
+
+                $("#gudang_edit").empty();
+                $("#gudang_edit").append("<option value=''>--Pilih Gudang--</option>")
+                $.each(result.dataGudang, function(i, v) {
+                    if (v.gudang == produk.gudang) {
+                        $("#gudang_edit").append(`<option value="${v.gudang}" selected>${v.gudang}</option>`)
+                    } else {
+                        $("#gudang_edit").append(`<option value="${v.gudang}">${v.gudang}</option>`)
+                    }
+                });
+
+                $("#id_coa_edit").empty();
+                $("#id_coa_edit").append("<option value=''>--Pilih Gudang--</option>")
+                $.each(result.dataListAkun, function(i, v) {
+                    if (v.id == produk.id_coa) {
+                        $("#id_coa_edit").append(`<option value="${v.id}" selected>K-${v.kode} - ${v.nama}</option>`)
+                    } else {
+                        $("#id_coa_edit").append(`<option value="${v.id}">K-${v.kode} - ${v.nama}</option>`)
+                    }
+                });
+            });
     }
 </script>

@@ -20,13 +20,18 @@ class M_daftar extends CI_Model
 
     public function tampil_data()
     {
-        $query = $this->db->query('SELECT * FROM `daftar_mitra` LEFT JOIN `users` ON daftar_mitra.kode  = users.kode_id');
+        $query = $this->db->query('SELECT daftar_mitra.* FROM `daftar_mitra` LEFT JOIN `users` ON daftar_mitra.kode  = users.kode_id');
         return $query;
     }
 
     public function tampil_promoter()
     {
         return $this->db->get('daftar_mitra')->result_array();
+    }
+
+    public function tampil_promoter1($id)
+    {
+        return $this->db->where("id !=", $id)->get('daftar_mitra')->result_array();
     }
 
     public function tampil_gudang()
@@ -71,6 +76,25 @@ class M_daftar extends CI_Model
         $this->db->insert('daftar_mitra', $data);
     }
 
+    public function ubahDataMitra($id)
+    {
+        $data = [
+            "name" => $this->input->post('name', true),
+            "tgl_lahir" => $this->input->post('tgl_lahir', true),
+            "jabatan" => $this->input->post('jabatan', true),
+            "promoter" => $this->input->post('promoter', true),
+            "thn_gabung" => $this->input->post('thn_gabung', true),
+            "gudang" => $this->input->post('gudang', true),
+            "alamat" => $this->input->post('alamat', true),
+            "kota" => $this->input->post('kota', true),
+            "telepon" => $this->input->post('telepon', true),
+            "email" => $this->input->post('email', true)
+
+        ];
+        $this->db->where("id", $id);
+        $this->db->update('daftar_mitra', $data);
+    }
+
     public function getdaftar_mitraById($id)
     {
         return $this->db->get_where('daftar_mitra', ['id' => $id])->row_array();
@@ -82,8 +106,9 @@ class M_daftar extends CI_Model
         return $query;
     }
 
-    public function hapusDatadaftar_mitra($id){
-        $this->db->where('id',$id);
+    public function hapusDatadaftar_mitra($id)
+    {
+        $this->db->where('id', $id);
         $this->db->delete('daftar_mitra');
     }
 
