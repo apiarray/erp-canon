@@ -23,7 +23,7 @@
                         </div>
                     </div>
                 <?php endif; ?>
-                <a href="<?= base_url('roleakses/tambah'); ?>" class="btn btn-primary mb-2 mt-2">Tambah Data --Test Auto Deploy</a>
+                <a href="<?= base_url('roleakses/tambah'); ?>" class="btn btn-primary mb-2 mt-2">Tambah Data </a>
                 <div class="table-responsive pt-2 pr-2">
                     <!-- <table class="table" id="dataTable" width="" cellspacing="0"> -->
                     <table id="mytable" class="table table-striped table-bordered table-hover table-full-width dataTable" cellspacing="0" width="" style="font-size: 12px;">
