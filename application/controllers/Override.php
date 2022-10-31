@@ -66,13 +66,14 @@ class Override extends CI_Controller
           $data = array(
             'kode' => $post['kode'],
             'kode_jabatan' => $post['kode_jabatan'],
+            'persen' => $post['persen'][$post['check'][0]],
           );
 
-          if($fields_name=="omsetless_15") $data = array_merge($data, array('omsetless_15' => $post['persen'][$post['check'][0]]));
+          if($fields_name=="omsetless_15") $data = array_merge($data, array('omsetless_15' => 'Y'));
 
-          if($fields_name=="omsetmore_15") $data = array_merge($data, array('omsetmore_15' => $post['persen'][$post['check'][0]]));
+          if($fields_name=="omsetmore_15") $data = array_merge($data, array('omsetmore_15' => 'Y'));
 
-          if($fields_name=="omsetall") $data = array_merge($data, array('omsetall' => $post['persen'][$post['check'][0]]));
+          if($fields_name=="omsetall") $data = array_merge($data, array('omsetall' => 'Y'));
 
           $this->M_Overridemitra->create($data);
 
