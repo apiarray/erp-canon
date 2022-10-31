@@ -171,6 +171,16 @@ class Override extends CI_Controller
       echo ($newKode);
   }
 
+  public function saldo(){
+    $topik['judul'] = 'Saldo Override';
+    $data['judul'] = $topik['judul'];       
+    $data['overrides'] = $this->M_override->getAllData();       
+
+    $this->load->view('templates/header',$topik);
+    $this->load->view('override/saldo',$data);
+    $this->load->view('templates/footer');
+  }
+
 }
 
 
