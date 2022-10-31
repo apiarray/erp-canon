@@ -22,7 +22,7 @@
                     <div class="row mb-3">
                         <div class="form-group col-sm-6">
                             <label class="my-1 mr-2">Kode</label>
-                            <input type="text" class="form-control" name="kode" value="<?=$overrides->kode;?>"/>
+                            <input type="text" class="form-control" name="kode" value="<?=$overrides->kode;?>" readonly/>
                         </div>
 
                         <div class="form-group col-sm-6">
@@ -54,7 +54,7 @@
                                 </td>
                                 <td>
                                     <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" name="check[]" value="omsetless_15" />
+                                        <input type="checkbox" class="form-check-input" name="check[]" value="omsetless_15" <?=($overrides->omsetless_15=='Y') ? 'checked="checked"' : '';?>/>
                                     </div>
                                 </td>
                             </tr>
@@ -65,7 +65,7 @@
                                 </td>
                                 <td>
                                     <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" name="check[]" value="omsetmore_15" />
+                                        <input type="checkbox" class="form-check-input" name="check[]" value="omsetmore_15" <?=($overrides->omsetmore_15=='Y') ? 'checked="checked"' : '';?>/>
                                     </div>
                                 </td>
                             </tr>
@@ -76,7 +76,7 @@
                                 </td>
                                 <td>
                                     <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" name="check[]" value="omsetall" />
+                                        <input type="checkbox" class="form-check-input" name="check[]" value="omsetall" <?=($overrides->omsetall=='Y') ? 'checked="checked"' : '';?>/>
                                     </div>
                                 </td>
                             </tr>
@@ -95,9 +95,9 @@
 <script type="text/javascript">
     var deferred = new $.Deferred(),
         promise = deferred.promise();
-    
-    $('#content').on( "click", function() {
-        // alert(1);
+
+    $(document).on('click', 'input[type="checkbox"]', function() {      
+        $('input[type="checkbox"]').not(this).prop('checked', false);      
     });
 
     setTimeout(function(){
