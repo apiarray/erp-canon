@@ -1,6 +1,3 @@
-<?php
-// echo json_encode($overrides);
-?>
 <div class="content-wrapper col-12">
 <section class="content-header ml mt-2 auto">
 
@@ -69,8 +66,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button></div>'); ?>
 
-                <?=form_open('dashboard/override_create', array(
-                    'id' => 'jabatanform',
+                <?=form_open('override/Override_Create', array(
+                    'id' => 'overrideform',
                     'class' => 'form-inline',
                     'method'=>'post'
                 )); ?>
@@ -82,10 +79,10 @@
 
                         <div class="form-group col-sm-6">
                             <label class="my-1 mr-2">Nama Jabatan</label>
-                            <select class="form-control" name="name">
+                            <select class="form-control" name="kode_jabatan">
                                 <option value="">-- Pilih --</option>
                                 <?php foreach($jabatanList as $jabtan) {
-                                    echo '<option value="' . $jabtan['id'] . '">' . $jabtan['name'] . '</option>';
+                                    echo '<option value="' . $jabtan['kode'] . '">' . $jabtan['name'] . '</option>';
                                 } ?>
                             </select>
                         </div>
@@ -103,33 +100,33 @@
                             <tr>
                                 <td>Kurang dari 15 Juta</td>
                                 <td>
-                                    <input type="text" class="form-control" name="persen" value="2" />
+                                    <input type="text" class="form-control" name="persen[omsetless_15]" value="2" />
                                 </td>
                                 <td>
                                     <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" name="check" />
+                                        <input type="checkbox" class="form-check-input" name="check[]" value="omsetless_15" />
                                     </div>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Lebih dari 15 Juta</td>
                                 <td>
-                                    <input type="text" class="form-control" name="persen" value="3" />
+                                    <input type="text" class="form-control" name="persen[omsetmore_15]" value="3" />
                                 </td>
                                 <td>
                                     <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" name="check" />
+                                        <input type="checkbox" class="form-check-input" name="check[]" value="omsetmore_15" />
                                     </div>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Berapapun Omzet</td>
                                 <td>
-                                    <input type="text" class="form-control" name="persen" value="4" />
+                                    <input type="text" class="form-control" name="persen[omsetall]" value="4" />
                                 </td>
                                 <td>
                                     <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" name="check" />
+                                        <input type="checkbox" class="form-check-input" name="check[]" value="omsetall" />
                                     </div>
                                 </td>
                             </tr>
@@ -178,8 +175,8 @@
 
         $.ajax({
             type: "POST",
-            url: $('form#jabatanform').attr('action'),
-            data: $('form#jabatanform').serialize(),
+            url: $('form#overrideform').attr('action'),
+            data: $('form#overrideform').serialize(),
             success: function(response) {
                 console.log(response);
                 var obj = JSON.parse(response);
@@ -212,7 +209,7 @@
     });
 
     $('#overrideModal').on('shown.bs.modal', function (e) {
-        $.get("<?=base_url('dashboard/override_getkode');?>", function(data, status){
+        $.get("<?=base_url('override/override_getkode');?>", function(data, status){
             // console.log(data);
             $('input[name=kode]').val(data).attr('disabled', 'disabled');
         });
