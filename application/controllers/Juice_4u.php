@@ -8,6 +8,8 @@ class Juice_4u extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('m_juice');
+        $this->load->model('M_bulan');
+        $this->load->model('M_Tahun');
         $this->load->library('form_validation');
     }
     public function index(){
