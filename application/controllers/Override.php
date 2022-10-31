@@ -63,26 +63,26 @@ class Override extends CI_Controller
         // echo $post['persen'][$post['check'][0]];
         $fields_name = $post['check'][0];
 
-          $data = array(
-            'kode' => $post['kode'],
-            'kode_jabatan' => $post['kode_jabatan'],
-            'persen' => $post['persen'][$post['check'][0]],
-          );
+        $data = array(
+          'kode' => $post['kode'],
+          'kode_jabatan' => $post['kode_jabatan'],
+          'persen' => $post['persen'][$post['check'][0]],
+        );
 
-          if($fields_name=="omsetless_15") $data = array_merge($data, array('omsetless_15' => 'Y'));
+        if($fields_name=="omsetless_15") $data = array_merge($data, array('omsetless_15' => 'Y'));
 
-          if($fields_name=="omsetmore_15") $data = array_merge($data, array('omsetmore_15' => 'Y'));
+        if($fields_name=="omsetmore_15") $data = array_merge($data, array('omsetmore_15' => 'Y'));
 
-          if($fields_name=="omsetall") $data = array_merge($data, array('omsetall' => 'Y'));
+        if($fields_name=="omsetall") $data = array_merge($data, array('omsetall' => 'Y'));
 
-          $this->M_Overridemitra->create($data);
+        $this->M_Overridemitra->create($data);
 
-          // response as ajax
-          $response = array(
-              'msg' => 'Overide Mitra berhasil tersimpan!',
-              'data' => ($data),
-              'success' => true,
-          );
+        // response as ajax
+        $response = array(
+          'msg' => 'Overide Mitra berhasil tersimpan!',
+          'data' => ($data),
+          'success' => true,
+        );
       } else {
           // echo validation_errors();
           $response = array(
@@ -94,6 +94,60 @@ class Override extends CI_Controller
 
       echo json_encode($response);
 
+  }
+
+  public function edit($id)
+  {
+    $topik['judul'] = 'Jabatan Mitra';
+    $data['judul'] = $topik['judul'];       
+    $data['overrides'] = $this->M_Overridemitra->view($id);
+    $data['jabatanList'] = $this->M_JabatanMitra->getAllData();
+    // echo json_encode($data['jabatanList']);
+
+    if($this->input->post())
+    {
+      $post = $this->input->post();
+      // echo json_encode($post);
+      $this->form_validation->set_rules('kode', 'Kode', 'required');
+      $this->form_validation->set_rules('name', 'Nama Jabatan', 'required');
+      if ($this->form_validation->run() == TRUE)
+      {
+        // echo "OK";
+        $fields_name = $post['check'][0];
+
+        $data = array(
+          'kode' => $post['kode'],
+          'kode_jabatan' => $post['kode_jabatan'],
+          'persen' => $post['persen'][$post['check'][0]],
+        );
+
+        if($fields_name=="omsetless_15") $data = array_merge($data, array('omsetless_15' => 'Y'));
+
+        if($fields_name=="omsetmore_15") $data = array_merge($data, array('omsetmore_15' => 'Y'));
+
+        if($fields_name=="omsetall") $data = array_merge($data, array('omsetall' => 'Y'));
+
+        $this->m_Overridemitra->update($post['id'], $data);
+        
+        $this->session->set_flashdata('success', 'Update Jabatan berhasil!');
+        redirect('jabatan/edit/' . $id, 'refresh');
+      }
+    }
+
+		$this->load->view('templates/header',$topik);
+    $this->load->view('override/view',$data);
+    $this->load->view('templates/footer');
+  }
+
+  public function hapus($id)
+  {
+    $query = $this->M_Overridemitra->delete($id);
+    $response = array(
+      'msg' => 'Jabatan berhasil dihapus!',
+      'success' => true,
+    );
+
+    echo json_encode($response);
   }
 
   public function override_getkode()
