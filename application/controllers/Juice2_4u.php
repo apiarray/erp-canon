@@ -4,6 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Juice2_4u extends CI_Controller {
     public function __construct(){
         parent::__construct();
+        $this->load->model('M_bulan');
+        $this->load->model('M_Tahun');
         $this->load->model('m_juice');
         $this->load->library('form_validation');
     }
