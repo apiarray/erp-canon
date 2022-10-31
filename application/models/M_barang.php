@@ -2,7 +2,7 @@
 
 use LDAP\Result;
 
- defined('BASEPATH') or exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class M_barang extends CI_Model
 {
@@ -115,14 +115,29 @@ class M_barang extends CI_Model
 
     public function getBarang($id)
     {
-        $this->db->where('id', $id);
-        $brg = $this->db->get('produk')->row_array();
+        // $this->db->where('id', $id);
+        // $brg = $this->db->get('produk')->row_array();
 
-        $this->db->select('name as nama_ktg');
-        $this->db->where('kode', $brg['kategori']);
-        $ktg = $this->db->get('tbl_category')->row_array();
+        // $this->db->select('name as nama_ktg');
+        // $this->db->where('kode', $brg['kategori']);
+        // $ktg = $this->db->get('tbl_category')->row_array();
 
-        return array_merge($brg, $ktg);
+        return $this->db->select("produk.*, b.name as nama_ktg")
+            ->from("produk")
+            ->join("tbl_category b", "produk.kategori = b.kode", "left")
+            ->where("produk.id", $id)->get()->row_array();
+
+        // return array_merge($brg, $ktg);
+    }
+
+    public function getAkun()
+    {
+        $this->db->select('chartofaccount.*');
+        $this->db->from('chartofaccount');
+        $this->db->join('account_log', 'chartofaccount.kode = account_log.kode', 'left');
+        $this->db->where('account_log.tanggal', "up");
+        $this->db->where('account_log.tutup_buku', 'T');
+        return $this->db->get()->result();
     }
 
     public function get_by_role()
@@ -202,12 +217,12 @@ class M_barang extends CI_Model
             "qty" => $this->input->post('qty', true),
             "unitbagus" => $this->input->post('unitbagus', true),
             "unitrusak" => $this->input->post('unitrusak', true),
-            "hpp" => $this->input->post('hpp', true),
-            "sebelumpajak" => $this->input->post('sebelumpajak', true),
+            "hpp" => str_replace(",", "", $this->input->post('hpp', true)),
+            "sebelumpajak" => str_replace(",", "", $this->input->post('sebelumpajak', true)),
             "ppn" => $this->input->post('ppn', true),
-            "setelahpajak" => $this->input->post('setelahpajak', true),
-            "hargasetoran" => $this->input->post('hargasetoran', true),
-            "jumlah" => $this->input->post('jumlah', true)
+            "setelahpajak" =>  str_replace(",", "", $this->input->post('setelahpajak', true)),
+            "hargasetoran" => str_replace(",", "", $this->input->post('hargasetoran', true)),
+            "jumlah" => str_replace(",", "", $this->input->post('jumlah', true)),
             // "image"=>$this->image = $this->_uploadImage()
         ];
         $this->db->insert('produk', $data);
@@ -233,21 +248,22 @@ class M_barang extends CI_Model
     }
     public function ubahDataProduct()
     {
+
+
         $data = [
             "nama" => $this->input->post('nama', true),
             "kode" => $this->input->post('kode', true),
             "kategori" => $this->input->post('kategori', true),
-            "manager" => $this->input->post('manager', true),
             "gudang" => $this->input->post('gudang', true),
             "qty" => $this->input->post('qty', true),
             "unitbagus" => $this->input->post('unitbagus', true),
             "unitrusak" => $this->input->post('unitrusak', true),
-            "hpp" => $this->input->post('hpp', true),
-            "sebelumpajak" => $this->input->post('sebelumpajak', true),
+            "hpp" => str_replace(",", "", $this->input->post('hpp', true)),
+            "sebelumpajak" => str_replace(",", "", $this->input->post('sebelumpajak', true)),
             "ppn" => $this->input->post('ppn', true),
-            "setelahpajak" => $this->input->post('setelahpajak', true),
-            "hargasetoran" => $this->input->post('hargasetoran', true),
-            "jumlah" => $this->input->post('jumlah', true),
+            "setelahpajak" => str_replace(",", "", $this->input->post('setelahpajak', true)),
+            "hargasetoran" => str_replace(",", "", $this->input->post('hargasetoran', true)),
+            "jumlah" => str_replace(",", "", $this->input->post('jumlah', true)),
             "id_coa" => $this->input->post('id_coa', true)
             // "image"=>$this->image = $this->_uploadImage()
             // "image"=>$this->image = $this->_uploadImage()
@@ -339,31 +355,30 @@ class M_barang extends CI_Model
         $mitrapengiriman = $this->db->get()->result_array();
 
         $idpengiriman = [];
-        
-        foreach($mitrapengiriman as $k => $v){
+
+        foreach ($mitrapengiriman as $k => $v) {
             $idpengiriman[] = $v['id'];
         }
         // var_dump($idpengiriman);die();
-        
-        if(count($idpengiriman) > 0 ){
+
+        if (count($idpengiriman) > 0) {
             $this->db->select('*, SUM(total) as total');
             $this->db->from('pengiriman_barang');
             $this->db->join('produk', 'produk.kode = pengiriman_barang.kode');
             // $this->db->join('tbl_category', 'tbl_category.kode = produk.kategori', 'LEFT');
             $this->db->where_in('pengiriman_barang.pengiriman_id', $idpengiriman);
             $this->db->group_by('pengiriman_barang.kode, pengiriman_barang.nama');
-            if($kode_barang != ''){
+            if ($kode_barang != '') {
                 $this->db->where('pengiriman_barang.kode', $kode_barang);
             }
-            if($nama_barang != ''){
+            if ($nama_barang != '') {
                 $this->db->where('pengiriman_barang.nama', $nama_barang);
             }
             $result = $this->db->get()->result_array();
-            
+
             // echo json_encode($result);die();
             // var_dump($result[0]['kode']);
-        }
-        else{
+        } else {
             $result = [];
         }
         return $result;
