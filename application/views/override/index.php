@@ -169,8 +169,11 @@
                 var obj = JSON.parse(data);
                 if(obj.success){
                     Swal.fire({
-                        icon: 'error',
-                        text: obj.msg
+                        position: 'top-end',
+                        icon: 'success',
+                        text: obj.msg,
+                        showConfirmButton: false,
+                        timer: 1500
                     });
                 }
             });

@@ -39,7 +39,7 @@ class M_Overridemitra extends CI_Model {
 
   public function getAllData()
   {
-    $this->db->select('*');
+    $this->db->select('om.*, jm.name');
     $this->db->from($this->table . ' om');
     $this->db->join('jabatan_mitra jm', 'jm.kode = om.kode_jabatan');
     $query = $this->db->get()->result_array();

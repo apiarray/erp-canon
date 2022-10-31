@@ -98,10 +98,7 @@ class Override extends CI_Controller
 
   public function hapus($id)
   {
-    $query = $this->M_overridemitra->delete($id);        
-    // $this->session->set_flashdata('success', 'Jabatan berhasil dihapus!');
-    // redirect('jabatan', 'refresh');
-
+    $query = $this->M_Overridemitra->delete($id);
     $response = array(
       'msg' => 'Jabatan berhasil dihapus!',
       'success' => true,
