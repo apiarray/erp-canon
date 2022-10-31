@@ -33,6 +33,38 @@ class M_Overridemitra extends CI_Model {
   {
     // 
   }
+  public function getAllData()
+  {
+    return $this->db->get($this->table)->result_array();
+  }
+
+  public function create($data)
+  {
+    return $this->db->insert($this->table,$data);
+  }
+
+  public function view($id, $limit="", $offset="")
+  {
+    return $this->db->get_where($this->table, array('id' => $id), $limit, $offset)->row();
+    // $this->db->get()->result();
+  }
+
+  public function update($id, $data)
+  {
+    return $this->db->update($this->table, $data, array('id' => $id));
+  }
+
+  public function delete($id)
+  {
+    $this->db->where('id', $id);
+    return $this->db->delete($this->table);
+  }
+
+  public function getLastIndex(){
+    $this->db->select_max('kode');
+    $query = $this->db->get($this->table);
+    return $query->result();
+  }
 
   public function up()
   {
@@ -43,7 +75,7 @@ class M_Overridemitra extends CI_Model {
     $fields = array(
       'id' => array('type' => 'INT', 'auto_increment' => TRUE),
       'kode' => array('type' => 'VARCHAR', 'constraint' => 10, 'null' => TRUE),
-      'name' => array('type' => 'VARCHAR', 'constraint' => 50,'null' => TRUE),
+      'kode_jabatan' => array('type' => 'VARCHAR', 'constraint' => 50,'null' => TRUE),
       'omsetless_15' => array('type' => 'VARCHAR', 'null' => TRUE),
       'omsetmore_15' => array('type' => 'VARCHAR', 'null' => TRUE),
       'omsetall' => array('type' => 'VARCHAR', 'null' => TRUE),
