@@ -25,6 +25,8 @@ class Override extends CI_Controller
   {
     parent::__construct();
 
+    $this->load->model('M_Daftarmitra');
+    $this->load->model('M_OverrideSaldo');
     $this->load->model('M_Overridemitra');
     $this->load->model('M_JabatanMitra');
 
@@ -174,7 +176,7 @@ class Override extends CI_Controller
   public function saldo(){
     $topik['judul'] = 'Saldo Override';
     $data['judul'] = $topik['judul'];       
-    $data['overrides'] = $this->M_override->getAllData();       
+    $data['mitraList'] = $this->M_OverrideSaldo->getAllData();
 
     $this->load->view('templates/header',$topik);
     $this->load->view('override/saldo',$data);
