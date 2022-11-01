@@ -183,6 +183,37 @@ class Override extends CI_Controller
     $this->load->view('templates/footer');
   }
 
+  public function saldoUpdate($id){
+    $topik['judul'] = 'Saldo Override';
+    $data['judul'] = $topik['judul'];       
+    $data['mitraList'] = $this->M_OverrideSaldo->view($id);
+
+    if($this->input->post())
+    {
+      $post = $this->input->post();
+      // echo json_encode($post);
+      $this->form_validation->set_rules('kode', 'Kode', 'required');
+      // $this->form_validation->set_rules('saldo_override', 'Nama Jabatan', 'required');
+      if ($this->form_validation->run() == TRUE)
+      {
+        // echo "OK";
+        $this->M_OverrideSaldo->update($post['id'], array(
+          'idmitra' => $post['id'],
+          'saldo_override' => $post['saldo_override'],
+          'saldo_ho' => $post['saldo_ho']
+        ));
+        
+        $this->session->set_flashdata('success', 'Update Saldo berhasil!');
+        redirect('override/saldoupdate/' . $id, 'refresh');
+      }
+
+    }
+
+    $this->load->view('templates/header',$topik);
+    $this->load->view('override/saldo_update',$data);
+    $this->load->view('templates/footer');
+  }
+
 }
 
 
