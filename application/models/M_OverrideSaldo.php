@@ -40,7 +40,7 @@ class M_OverrideSaldo extends CI_Model {
 
   public function getAllData()
   {
-    $this->db->select('dm.id,kode,name,jabatan, om.saldo_override,saldo_ho');
+    $this->db->select('dm.*, om.kodemitra,saldo_override,saldo_ho');
     $this->db->from('daftar_mitra dm');
     $this->db->join($this->table . ' om', 'om.idmitra = dm.id', 'left');
     $query = $this->db->get()->result_array();
@@ -49,13 +49,20 @@ class M_OverrideSaldo extends CI_Model {
   }
 
   public function view($id){
-    $this->db->select('dm.id,kode,name,jabatan, om.saldo_override,saldo_ho');
+    $this->db->select('dm.*, om.kodemitra,saldo_override,saldo_ho');
     $this->db->from('daftar_mitra dm');
     $this->db->join($this->table . ' om', 'om.idmitra = dm.id', 'left');
     $this->db->where('dm.id', $id);
     $query = $this->db->get()->row();
     // echo $this->db->last_query();
     return $query;
+  }
+
+  public function viewByKode($kode){
+    $this->db->select('*')->from($this->table);
+    $this->db->where("`id` IN (SELECT `id` FROM `daftar_mitra` WHERE kode='".$kode."')", NULL, FALSE);
+    $result = $this->db->get();
+    return  $result->result_array();
   }
 
   public function update($id, $data)
@@ -86,7 +93,7 @@ class M_OverrideSaldo extends CI_Model {
       $fields = array(
         'id' => array('type' => 'INT', 'auto_increment' => TRUE),
         'idmitra' => array('type' => 'INT', 'constraint' => 10, 'null' => TRUE),
-        'kode' => array('type' => 'VARCHAR', 'constraint' => 50, 'null' => TRUE),
+        'kodemitra' => array('type' => 'VARCHAR', 'constraint' => 50, 'null' => TRUE),
         'saldo_override' => array('type' => 'INT', 'constraint' => 10,'null' => TRUE),
         'saldo_ho' => array('type' => 'INT', 'constraint' => 10,'null' => TRUE),
       );
@@ -102,10 +109,10 @@ class M_OverrideSaldo extends CI_Model {
     }
 
     // 
-    if (!$this->db->field_exists('kode', $this->table))
+    if (!$this->db->field_exists('kodemitra', $this->table))
     {
       $fields = array(
-        'kode' => array('type' => 'VARCHAR', 'constraint' => 50, 'null' => TRUE),
+        'kodemitra' => array('type' => 'VARCHAR', 'constraint' => 50, 'null' => TRUE),
       );
       
       $this->dbforge->add_column($this->table, $fields);

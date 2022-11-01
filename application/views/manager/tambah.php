@@ -275,7 +275,7 @@
             </div>
             <div class="col-lg-8">
                 <h6 class="text-dark text-bold">Piutang / (Hutang)</h6>
-                <table class="table table-responsive text-center table-sm text-dark" width="100%" cellspacing="0">
+                <table id="tableOverride" class="table table-responsive text-center table-sm text-dark" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th></th>
@@ -531,105 +531,160 @@
 </div>
 
 <script>
+$(document).ready(function() {
+  $('.datepicker').datepicker();
 
-$('.datepicker').datepicker();
+  $.fn.loadOverride = function() {
+    var kode_mitra = $('select[name=kode_mitra] option:selected').val();
+    // console.log(kode_mitra, "_kode_mitra");
+    if(kode_mitra){
+      $.ajax({
+        url: "<?= base_url('override/apigetmitra'); ?>/" + kode_mitra,
+        dataType: 'json',
+        success: function(data) {
+          var konten = ``;
+          if(data.success){
+            $.each(data.data, function(i,item){
+              konten += `<tr>
+                <td>Simpanan di HO</td>
+                <td id="saldoawal_simp">`+(item.saldo_override)+`</td>
+                <td id="inout">0</td>
+                <td id="saldoakhir_simp">0</td>
+              </tr>
+              <tr>
+                <td>Override</td>
+                <td>`+(item.saldo_ho)+`</td>
+                <td>0</td>
+                <td>0</td>
+              </tr>`;
+            });
+          } else{
 
-$('#tambah-data').on('click', function() {
-    let mitraid = $('select[name="kode_mitra"]').val();
-    let fetchUrl = "manager/formtambah/" + mitraid;
+            konten += `<tr>
+              <td>Simpanan di HO</td>
+              <td id="saldoawal_simp">0</td>
+              <td id="inout">0</td>
+              <td id="saldoakhir_simp">0</td>
+            </tr>
+            <tr>
+              <td>Override</td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+            </tr>`;
+          }
 
-    $.ajax({
-      url: "<?= base_url(); ?>" + fetchUrl,
-      success: function(result) {
-        var data = JSON.parse(result);
-        var konten = ``;
-
-        if(data.weekly_manager2.length == 0){
-          konten += `
-          <div class="alert alert-danger text-center">tidak ada data pada mitra `+(mitraid+' - '+data.mitra[0].name)+`</div>
-          `;
-          $('#modalTambah .modal-footer').addClass('d-none');
+          // console.log(konten, "konten");
+          $('#tableOverride tbody').html(konten);
         }
-        else{
-          $('#modalTambah .modal-footer').removeClass('d-none');
-          if(data.weekly_manager2_barang[0].status == 'disimpan'){
+      });
+    }
+  }
+
+  $.fn.loadOverride();
+
+  $("body").on('change', 'select[name=kode_mitra]', function(){
+    $.fn.loadOverride();
+  });
+
+  $('#tambah-data').on('click', function() {
+      let mitraid = $('select[name="kode_mitra"]').val();
+      let fetchUrl = "manager/formtambah/" + mitraid;
+
+      $.ajax({
+        url: "<?= base_url(); ?>" + fetchUrl,
+        success: function(result) {
+          var data = JSON.parse(result);
+          var konten = ``;
+
+          if(data.weekly_manager2.length == 0){
             konten += `
-              <div class="alert alert-danger text-center">Data ini telah anda tambahkan</div>
+            <div class="alert alert-danger text-center">tidak ada data pada mitra `+(mitraid+' - '+data.mitra[0].name)+`</div>
             `;
             $('#modalTambah .modal-footer').addClass('d-none');
           }
           else{
             $('#modalTambah .modal-footer').removeClass('d-none');
+            if(data.weekly_manager2_barang[0].status == 'disimpan'){
+              konten += `
+                <div class="alert alert-danger text-center">Data ini telah anda tambahkan</div>
+              `;
+              $('#modalTambah .modal-footer').addClass('d-none');
+            }
+            else{
+              $('#modalTambah .modal-footer').removeClass('d-none');
+            }
+            konten += `
+                <input type="hidden" name="id" value="`+(data.weekly_manager2[0].id)+`">
+                <label>Mitra : <b>`+(mitraid+' - '+data.mitra[0].name)+`</b></label><br>
+                <label>No Weekly : <b>`+(data.weekly_manager2[0].no_invoice)+`</b></label><br>
+                <hr>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Kode Barang</th>
+                            <th>Nama Barang</th>
+                            <th>Qty</th>
+                            <th>Stok</th>
+                            <th>Harga Setor</th>
+                            <th>Total Item</th>
+                        <tr>
+                    <thead>
+                    <tbody>`;
+                    $.each( data.weekly_manager2_barang, function( key, value ) {
+                        konten += `
+                        <tr>
+                            <td>`+(value.kode)+`</td>
+                            <td>`+(value.nama)+`</td>
+                            <td>`+(value.qty_terjual)+`</td>
+                            <td>`+(value.stok)+`</td>
+                            <td>`+(new Intl.NumberFormat("id-ID").format(value.harga_setor))+`</td>
+                            <td>`+(new Intl.NumberFormat("id-ID").format(value.total_item))+`</td>
+                        </tr>
+                        `;
+                    })
+                    konten += `
+                    </tbody>
+                    </table>
+                </div>
+                <div class="form-group">
+                    <label>Total Penjualan</label>
+                    <input class="form-control" value="`+(data.weekly_manager2[0].nominal_total)+`" name="total_penjualan" required readonly>
+                </div>
+                
+            `;
           }
-          konten += `
-              <input type="hidden" name="id" value="`+(data.weekly_manager2[0].id)+`">
-              <label>Mitra : <b>`+(mitraid+' - '+data.mitra[0].name)+`</b></label><br>
-              <label>No Weekly : <b>`+(data.weekly_manager2[0].no_invoice)+`</b></label><br>
-              <hr>
-              <div class="table-responsive">
-                  <table class="table table-bordered">
-                  <thead>
-                      <tr>
-                          <th>Kode Barang</th>
-                          <th>Nama Barang</th>
-                          <th>Qty</th>
-                          <th>Stok</th>
-                          <th>Harga Setor</th>
-                          <th>Total Item</th>
-                      <tr>
-                  <thead>
-                  <tbody>`;
-                  $.each( data.weekly_manager2_barang, function( key, value ) {
-                      konten += `
-                      <tr>
-                          <td>`+(value.kode)+`</td>
-                          <td>`+(value.nama)+`</td>
-                          <td>`+(value.qty_terjual)+`</td>
-                          <td>`+(value.stok)+`</td>
-                          <td>`+(new Intl.NumberFormat("id-ID").format(value.harga_setor))+`</td>
-                          <td>`+(new Intl.NumberFormat("id-ID").format(value.total_item))+`</td>
-                      </tr>
-                      `;
-                  })
-                  konten += `
-                  </tbody>
-                  </table>
-              </div>
-              <div class="form-group">
-                  <label>Total Penjualan</label>
-                  <input class="form-control" value="`+(data.weekly_manager2[0].nominal_total)+`" name="total_penjualan" required readonly>
-              </div>
-              
-          `;
+
+          $('#modalTambah .modal-body').html(konten);
+          $('#modalTambah').modal('show');
+
         }
-
-        $('#modalTambah .modal-body').html(konten);
-        $('#modalTambah').modal('show');
-
-      }
+      });
     });
+
+
+
+
+  $('#jabatan').on('change', function() {
+    let weekending = $('#weekending').val();
+    fetchData(this.value);
   });
 
+  $('#weekending').on('change', function() {
+    let manager = $('#manager').val();
+    invoiceMgr(this.value, manager);
+  });
 
+  $('#manager').on('change', function() {
+    let weekending = $('#weekending').val();
+    invoiceMgr(weekending, this.value);
+  });
 
+  $('#koreksi').on('change', function() {
+    fetchData($('#jabatan').val());
+  });
 
-$('#jabatan').on('change', function() {
-  let weekending = $('#weekending').val();
-  fetchData(this.value);
-});
-
-$('#weekending').on('change', function() {
-  let manager = $('#manager').val();
-  invoiceMgr(this.value, manager);
-});
-
-$('#manager').on('change', function() {
-  let weekending = $('#weekending').val();
-  invoiceMgr(weekending, this.value);
-});
-
-$('#koreksi').on('change', function() {
-  fetchData($('#jabatan').val());
 });
 
 function invoiceMgr(weekending, kode_id) {

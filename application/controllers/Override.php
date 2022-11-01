@@ -214,6 +214,18 @@ class Override extends CI_Controller
     $this->load->view('templates/footer');
   }
 
+  public function ApiGetMitra($id){
+    // echo $id;
+    $data['data'] = $this->M_OverrideSaldo->viewByKode($id);
+    $response = array(
+      'kodemitra' => $id,
+      'data' => $data['data'],
+      'success' => !empty($data['data']) ? true : false,
+    );
+
+    echo json_encode($response);
+  }
+
 }
 
 
