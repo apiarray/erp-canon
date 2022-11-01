@@ -25,6 +25,8 @@ class Override extends CI_Controller
   {
     parent::__construct();
 
+    $this->load->model('M_Daftarmitra');
+    $this->load->model('M_OverrideSaldo');
     $this->load->model('M_Overridemitra');
     $this->load->model('M_JabatanMitra');
 
@@ -52,15 +54,10 @@ class Override extends CI_Controller
   {
       $post = $this->input->post();
       // echo json_encode($post);
-      // {"kode":"OV00006","name":"1","persen":"4","check":"on"}
-
       $this->form_validation->set_rules('kode', 'Kode', 'required');
       $this->form_validation->set_rules('kode_jabatan', 'Nama Jabatan', 'required');
-      // $this->form_validation->set_rules('persen', 'Persen', 'required');
       if ($this->form_validation->run() == TRUE)
       {
-        // echo $post['check'][0] . "<br>";
-        // echo $post['persen'][$post['check'][0]];
         $fields_name = $post['check'][0];
 
         $data = array(
@@ -84,7 +81,6 @@ class Override extends CI_Controller
           'success' => true,
         );
       } else {
-          // echo validation_errors();
           $response = array(
               'msg' => 'Error!',
               'data' => validation_errors(),
@@ -102,17 +98,15 @@ class Override extends CI_Controller
     $data['judul'] = $topik['judul'];       
     $data['overrides'] = $this->M_Overridemitra->view($id);
     $data['jabatanList'] = $this->M_JabatanMitra->getAllData();
-    // echo json_encode($data['jabatanList']);
 
     if($this->input->post())
     {
       $post = $this->input->post();
       // echo json_encode($post);
       $this->form_validation->set_rules('kode', 'Kode', 'required');
-      $this->form_validation->set_rules('name', 'Nama Jabatan', 'required');
+      $this->form_validation->set_rules('kode_jabatan', 'Nama Jabatan', 'required');
       if ($this->form_validation->run() == TRUE)
       {
-        // echo "OK";
         $fields_name = $post['check'][0];
 
         $data = array(
@@ -121,16 +115,34 @@ class Override extends CI_Controller
           'persen' => $post['persen'][$post['check'][0]],
         );
 
-        if($fields_name=="omsetless_15") $data = array_merge($data, array('omsetless_15' => 'Y'));
+        if($fields_name=="omsetless_15") {
+          $data = array_merge($data, array(
+            'omsetless_15' => 'Y',
+            'omsetmore_15' => null,
+            'omsetall' => null
+          ));
+        }
 
-        if($fields_name=="omsetmore_15") $data = array_merge($data, array('omsetmore_15' => 'Y'));
+        if($fields_name=="omsetmore_15") {
+          $data = array_merge($data, array(
+            'omsetless_15' => null,
+            'omsetmore_15' => 'Y',
+            'omsetall' => null
+          ));
+        }
 
-        if($fields_name=="omsetall") $data = array_merge($data, array('omsetall' => 'Y'));
+        if($fields_name=="omsetall") {
+          $data = array_merge($data, array(
+            'omsetless_15' => null,
+            'omsetmore_15' => null,
+            'omsetall' => 'Y'
+          ));
+        }
 
-        $this->m_Overridemitra->update($post['id'], $data);
+        $this->M_Overridemitra->update($post['id'], $data);
         
-        $this->session->set_flashdata('success', 'Update Jabatan berhasil!');
-        redirect('jabatan/edit/' . $id, 'refresh');
+        $this->session->set_flashdata('success', 'Update Override berhasil!');
+        redirect('override/edit/' . $id, 'refresh');
       }
     }
 
@@ -159,6 +171,16 @@ class Override extends CI_Controller
       $newKode = "OV" . str_pad((int)$num+1, 5, '0', STR_PAD_LEFT);
 
       echo ($newKode);
+  }
+
+  public function saldo(){
+    $topik['judul'] = 'Saldo Override';
+    $data['judul'] = $topik['judul'];       
+    $data['mitraList'] = $this->M_OverrideSaldo->getAllData();
+
+    $this->load->view('templates/header',$topik);
+    $this->load->view('override/saldo',$data);
+    $this->load->view('templates/footer');
   }
 
 }
