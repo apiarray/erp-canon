@@ -15,8 +15,8 @@
                         <th>ID Mitra</th>
                         <th>Nama Mitra</th>
                         <th>Jabatan</th>
-                        <th>Saldo Awal Override</th>
-                        <th>Saldo Awal HO</th>
+                        <th>(Rp) Saldo Awal Override</th>
+                        <th>(Rp) Saldo Awal HO</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>

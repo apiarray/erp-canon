@@ -163,10 +163,10 @@
                       <td><?= $v['kode'] ?></td>
                       <td><?= $v['nama'] ?></td>
                       <td><?= $v['qty_terjual'] ?></td>
-                      <td>-</td>
-                      <td>-</td>
-                      <td>-</td>
-                      <td>-</td>
+                      <td><?= number_format($v['sebelumpajak']) ?></td>
+                      <td><?= number_format($v['sebelumpajak']*$v['qty_terjual']) ?></td>
+                      <td><?= number_format($v['hargasetoran']) ?></td>
+                      <td><?= number_format($v['hargasetoran']*$v['qty_terjual']) ?></td>
                       <td>-</td>
                   </tr>
                  <?php }
@@ -992,6 +992,7 @@ function getInOut(id) {
     var data = {
       'noinv' : no_invoice, 
       'idweekly' : [], 
+      'csrf_test_name' : '<?=$this->security->get_csrf_hash(); ?>', 
     };
     // $('input[name="idweekly[]"]').val()
     $('input[name="idweekly[]"]').each(function (i, val) {
@@ -1002,6 +1003,7 @@ function getInOut(id) {
       alert('tidak ada data yang akan diproses, harap tambah data Weekly Mitra');
     }
     else{
+      console.log(JSON.stringify(data), '_data')
       let url = "<?= base_url() ?>"+"manager/prosesInvoice/";
       $.ajax({
         url: url,
