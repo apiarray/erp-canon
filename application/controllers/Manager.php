@@ -50,13 +50,15 @@ class Manager extends CI_Controller {
         $this->db->select('*');
         $this->db->from('weekly_manager2_barang');
         $this->db->join('weekly_manager2', 'weekly_manager2_barang.id_weekly_manager2 = weekly_manager2.id');
+        $this->db->join('produk p', 'weekly_manager2_barang.kode = p.kode');
         $this->db->where('weekly_manager2.validasi', "N");
-        $this->db->where('weekly_manager2_barang.status', "disimpan");
+        // $this->db->where('weekly_manager2_barang.status', "disimpan");
         $data['weekly_manager2_barang'] = $this->db->get()->result_array();
+        // echo $this->db->last_query();
 
         $this->db->select('id_weekly_manager2, SUM(harga_setor)');
         $this->db->from('weekly_manager2_barang');
-        $this->db->where('status', "disimpan");
+        // $this->db->where('status', "disimpan");
         $this->db->group_by('id_weekly_manager2');
 
         $data['wm2hidden'] = $this->db->get()->result_array();
