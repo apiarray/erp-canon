@@ -58,6 +58,7 @@ class M_Overridemitra extends CI_Model {
     $this->db->select('om.*, jm.name');
     $this->db->from($this->table . ' om');
     $this->db->join('jabatan_mitra jm', 'jm.kode = om.kode_jabatan');
+    $this->db->where('om.id', $id);
     $query = $this->db->get()->row();
     // echo $this->db->last_query();
     return $query;
