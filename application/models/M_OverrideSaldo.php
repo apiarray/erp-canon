@@ -80,23 +80,36 @@ class M_OverrideSaldo extends CI_Model {
   {
     // Produces: DROP TABLE IF EXISTS table_name
     // $this->dbforge->drop_table($this->table,TRUE);
+    if (!$this->db->table_exists($this->table))
+    {
+      // create table
+      $fields = array(
+        'id' => array('type' => 'INT', 'auto_increment' => TRUE),
+        'idmitra' => array('type' => 'INT', 'constraint' => 10, 'null' => TRUE),
+        'kode' => array('type' => 'VARCHAR', 'constraint' => 50, 'null' => TRUE),
+        'saldo_override' => array('type' => 'INT', 'constraint' => 10,'null' => TRUE),
+        'saldo_ho' => array('type' => 'INT', 'constraint' => 10,'null' => TRUE),
+      );
 
-    // create table
-    $fields = array(
-      'id' => array('type' => 'INT', 'auto_increment' => TRUE),
-      'idmitra' => array('type' => 'INT', 'constraint' => 10, 'null' => TRUE),
-      'saldo_override' => array('type' => 'INT', 'constraint' => 10,'null' => TRUE),
-      'saldo_ho' => array('type' => 'INT', 'constraint' => 10,'null' => TRUE),
-    );
+      $this->dbforge->add_field($fields);
 
-    $this->dbforge->add_field($fields);
+      $this->dbforge->add_key('id', TRUE);
+      // gives PRIMARY KEY (id)
 
-    $this->dbforge->add_key('id', TRUE);
-    // gives PRIMARY KEY (id)
+      $attributes = array('ENGINE' => 'InnoDB');
+      // CREATE TABLE IF NOT EXISTS table_name
+      $this->dbforge->create_table($this->table, TRUE, $attributes);
+    }
 
-    $attributes = array('ENGINE' => 'InnoDB');
-    // CREATE TABLE IF NOT EXISTS table_name
-    $this->dbforge->create_table($this->table, TRUE, $attributes);
+    // 
+    if (!$this->db->field_exists('kode', $this->table))
+    {
+      $fields = array(
+        'kode' => array('type' => 'VARCHAR', 'constraint' => 50, 'null' => TRUE),
+      );
+      
+      $this->dbforge->add_column($this->table, $fields);
+    }
   }
 
   public function down()
