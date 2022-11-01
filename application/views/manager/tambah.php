@@ -153,6 +153,8 @@
             <tbody>
                 <?php if(count($weekly_manager2_barang) > 0){
                   
+                  $ttlqty = $ttlotc = $ppn = $pjlkotor = $htgdgg = $labakotor = 0;
+
                   foreach($wm2hidden as $k => $v){ ?>
                     <input type="hidden" name="idweekly[]" value="<?= $v['id_weekly_manager2']?>">
                   <?php } ?>
@@ -169,7 +171,15 @@
                       <td><?= number_format($v['hargasetoran']*$v['qty_terjual']) ?></td>
                       <td>-</td>
                   </tr>
-                 <?php }
+                 <?php 
+                  $ttlqty += $v['qty_terjual'];
+                  $ttlotc += ($v['sebelumpajak']*$v['qty_terjual']);
+                  $ppn += ($v['ppn']);
+                  $pjlkotor += ($v['hargasetoran']); //Penjualan Kotor terisi otomatis dari akumulasi Total F/C
+                  $htgdgg += ($v['setelahpajak']); //Hutang Dagang terisi otomatis dari kolom harga setelah pajak
+                 }
+
+                 $labakotor = $pjlkotor-$htgdgg; //Laba Kotor Penjualan adalah point 4 dikurangi point 5
                 }else{ ?>
                   <tr>
                     <td class="text-center" colspan="9">Tidak ada data ditampilkan.</td>
@@ -206,29 +216,29 @@
             <div class="col-lg-4">
                 <table class="table table-responsive text-center table-sm text-dark" width="100%" cellspacing="0">
                     <tbody>
-                        <tr>
-                            <th>Total Qty</th>
-                            <td id="ttlqty"></td>
+                        <tr class="text-left">
+                            <td>Total Qty</td>
+                            <td id="ttlqty" class="text-right"><?=$ttlqty; ?></td>
                         </tr>
-                        <tr>
-                            <th>Total O/C</th>
-                            <td id="ttlotc"></td>
+                        <tr class="text-left">
+                            <td>Total O/C</td>
+                            <td id="ttlotc" class="text-right"><?=number_format($ttlotc); ?></td>
                         </tr>
-                        <tr>
-                            <th>PPN</th>
-                            <td id="ppn"></td>
+                        <tr class="text-left">
+                            <td>PPN</td>
+                            <td id="ppn" class="text-right"><?=$ppn; ?></td>
                         </tr>
-                        <tr>
-                            <th>Penjualan Kotor</th>
-                            <td id="pjlkotor"></td>
+                        <tr class="text-left">
+                            <td>Penjualan Kotor</td>
+                            <td id="pjlkotor" class="text-right"><?=number_format($pjlkotor); ?></td>
                         </tr>
-                        <tr>
-                            <th>Hutang Dagang</th>
-                            <td id="htgdgg"></td>
+                        <tr class="text-left">
+                            <td>Hutang Dagang</td>
+                            <td id="htgdgg" class="text-right"><?=number_format($htgdgg); ?></td>
                         </tr>
-                        <tr>
-                            <th>Laba Kotor Penjualan</th>
-                            <td class="labakotor"></td>
+                        <tr class="text-left">
+                            <td>Laba Kotor Penjualan</td>
+                            <td id="labakotor" class="text-right"><?=number_format($labakotor); ?></td>
                         </tr>
                     </tbody>
                 </table>
