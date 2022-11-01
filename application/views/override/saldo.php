@@ -17,6 +17,7 @@
                         <th>Jabatan</th>
                         <th>Saldo Awal Override</th>
                         <th>Saldo Awal HO</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -29,8 +30,11 @@
                             <td><?=$mitra['kode'];?></td>
                             <td><?=$mitra['name'];?></td>
                             <td><?=$mitra['jabatan'];?></td>
-                            <td><?=($mitra['saldo_override']) ? $mitra['saldo_override'] : 0;?></td>
-                            <td><?=($mitra['saldo_ho']) ? $mitra['saldo_ho'] : 0;?></td>
+                            <td><?=($mitra['saldo_override']) ? number_format($mitra['saldo_override']) : 0;?></td>
+                            <td><?=($mitra['saldo_ho']) ? number_format($mitra['saldo_ho']) : 0;?></td>
+                            <td>
+                                <a href="<?=base_url();?>override/saldoupdate/<?=$mitra['id'];?>" class="btn btn-success" style="margin-left:42px"><i class="fa fa-edit"></i>Edit</i></a>
+                            </td>
                         </tr>
                         <?php
                             $no++;

@@ -40,12 +40,40 @@ class M_OverrideSaldo extends CI_Model {
 
   public function getAllData()
   {
-    $this->db->select('om.*, jm.kode,name,jabatan');
-    $this->db->from($this->table . ' om');
-    $this->db->join('daftar_mitra jm', 'jm.id = om.idmitra', 'RIGHT');
+    $this->db->select('dm.id,kode,name,jabatan, om.saldo_override,saldo_ho');
+    $this->db->from('daftar_mitra dm');
+    $this->db->join($this->table . ' om', 'om.idmitra = dm.id', 'left');
     $query = $this->db->get()->result_array();
     // echo $this->db->last_query();
     return $query;
+  }
+
+  public function view($id){
+    $this->db->select('dm.id,kode,name,jabatan, om.saldo_override,saldo_ho');
+    $this->db->from('daftar_mitra dm');
+    $this->db->join($this->table . ' om', 'om.idmitra = dm.id', 'left');
+    $this->db->where('dm.id', $id);
+    $query = $this->db->get()->row();
+    // echo $this->db->last_query();
+    return $query;
+  }
+
+  public function update($id, $data)
+  {
+    $array = array('idmitra' => $id);
+    $result = $this->db->select('idmitra')->from($this->table)->where($array)->get();
+    if($result->num_rows())
+    {
+      return $this->db->update($this->table, $data, $array);
+      
+    } else {
+      return $this->db->insert($this->table,$data);
+    }
+  }
+
+  public function create($data)
+  {
+    return $this->db->insert($this->table,$data);
   }
 
   public function up()
