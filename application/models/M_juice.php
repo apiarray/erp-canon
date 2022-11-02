@@ -73,4 +73,14 @@ class M_juice extends CI_Model {
         $this->db->or_like('alamat',$keyword);
         return $this->db->get('juice')->result_array();
     }
+    
+    public function tampil_data_by_mitra()
+    {
+      $this->db->select('weekly_manager2.tgl_validasi as tgl_validasi,daftar_mitra.name as nama_mitra');
+      $this->db->from('weekly_manager2');
+      $this->db->join('daftar_mitra', 'weekly_manager2.kode_id = daftar_mitra.kode');
+      $this->db->where('weekly_manager2.validasi', 'V');
+      $query = $this->db->get();
+      return $query->result_array();
+    }
 }
