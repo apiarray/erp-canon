@@ -42,8 +42,8 @@
                 <div class="input-group-prepend">
                     <label for="idMitra" class="input-group-text">ID Mitra :</label>
                 </div>
-                <select id="idMitra" class="form-control form-control-sm">
-                    <option value=""><?= $user->kode ?></option>
+                <select id="idMitra" name="idmitra" class="form-control form-control-sm">
+                    <option value="<?= $user->kode ?>"><?= $user->kode ?></option>
                 </select>
             </div> 
             <div class="input-group input-group-sm mb-1">

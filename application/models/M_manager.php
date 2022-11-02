@@ -146,7 +146,9 @@ class M_manager extends CI_Model {
 	}
 
 	function tampil_data_manager($fil) {
-    $kodeid=$this->session->userdata("kode_id");
+    // $kodeid=$this->session->userdata("kode_id");
+    $kodeid = ($fil['idmitra']) ? $fil['idmitra'] : $this->session->userdata("kode_id");
+
     $this->db->select('*');
     $this->db->from('weekly_manager2');
 
@@ -162,7 +164,8 @@ class M_manager extends CI_Model {
     
     $this->db->where('kode_id',"$kodeid");
     $query = $this->db->get();
-	 return $query->result_array();
+    // echo $this->db->last_query();
+    return $query->result_array();
 	}
 
 	function hapusDataManager($id) {
