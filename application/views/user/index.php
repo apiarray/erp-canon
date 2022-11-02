@@ -88,7 +88,7 @@
                                     </td>
                                     <td>
                                         <?php
-                                        echo    $usr['id_role'] == 1 ? "ADMIN" : ($usr['id_role'] == 2 ? "USER" : "Not set");
+                                        echo    $usr['id_role'] == 1 ? "ADMIN" : ($usr['id_role'] == 2 ? "USER" : ($usr['id_role'] == 6 ? "MANAGER" : "Not set"));
                                         ?>
                                     </td>
                                     <td>
