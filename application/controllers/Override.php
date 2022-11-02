@@ -217,11 +217,32 @@ class Override extends CI_Controller
   public function ApiGetMitra($id){
     // echo $id;
     $data['data'] = $this->M_OverrideSaldo->viewByKode($id);
+
     $response = array(
       'kodemitra' => $id,
       'data' => $data['data'],
+      'saldo_override' => $data['data'][0]['saldo_override'],
       'success' => !empty($data['data']) ? true : false,
     );
+
+    /* hitung override pribadi
+     * a. Jika omset Total F/C < 15 juta = 2 % x Total F/C
+     * b. Jika omset Total F/C > 15 juta = 4 % x Total F/C
+     */
+    $ttlfc = $this->input->get('ttlfc');
+    if($ttlfc) {
+      
+      $totalfc = $data['data'][0]['saldo_override'];
+
+      if($ttlfc < 15000000) $totalfc = (2/100*$ttlfc);
+      if($ttlfc > 15000000) $totalfc = (4/100*$ttlfc);
+
+      $saldo_override = array(
+        'saldo_override' => $totalfc,
+      );
+
+      $response = array_merge($response, $saldo_override);
+    }
 
     echo json_encode($response);
   }

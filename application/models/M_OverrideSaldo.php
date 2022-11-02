@@ -62,6 +62,7 @@ class M_OverrideSaldo extends CI_Model {
     $this->db->select('*')->from($this->table);
     $this->db->where("`id` IN (SELECT `id` FROM `daftar_mitra` WHERE kode='".$kode."')", NULL, FALSE);
     $result = $this->db->get();
+    // echo $this->db->last_query();
     return  $result->result_array();
   }
 
