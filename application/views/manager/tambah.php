@@ -153,7 +153,7 @@
             <tbody>
                 <?php if(count($weekly_manager2_barang) > 0){
                   
-                  $ttlqty = $ttlotc = $ppn = $pjlkotor = $htgdgg = $labakotor = 0;
+                  $ttlqty = $ttlotc = $ppn = $pjlkotor = $htgdgg = $labakotor = $ttlfc = 0;
 
                   foreach($wm2hidden as $k => $v){ ?>
                     <input type="hidden" name="idweekly[]" value="<?= $v['id_weekly_manager2']?>">
@@ -177,6 +177,7 @@
                   $ppn += ($v['ppn']);
                   $pjlkotor += ($v['hargasetoran']); //Penjualan Kotor terisi otomatis dari akumulasi Total F/C
                   $htgdgg += ($v['setelahpajak']); //Hutang Dagang terisi otomatis dari kolom harga setelah pajak
+                  $ttlfc += ($v['hargasetoran']*$v['qty_terjual']);
                  }
 
                  $labakotor = $pjlkotor-$htgdgg; //Laba Kotor Penjualan adalah point 4 dikurangi point 5
@@ -268,7 +269,7 @@
                         </tr>
                         <tr>
                             <th>Override Pribadi</th>
-                            <td class="text-right">0</td>
+                            <td class="saldo_override text-right">0</td>
                         </tr>
                     </tbody>
                 </table>
@@ -536,10 +537,11 @@ $(document).ready(function() {
 
   $.fn.loadOverride = function() {
     var kode_mitra = $('select[name=kode_mitra] option:selected').val();
+    var ttlfc = '<?=$ttlfc; ?>';
     // console.log(kode_mitra, "_kode_mitra");
     if(kode_mitra){
       $.ajax({
-        url: "<?= base_url('override/apigetmitra'); ?>/" + kode_mitra,
+        url: "<?= base_url('override/apigetmitra'); ?>/" + kode_mitra + "?ttlfc=" + ttlfc,
         dataType: 'json',
         success: function(data) {
           var konten = ``;
@@ -576,6 +578,7 @@ $(document).ready(function() {
 
           // console.log(konten, "konten");
           $('#tableOverride tbody').html(konten);
+          $('.saldo_override').html(data.saldo_override);
         }
       });
     }
