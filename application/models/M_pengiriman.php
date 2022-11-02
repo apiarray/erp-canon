@@ -162,11 +162,37 @@ class M_pengiriman extends CI_Model
 	{
 		$this->db->where($where);
 		$this->db->update($table, $data);
+		
 	}
 
 	public function tambahDataPengiriman($data)
 	{
 		$this->db->insert('pengiriman', $data);
+		
+		$jurnal =$this->siapkanjurnal(5); // 5 == KRM Pengiriman
+		$coa = $this->getcoaD($jurnal['id']);
+		$mapping_coa= $this->getCoa();
+        foreach ($mapping_coa as $key => $value) {
+			$mapping_coa[$key]['akun']   = $this->getCoaById($value['id_coa']);
+            $mapping_coa[$key]['akun_1'] = $this->getCoaById($value['id_coa_1']);
+            $mapping_coa[$key]['akun_2'] = $this->getCoaById($value['id_coa_2']);
+            $mapping_coa[$key]['akun_3'] = $this->getCoaById($value['id_coa_3']);
+        }		
+		//TRM penerimaan menggunakan map no 2, $key = 1 0
+		$item_jurnal = [
+			'tgl' => $this->input->post('tanggal', true),
+			'transaksi' =>  $this->input->post('no_sj', true),
+			'no_bukti' =>  $this->input->post('no_lpb', true),
+			'jumlah' => '',
+			'kode_debit' => $mapping_coa[1]['akun']['kode'],
+			'kode_kredit' => $mapping_coa[1]['akun_1']['kode'],
+			'nama_akundebit' => $mapping_coa[1]['akun']['nama'],
+			'didebit' => $totalHarga,
+			'nama_akunkredit' => $mapping_coa[1]['akun_1']['nama'],
+			'dikredit' => $totalHarga,
+			'weekending' => '',
+			'tutup_buku' => '',
+		];
 	}
 
 	public function tambahDataBarangPengiriman($data)
@@ -222,6 +248,34 @@ class M_pengiriman extends CI_Model
 		];
 		$this->db->where('id', $this->input->post('id'));
 		$this->db->update('pengiriman', $data);
+		
+		$jurnal =$this->siapkanjurnal(5); // 5 == KRM Pengiriman
+		$coa = $this->getcoaD($jurnal['id']);
+		$mapping_coa= $this->getCoa();
+        foreach ($mapping_coa as $key => $value) {
+			$mapping_coa[$key]['akun']   = $this->getCoaById($value['id_coa']);
+            $mapping_coa[$key]['akun_1'] = $this->getCoaById($value['id_coa_1']);
+            $mapping_coa[$key]['akun_2'] = $this->getCoaById($value['id_coa_2']);
+            $mapping_coa[$key]['akun_3'] = $this->getCoaById($value['id_coa_3']);
+        }
+		
+		//TRM penerimaan menggunakan map no 2, $key=1
+		$item_jurnal = [
+			'tgl' => $this->input->post('tanggal', true),
+			'transaksi' =>  $this->input->post('no_sj', true),
+			'no_bukti' =>  $this->input->post('no_lpb', true),
+			'jumlah' => '',
+			'kode_debit' => $mapping_coa[1]['akun']['kode'],
+			'kode_kredit' => $mapping_coa[1]['akun_1']['kode'],
+			'nama_akundebit' => $mapping_coa[1]['akun']['nama'],
+			'didebit' => $totalHarga,
+			'nama_akunkredit' => $mapping_coa[1]['akun_1']['nama'],
+			'dikredit' => $totalHarga,
+			'weekending' => '',
+			'tutup_buku' => '',
+		];
+		//echo "<pre>";
+		//print_r($item_jurnal);
 	}
 	public function cariDataKaryawan()
 	{
@@ -231,4 +285,64 @@ class M_pengiriman extends CI_Model
 		$this->db->or_like('alamat', $keyword);
 		return $this->db->get('pengiriman')->result_array();
 	}
+	
+	function jurnalumum($total)
+	{
+		$jurnal =$this->siapkanjurnal(5); // 5 == KRM Pengiriman
+		$coa = $this->getcoaD($jurnal['id']);
+		//echo $jurnal['id'];
+		$mapping_coa= $this->getCoa();
+        foreach ($mapping_coa as $key => $value) {
+			$mapping_coa[$key]['akun']   = $this->getCoaById($value['id_coa']);
+            $mapping_coa[$key]['akun_1'] = $this->getCoaById($value['id_coa_1']);
+            $mapping_coa[$key]['akun_2'] = $this->getCoaById($value['id_coa_2']);
+            $mapping_coa[$key]['akun_3'] = $this->getCoaById($value['id_coa_3']);
+        }
+		
+		//TRM penerimaan menggunakan map no 2, $key=1
+		$item_jurnal = [
+			'tgl' => $this->input->post('tanggal', true),
+			'transaksi' =>  $this->input->post('no_do', true),
+			'no_bukti' =>  $this->input->post('no_do', true),
+			'jumlah' => '',
+			'kode_debit' => $mapping_coa[1]['akun_2']['kode'],
+			'kode_kredit' => $mapping_coa[1]['akun']['kode'],
+			'nama_akundebit' => $mapping_coa[1]['akun_2']['nama'],
+			'didebit' => $total,
+			'nama_akunkredit' => $mapping_coa[1]['akun']['nama'],
+			'dikredit' => $total,
+			'weekending' => '',
+			'tutup_buku' => '',
+		];
+		
+		//echo "<pre>";
+		//print_r($jurnal);
+		//print_r($item_jurnal);
+		//print_r($mapping_coa);
+		$this->db->replace('jurnalumum', $item_jurnal);
+	}
+	
+	private function siapkanjurnal($id)
+	{
+		return $this->db->get_where('tbl_setup_jurnal', ['id' => $id])->row_array();
+		
+		//$this->db->select('RIGHT(penerimaan.no_lpb,2) as no_lpb', FALSE);
+		//$this->db->order_by('no_lpb', 'DESC');
+		//$this->db->where('id', $this->input->post('id'));
+		//$this->db->limit(1); ['setup_jurnal_id' => $id]
+	}
+	
+	private function getcoaD($id)
+	{		
+        return $this->db->get('tbl_mapping_coa', ['setup_jurnal_id' => $id, 'tipe' => 'debit' ])->row_array();   
+	}
+	
+	public function getCoaById($id) {
+        $this->db->where('id', $id);
+        return $this->db->get('chartofaccount')->row_array();
+    }
+	
+	public function getCoa(){
+        return $this->db->get('tbl_mapping_coa')->result_array();
+    }
 }
