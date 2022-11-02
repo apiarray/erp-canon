@@ -12,6 +12,7 @@ class Manager2 extends CI_Controller {
     public function index(){
         $topik['judul'] = 'Halaman Menu Manager Lain';
         
+        $dfil['idmitra'] = $this->input->get('idmitra', true);
         $dfil['faktur'] = $this->input->get('faktur', true);
         $dfil['tgl_mulai'] = $this->input->get('tgl_mulai', true);
         $dfil['tgl_sampai'] = $this->input->get('tgl_sampai', true);
@@ -21,9 +22,11 @@ class Manager2 extends CI_Controller {
         $data['kode_barang'] = $this->M_manager->kode_barang();
         $data['barang'] = $this->M_manager->get_barang_mitra2($this->session->userdata('kode_id'));
         $data['user'] = $this->M_manager->getMitra();
-        $this->load->view('templates2/header',$topik);
+        // echo json_encode($data);
+
+        $this->load->view('templates/header',$topik);
         $this->load->view('manager2/index',$data);
-        $this->load->view('templates2/footer');
+        $this->load->view('templates/footer');
     }
 
     public function tampil_data() {
