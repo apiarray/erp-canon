@@ -131,7 +131,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= base_url('manager2/tambahDataPenjualanManager');?>" method="POST"> 
+            <!-- <form action="<?= base_url('manager2/tambahDataPenjualanManager');?>" method="POST"> -->
+            <?= form_open('manager2/tambahDataPenjualanManager', array('method'=>'post')); ?>
                 <div class="modal-body ">
                     <div id="kodeappend">
                         <div>
