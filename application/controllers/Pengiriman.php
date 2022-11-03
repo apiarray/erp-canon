@@ -447,9 +447,10 @@ class Pengiriman extends CI_Controller
       $where = array(
         'id' => $id
       );
-  
+	  $this->m_pengiriman->jurnalumum($this->input->post('total_pengiriman', true));	
       $this->m_pengiriman->update_data($where, $dataPengiriman, 'pengiriman');
-
+	 		
+	  
       $delbp = $this->m_pengiriman->hapusDataPengirimanBarangByPengirimanId($id);
       
       foreach($this->input->post('barang', true) as $b){

@@ -58,8 +58,7 @@ class Login extends CI_Controller {
             }
             
         } else {
-            // redirect(base_url('login'));
-            redirect('login', 'refresh');
+            redirect(base_url('login'));
         }
     }
     public function logout(){

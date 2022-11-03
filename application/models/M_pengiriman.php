@@ -168,31 +168,6 @@ class M_pengiriman extends CI_Model
 	public function tambahDataPengiriman($data)
 	{
 		$this->db->insert('pengiriman', $data);
-		
-		$jurnal =$this->siapkanjurnal(5); // 5 == KRM Pengiriman
-		$coa = $this->getcoaD($jurnal['id']);
-		$mapping_coa= $this->getCoa();
-        foreach ($mapping_coa as $key => $value) {
-			$mapping_coa[$key]['akun']   = $this->getCoaById($value['id_coa']);
-            $mapping_coa[$key]['akun_1'] = $this->getCoaById($value['id_coa_1']);
-            $mapping_coa[$key]['akun_2'] = $this->getCoaById($value['id_coa_2']);
-            $mapping_coa[$key]['akun_3'] = $this->getCoaById($value['id_coa_3']);
-        }		
-		//TRM penerimaan menggunakan map no 2, $key = 1 0
-		$item_jurnal = [
-			'tgl' => $this->input->post('tanggal', true),
-			'transaksi' =>  $this->input->post('no_sj', true),
-			'no_bukti' =>  $this->input->post('no_lpb', true),
-			'jumlah' => '',
-			'kode_debit' => $mapping_coa[1]['akun']['kode'],
-			'kode_kredit' => $mapping_coa[1]['akun_1']['kode'],
-			'nama_akundebit' => $mapping_coa[1]['akun']['nama'],
-			'didebit' => $totalHarga,
-			'nama_akunkredit' => $mapping_coa[1]['akun_1']['nama'],
-			'dikredit' => $totalHarga,
-			'weekending' => '',
-			'tutup_buku' => '',
-		];
 	}
 
 	public function tambahDataBarangPengiriman($data)
@@ -274,8 +249,8 @@ class M_pengiriman extends CI_Model
 			'weekending' => '',
 			'tutup_buku' => '',
 		];
-		//echo "<pre>";
-		//print_r($item_jurnal);
+		echo "<pre>";
+		print_r($item_jurnal);
 	}
 	public function cariDataKaryawan()
 	{

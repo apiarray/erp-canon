@@ -48,7 +48,7 @@ class M_Akses extends CI_Model
       if (!$ada) {
         $insert[] = [
           'id_sub_menu' => $mn['id'],
-          'id_role' => $this->input->post('id_role'),
+          'id_role' => $this->input->post('id_role', true),
           'akses' => '0',
           'tambah' => '0',
           'update' => '0',
@@ -59,7 +59,6 @@ class M_Akses extends CI_Model
     if (isset($insert)) {
       $this->db->insert_batch('tbl_akses', $insert);
     }
-    // return $this->input->post('id_role');
     return $this->db->select('m.nama_sub_menu,a.*')
       ->from('tbl_sub_menu m')
       ->join('tbl_akses a', 'm.id = a.id_sub_menu')
@@ -72,31 +71,11 @@ class M_Akses extends CI_Model
   }
   public function list_user()
   {
-    return $this->db->get_where('tbl_akses', ['id_role' => $this->input->post('id_role')])->result_array();
-  }
-  public function list_name()
-  {
     return $this->db->get_where('tbl_role', ['id' => $this->input->post('id_role')])->result_array();
   }
 
   public function simpan()
   {
-    $list = $this->list_menu();
-    $no = 0;
-    foreach ($list as $ls) {
-      $data[] = [
-        'id_sub_menu' => $ls['id_sub_menu'],
-        'tambah' => ($this->input->post('tambah' . $no) ? 1 : 0),
-        'akses' => ($this->input->post('akses' . $no) ? 1 : 0),
-        'update' => ($this->input->post('update' . $no) ? 1 : 0),
-        'delete' => ($this->input->post('delete' . $no) ? 1 : 0),
-      ];
-      $this->db->where('id_role', $this->input->post('id_role'));
-      $this->db->update_batch('tbl_akses', $data, 'id_sub_menu');
-      $no++;
-    }
-
-    return $data;
   }
 
   public function getJabatan()

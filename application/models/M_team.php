@@ -8,7 +8,7 @@ class M_team extends CI_Model{
 	function tampil_team(){
     $username=$this->session->userdata("username");
      $this->db->where('users.username',"$username");
-	 $this->db->select('team.id,users.kode_id, team.nama, team.tgl_lahir,team.jabatan, team.tahun_gabung,t eam.alamat,team.kota,team.no_telp,team.email');
+	 $this->db->select('team.id,users.kode_id, team.nama, team.tgl_lahir,team.jabatan, team.tahun_gabung, team.alamat, team.kota,team.no_telp,team.email');
 	 $this->db->from('users');
 	 $this->db->join('team','team.kode = users.kode_id');
 	 $query = $this->db->get();
