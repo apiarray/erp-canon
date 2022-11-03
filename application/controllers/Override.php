@@ -232,7 +232,7 @@ class Override extends CI_Controller
     $ttlfc = $this->input->get('ttlfc');
     if($ttlfc) {
       
-      $totalfc = $data['data'][0]['saldo_override'];
+      $totalfc = ($data['data']) ? $data['data'][0]['saldo_override'] : 0;
 
       if($ttlfc < 15000000) $totalfc = (2/100*$ttlfc);
       if($ttlfc > 15000000) $totalfc = (4/100*$ttlfc);
