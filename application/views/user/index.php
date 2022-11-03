@@ -116,9 +116,9 @@
                     </button>
                     <div class="dropdown-menu"> -->
                                         <?php if ($usr['activated'] == 1) : ?>
-                                            <a href="<?= base_url('users/aktivasiUser/') . $usr['kode_id']; ?>" class="btn btn-sm btn-warning">Nonaktifkan</a>
+                                            <a href="<?= base_url('users/aktivasiUser/') . $usr['id']; ?>" class="btn btn-sm btn-warning">Nonaktifkan</a>
                                         <?php else : ?>
-                                            <a href="<?= base_url('users/aktivasiUser/') . $usr['kode_id']; ?>" class="btn btn-sm btn-primary">Aktifkan</a>
+                                            <a href="<?= base_url('users/aktivasiUser/') . $usr['id']; ?>" class="btn btn-sm btn-primary">Aktifkan</a>
                                         <?php endif; ?>
 
                                         <?php if ($usr['id_role'] != 1) : ?>
