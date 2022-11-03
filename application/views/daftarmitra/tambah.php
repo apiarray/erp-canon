@@ -34,10 +34,10 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label for="jabatan">Jabatan</label>
-                    <select class="form-control" name="jabatan" id="jabatan">
+                    <select class="form-control" name="jabatan" id="jabatan" onchange="handlePromotor(this.value)">
                         <option value="">-- Pilih --</option>
                         <?php foreach ($jabatan as $j) : ?>
-                            <option name="jabatan"><?= $j['name']; ?></option>
+                            <option value="<?= $j['name'] ?>"><?= $j['kode'] ?> - <?= $j['name']; ?></option>
                         <?php endforeach; ?>
                     </select>
                     <!-- <select class="form-control" name="jabatan" id="jabatan">
@@ -54,12 +54,7 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label for="jabatan">Promoter</label>
-                    <select class="form-control" name="promoter" id="prometer">
-                        <option value="">-- Pilih --</option>
-                        <?php foreach ($promoter as $j) : ?>
-                            <option name="promoter"><?= $j['name']; ?></option>
-                        <?php endforeach; ?>
-                    </select>
+                    <select class="form-control" name="promoter" id="prometer"></select>
                 </div>
             </div>
             <div class="form-row">
@@ -102,4 +97,38 @@
     <a href="<?= base_url('daftar_mitra'); ?>" class="btn btn-success">Kembali</a>
     </form>
 </div>
-</div>
+
+<script>
+    function handlePromotor(value) {
+        $.ajax({
+            type: "POST",
+            url: "<?= base_url('Daftar_mitra/getPromotorByKode') ?>",
+            data: {
+                kode: value,
+                type: 'create',
+                name: null
+            },
+            dataType: "JSON",
+            success: function(response) {
+                $("#prometer").empty()
+                let html = "";
+
+                if (value == "Vice President") {
+                    html += `<option value="">--Pilih--</option>`
+                } else {
+                    if (response.length > 0) {
+                        html += `<option value="">--Pilih--</option>`
+                        $.each(response, function(i, v) {
+                            html += `<option value="${v.name}">${v.name}</option>`
+                        })
+                    } else {
+                        html += `<option value="">--Pilih--</option>`;
+                    }
+                }
+                $("#prometer").append(html);
+
+
+            }
+        })
+    }
+</script>

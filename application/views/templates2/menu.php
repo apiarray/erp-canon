@@ -1,5 +1,5 @@
     <!-- <ul class="navbar-nav bg-primary sidebar sidebar-dark custom" id="accordionSidebar"> -->
-    <ul class="navbar-nav sidebar sidebar-dark custom" id="accordionSidebar" style="background-color:#fff">
+    <ul class="navbar-nav sidebar sidebar-dark custom" id="accordionSidebar" style="background-color:#BF00FF">
 
 
       <!-- Sidebar - Brand -->
