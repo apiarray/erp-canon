@@ -13,6 +13,7 @@ class Top_lead2 extends CI_Controller
     {
         $topik['judul'] = 'Halaman Menu Top Leader';
         $data['tgl'] = $this->m_lead->tampil_weekending();
+        $data['manager'] = $this->db->select("name")->from("daftar_mitra")->where("jabatan", "Branch Manager")->get()->result();
         $this->load->view('templates2/header', $topik);
         $this->load->view('toplead2/index', $data);
         $this->load->view('templates2/footer');

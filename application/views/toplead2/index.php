@@ -90,11 +90,16 @@
               <div class="form-row">
                 <div class="form-group col-md-6">
                   <label for="inputNama">Nama Mitra</label>
-                  <input type="text" class="form-control" id="inputNama" name="nama" required>
+                  <input type="text" class="form-control" id="inputNama" name="nama" value="<?= $this->session->userdata('username') ?>" required readonly>
                 </div>
                 <div class="form-group col-md-6">
                   <label for="inputManager">Manager</label>
-                  <input type="text" class="form-control" id="inputManager" name="manager" required>
+                  <select name="manager" id="inputManager" class="form-control">
+                    <option value="">--Pilih Manager--</option>
+                    <?php foreach ($manager as $value) { ?>
+                      <option value="<?= $value->name ?>"><?= $value->name ?></option>
+                    <?php } ?>
+                  </select>
                 </div>
               </div>
               <div class="form-row">
@@ -173,11 +178,16 @@
                 <div class="form-group col-md-6">
                   <label for="inputNamaEdit">Nama Mitra</label>
                   <input type="hidden" name="id" id="id">
-                  <input type="text" class="form-control" id="inputNamaEdit" name="nama" required>
+                  <input type="text" class="form-control" id="inputNamaEdit" name="nama" required readonly>
                 </div>
                 <div class="form-group col-md-6">
                   <label for="inputManagerEdit">Manager</label>
-                  <input type="text" class="form-control" id="inputManagerEdit" name="manager" required>
+                  <select name="manager" id="inputManagerEdit" class="form-control">
+                    <option value="">--Pilih Manager--</option>
+                    <?php foreach ($manager as $value) { ?>
+                      <option value="<?= $value->name ?>"><?= $value->name ?></option>
+                    <?php } ?>
+                  </select>
                 </div>
               </div>
               <div class="form-row">
@@ -409,7 +419,7 @@
 
         $('#id').val(results.id);
         $('#inputNamaEdit').val(results.nama);
-        $('#inputManagerEdit').val(results.manager);
+        $('#inputManagerEdit').val(results.manager).trigger('change');
         $('#inputPointEdit').val(results.poin_sendiri);
         $('#inputPointTeamEdit').val(results.poin_team);
         $('#inputPeringkatEdit').val(results.peringkat_langsung);
