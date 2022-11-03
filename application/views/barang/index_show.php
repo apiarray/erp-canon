@@ -197,22 +197,50 @@
                             <?= $qty; ?>
                         </td>
                         <td class="">
-                            <?php echo number_format($hpp, 2, ',', '.'); ?>
+                            <?php if ($hpp == "") { ?>
+                                -
+                            <?php } else { ?>
+                                <?php echo number_format($hpp, 2, ',', '.'); ?>
+                            <?php } ?>
                         </td>
                         <td class="">
-                            <?php echo number_format($sebelumpajak, 2, ',', '.'); ?>
+                            <?php if ($sebelumpajak == "") { ?>
+                                -
+                            <?php } else { ?>
+                                <?php echo number_format($sebelumpajak, 2, ',', '.'); ?>
+                            <?php } ?>
+
                         </td>
                         <td class="">
-                            <?php echo $ppn . "%"; ?>
+                            <?php if ($ppn == "") { ?>
+                                -
+                            <?php } else { ?>
+                                <?php echo $ppn . "%"; ?>
+                            <?php } ?>
                         </td>
                         <td class="">
-                            <?php echo number_format($setelahpajak, 2, ',', '.'); ?>
+                            <?php if ($setelahpajak == "") { ?>
+                                -
+                            <?php } else { ?>
+                                <?php echo number_format($setelahpajak, 2, ',', '.'); ?>
+                            <?php } ?>
+
                         </td>
                         <td class="">
-                            <?php echo number_format($hargasetoran, 2, ',', '.'); ?>
+                            <?php if ($hargasetoran == "") { ?>
+                                -
+                            <?php } else { ?>
+                                <?php echo number_format($hargasetoran, 2, ',', '.'); ?>
+                            <?php } ?>
+
                         </td>
                         <td class="">
-                            <?php echo number_format($jumlah, 2, ',', '.'); ?>
+                            <?php if ($jumlah == "") { ?>
+                                -
+                            <?php } else { ?>
+                                <?php echo number_format($jumlah, 2, ',', '.'); ?>
+                            <?php } ?>
+
                         </td>
                         <td>
                             <div class="btn-group">
@@ -409,7 +437,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="inputSetelahPajak">Harga Setelah Pajak</label>
-                                    <input type="text" class="form-control numeric" id="inputSetelahPajak" name="setelahpajak" readonly>
+                                    <input type="text" class="form-control" id="inputSetelahPajak" name="setelahpajak" readonly>
                                 </div>
                             </div>
 
@@ -442,7 +470,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="inputTotal">Total</label>
-                                    <input type="text" class="form-control numeric" id="inputTotal" name="jumlah" readonly>
+                                    <input type="text" class="form-control" id="inputTotal" name="jumlah" readonly>
                                 </div>
                             </div>
                             <div class="form-row">
@@ -915,9 +943,11 @@
 
                 let stok = document.getElementById('inputStok');
 
-                let valStok = stok.value == "" ? 1 : parseFloat(stok.value.replace(/,/g, ''))
+                let valStok = stok.value == "" ? 0 : parseFloat(stok.value.replace(/,/g, ''))
 
-                document.getElementById('inputTotal').value = numberFormat(valStok * parseFloat(result.setelahpajak));
+                let totFinal = valStok * parseFloat(result.setelahpajak);
+
+                document.getElementById('inputTotal').value = totFinal == 0 ? "" : numberFormat(totFinal);
 
                 document.getElementById('tabelKode').style.display = 'none';
                 // console.log(result);
@@ -964,23 +994,25 @@
         let valInputPpn = inputPpn.value == "" ? 0 : parseFloat(inputPpn.value.replace(/,/g, ''));
         let valInputSebelumPajak = inputSebelumPajak.value == "" ? 0 : parseFloat(inputSebelumPajak.value.replace(/,/g, ''))
 
-        let valueSetelahPajak = numberFormat(valInputSebelumPajak + valInputSebelumPajak * (valInputPpn / 100));
+        let totSetelahPajak = valInputSebelumPajak + valInputSebelumPajak * (valInputPpn / 100)
 
-        inputSetelahPajak.value = valueSetelahPajak;
+        inputSetelahPajak.value = totSetelahPajak == 0 ? "" : numberFormat(totSetelahPajak);
 
-        let valStok = stok.value == "" ? 1 : parseFloat(stok.value.replace(/,/g, ''))
+        let valStok = stok.value == "" ? 0 : parseFloat(stok.value.replace(/,/g, ''))
+        let totFinal = valStok * totSetelahPajak == "" ? 0 : totSetelahPajak;
 
-        total.value = numberFormat(valStok * valueSetelahPajak == "" ? 1 : valueSetelahPajak.replace(/,/g, ''))
+        total.value = totFinal == 0 ? "" : numberFormat(totFinal)
     }
 
     const hitungTotal = (event, type = null) => {
-        let stok = event.currentTarget.value == "" ? 1 : parseFloat(event.currentTarget.value)
+        let stok = event.currentTarget.value == "" ? 0 : parseFloat(event.currentTarget.value)
         let inputSetelahPajak = (type == null) ? document.getElementById('inputSetelahPajak') : document.getElementById('inputSetelahPajak' + type)
-        let valInputSetelahPajak = inputSetelahPajak.value == "" ? 1 : parseFloat(inputSetelahPajak.value.replace(/,/g, ''));
+        let valInputSetelahPajak = inputSetelahPajak.value == "" ? 0 : parseFloat(inputSetelahPajak.value.replace(/,/g, ''));
 
         let total = (type == null) ? document.getElementById('inputTotal') : document.getElementById('inputTotal' + type)
+        let totFinal = stok * valInputSetelahPajak;
 
-        total.value = numberFormat(stok * valInputSetelahPajak)
+        total.value = totFinal == 0 ? "" : numberFormat(totFinal)
     }
 
     const handlerFormat = (event, target, type = null) => {
