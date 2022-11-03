@@ -139,7 +139,7 @@
                                     </td>
                                     <td>
                                         <?php
-                                        echo $erp['kode_id'] ?>
+                                        echo $erp['kode'] ?>
                                     </td>
                                     <td width="">
                                         <?php

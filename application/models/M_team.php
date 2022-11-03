@@ -9,16 +9,8 @@ class M_team extends CI_Model
 
     function tampil_team()
     {
-        // $username = $this->session->userdata("username");
-        // $this->db->where('users.username', "$username");
-        // $this->db->select('team.id,team.kode,team.nama,team.tgl_lahir,team.jabatan,team.thn_gabung,team.alamat,team.kota,team.no_telp,team.email');
-        // $this->db->from('users');
-        // $this->db->join('team', 'team.kode=users.kode_id');
 
-        return $this->db->select("team.*, users.kode_id")
-            ->from("users")
-            ->join("team", "users.kode_id = team.kode", "left")
-            ->where("users.username", $this->session->userdata("username"))->get()->result_array();
+        return $this->db->select("*")->from("team")->get()->result_array();
     }
 
     public function tambahDataTeam()
