@@ -178,4 +178,14 @@ class Daftar_mitra extends CI_Controller
         $writer->save('php://output');
         exit;
     }
+
+    public function getPromotorByKode()
+    {
+        $kode = $this->input->post("kode");
+        $type = $this->input->post("type");
+        $name = $this->input->post("name");
+
+        $result = $this->M_daftar->getPromotorByKode($kode, $type, $name);
+        echo json_encode($result);
+    }
 }

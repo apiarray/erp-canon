@@ -1,73 +1,76 @@
 <?php
 
-class M_asmen extends CI_Model{
-    public function tampil_data($weekending) {
-        if ($weekending) {
-            if ($this->session->userdata('gudang') != "Head Office") {
-                return $this->db->get_where('topasmen', ['tgl' => $weekending, 'gudang' => $this->session->userdata('gudang')])->result_array();
-            }
+class M_asmen extends CI_Model
+{
+    public function tampil_data($weekending)
+    {
+        if ($weekending != "") {
             return $this->db->get_where('topasmen', ['tgl' => $weekending])->result_array();
         } else {
-            return "";
+            return;
         }
     }
 
-    public function getDataById($id) {
+    public function getDataById($id)
+    {
         return $this->db->get_where('topasmen', ['id' => $id])->row_array();
     }
 
-    public function weekending() {
+    public function weekending()
+    {
         $this->db->select('tgl');
         $this->db->where_not_in('tgl', 'up');
         $this->db->distinct();
         return $this->db->get('topasmen')->result_array();
     }
 
-    public function tambahDataAsmen() {
+    public function tambahDataAsmen()
+    {
         $data = [
             "tgl" => "up",
-            "nama" => $this->input->post('nama',true),
-            "gudang" => $this->input->post('gudang',true),
-            "manager" => $this->input->post('manager',true),
-            "poin_sendiri" => $this->input->post('poin_sendiri',true),
-            "poin_tim" => $this->input->post('poin_tim',true),
-            "peringkat_langsung" => $this->input->post('peringkat_langsung',true),
-            "peringkat_tidaklangsung" => $this->input->post('peringkat_tidaklangsung',true),
-            "jumlah_leader" => $this->input->post('jumlah_leader',true),
-            "jumlah_distributor" => $this->input->post('jumlah_distributor',true),
-            "jumlah_retrain" => $this->input->post('jumlah_retrain',true),
-            "jumlah_observasi" => $this->input->post('jumlah_observasi',true),
-            "jumlah_team" => $this->input->post('jumlah_team',true)
+            "nama" => $this->input->post('mitra', true),
+            "manager" => $this->input->post('manager', true),
+            "poin_sendiri" => $this->input->post('pointSendiri', true),
+            "poin_tim" => $this->input->post('pointTeam', true),
+            "peringkat_langsung" => $this->input->post('peringkatLangsung', true),
+            "peringkat_tidaklangsung" => $this->input->post('peringkatTidakLangsung', true),
+            "jumlah_leader" => $this->input->post('leader', true),
+            "jumlah_distributor" => $this->input->post('distributor', true),
+            "jumlah_retrain" => $this->input->post('retrain', true),
+            "jumlah_observasi" => $this->input->post('observasi', true),
+            "jumlah_team" => $this->input->post('team', true)
         ];
-        $this->db->insert('topasmen',$data);
+        return $this->db->insert('topasmen', $data);
     }
 
-    public function editDataAsmen() {
+    public function editDataAsmen()
+    {
         $data = [
-            "nama" => $this->input->post('nama2',true),
-            "gudang" => $this->input->post('gudang2',true),
-            "manager" => $this->input->post('manager2',true),
-            "poin_sendiri" => $this->input->post('poin_sendiri2',true),
-            "poin_tim" => $this->input->post('poin_tim2',true),
-            "peringkat_langsung" => $this->input->post('peringkat_langsung2',true),
-            "peringkat_tidaklangsung" => $this->input->post('peringkat_tidaklangsung2',true),
-            "jumlah_leader" => $this->input->post('jumlah_leader2',true),
-            "jumlah_distributor" => $this->input->post('jumlah_distributor2',true),
-            "jumlah_retrain" => $this->input->post('jumlah_retrain2',true),
-            "jumlah_observasi" => $this->input->post('jumlah_observasi2',true),
-            "jumlah_team" => $this->input->post('jumlah_team2',true)
+            "nama" => $this->input->post('mitra', true),
+            "manager" => $this->input->post('manager', true),
+            "poin_sendiri" => $this->input->post('pointSendiri', true),
+            "poin_tim" => $this->input->post('pointTeam', true),
+            "peringkat_langsung" => $this->input->post('peringkatLangsung', true),
+            "peringkat_tidaklangsung" => $this->input->post('peringkatTidakLangsung', true),
+            "jumlah_leader" => $this->input->post('leader', true),
+            "jumlah_distributor" => $this->input->post('distributor', true),
+            "jumlah_retrain" => $this->input->post('retrain', true),
+            "jumlah_observasi" => $this->input->post('observasi', true),
+            "jumlah_team" => $this->input->post('team', true)
         ];
 
         $this->db->set($data);
         $this->db->where('id', $this->input->post('id'));
-        $this->db->update('topasmen');
+        return $this->db->update('topasmen');
     }
 
-    public function getKaryawanById($id){
-        return $this->db->get_where('manager',['id'=>$id])->row_array();
+    public function getKaryawanById($id)
+    {
+        return $this->db->get_where('manager', ['id' => $id])->row_array();
     }
-    public function hapusDataAsmen($id){
-        $this->db->where('id',$id);
+    public function hapusDataAsmen($id)
+    {
+        $this->db->where('id', $id);
         $this->db->delete('topasmen');
     }
     // public function ubahDataKaryawan(){

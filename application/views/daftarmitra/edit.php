@@ -4,6 +4,7 @@
 
         <form action="<?= base_url() ?>daftar_mitra/prosesEdit" method="POST">
             <input type="hidden" name="id" class="form-control" value="<?= $data['id']; ?>">
+            <input type="hidden" id="dataPromotor" class="form-control" value="<?= $data['promoter']; ?>">
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="inputKode">ID</label>
@@ -21,7 +22,7 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label for="dosen_pa">Jabatan</label>
-                    <select name="jabatan" id="jabatan" class="form-control">
+                    <select name="jabatan" id="jabatan" class="form-control" onchange="handlePromotor(this.value)">
                         <?php foreach ($jabatan as $pr) : ?>
                             <?php if ($pr['name'] == $data['jabatan']) : ?>
                                 <option value="<?= $pr['name'] ?>" selected><?= $pr['name'] ?></option>
@@ -33,16 +34,7 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label for="promoter">Promoter</label>
-                    <select class="form-control" name="promoter" id="prometer">
-                        <option value="">-- Pilih --</option>
-                        <?php foreach ($promoter as $j) : ?>
-                            <?php if ($j['name'] == $data['promoter']) : ?>
-                                <option value="<?= $j['name'] ?>" selected><?= $j['name'] ?></option>
-                            <?php else : ?>
-                                <option value="<?= $j['name'] ?>"><?= $j['name'] ?></option>
-                            <?php endif; ?>
-                        <?php endforeach; ?>
-                    </select>
+                    <select class="form-control" name="promoter" id="prometer"></select>
                 </div>
             </div>
             <div class="form-row">
@@ -88,3 +80,47 @@
         </form>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        $("#jabatan").trigger('change');
+    })
+
+    function handlePromotor(value) {
+        let dataDb = $("#dataPromotor").val();
+        $.ajax({
+            type: "POST",
+            url: "<?= base_url('Daftar_mitra/getPromotorByKode') ?>",
+            data: {
+                kode: value,
+                type: 'edit',
+                name: $("#inputNama").val()
+            },
+            dataType: "JSON",
+            success: function(response) {
+                $("#prometer").empty()
+                let html = "";
+
+                if (value == "Vice President") {
+                    html += `<option value="">--Pilih--</option>`
+                } else {
+                    if (response.length > 0) {
+                        html += `<option value="">--Pilih--</option>`
+                        $.each(response, function(i, v) {
+                            if (v.name == dataDb) {
+                                html += `<option value="${v.name}" selected>${v.name}</option>`
+                            } else {
+                                html += `<option value="${v.name}">${v.name}</option>`
+                            }
+                        })
+                    } else {
+                        html += `<option value="">--Pilih--</option>`;
+                    }
+                }
+                $("#prometer").append(html);
+
+
+            }
+        })
+    }
+</script>

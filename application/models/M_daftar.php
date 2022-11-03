@@ -133,4 +133,15 @@ class M_daftar extends CI_Model
         $this->db->or_like('telepon', $keyword);
         return $this->db->get('daftar_mitra')->result_array();
     }
+
+    public function getPromotorByKode($kode, $type, $name)
+    {
+        $this->db->select("name");
+        $this->db->from("daftar_mitra");
+        $this->db->where("jabatan", $kode);
+        if ($type == 'edit') {
+            $this->db->where("name !=", $name);
+        }
+        return $this->db->get()->result();
+    }
 }
