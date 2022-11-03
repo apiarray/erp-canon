@@ -13,6 +13,7 @@ class Top_asmen2 extends CI_Controller
     {
         $topik['judul'] = 'Halaman Menu Asmen';
         $data['tgl'] = $this->m_asmen->weekending();
+        $data['manager'] = $this->db->select("name")->from("daftar_mitra")->where("jabatan", "Assistant Manager")->get()->result();
         $this->load->view('templates2/header', $topik);
         $this->load->view('topasmen2/index', $data);
         $this->load->view('templates2/footer');
