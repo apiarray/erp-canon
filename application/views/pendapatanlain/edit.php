@@ -16,7 +16,7 @@
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="">Tgl</label>
+                        <label for="">Tanggal</label>
                         <input type="text" required name="tgl" class="form-control" value="<?= $pendapatanlain['tgl'];?>">
                         <small><span class="text-danger"><?=form_error('tgl');?></span></small>
                     </div>
