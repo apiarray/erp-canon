@@ -16,6 +16,7 @@ class Manager2 extends CI_Controller {
         $dfil['faktur'] = $this->input->get('faktur', true);
         $dfil['tgl_mulai'] = $this->input->get('tgl_mulai', true);
         $dfil['tgl_sampai'] = $this->input->get('tgl_sampai', true);
+        $dfil['validasi'] = 'V';
 
         $data['manager'] = $this->M_manager->tampil_data();
         $data['datas'] = $this->M_manager->tampil_data_manager($dfil);

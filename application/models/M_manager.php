@@ -161,6 +161,9 @@ class M_manager extends CI_Model {
     if($fil['tgl_sampai'] != ''){
       $this->db->where('tgl <= ', $fil['tgl_sampai']);
     }
+    if($fil['validasi'] != ''){
+      $this->db->where('validasi', $fil['validasi']);
+    }
     
     $this->db->where('kode_id',"$kodeid");
     $query = $this->db->get();
