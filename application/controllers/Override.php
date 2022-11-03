@@ -221,7 +221,7 @@ class Override extends CI_Controller
     $response = array(
       'kodemitra' => $id,
       'data' => $data['data'],
-      'saldo_override' => ($data['data'][0]) ? $data['data'][0]['saldo_override'] : 0,
+      'saldo_override' => ($data['data']) ? $data['data'][0]['saldo_override'] : 0,
       'success' => !empty($data['data']) ? true : false,
     );
 
