@@ -88,8 +88,8 @@
             <h6 class="collapse-header">Custom Weekly:</h6>
 
             <?php
-            if ($this->session->userdata('id_role') == 2) {
-              $cek_akses = $this->db->get_where('tbl_akses', ['id_role' => 2])->result_array();
+            if ($this->session->userdata('id_role') == 2 || $this->session->userdata('id_role') == 6) {
+              $cek_akses = $this->db->get_where('tbl_akses', ['id_role' => $this->session->userdata('id_role')])->result_array();
               foreach ($cek_akses as $cek) {
                 list_akses_user($cek['id_sub_menu'], 18, $cek['akses'], 1, 'manager2', 'Manager');
                 list_akses_user($cek['id_sub_menu'], 19, $cek['akses'], 1, 'win2_manager2', 'Win2 Manager');
@@ -119,8 +119,8 @@
             <!-- ======menampilkan list menu dengan kondisi hak akses============ -->
 
             <?php
-            if ($this->session->userdata('id_role') == 2) {
-              $cek_akses = $this->db->get_where('tbl_akses', ['id_role' => 2])->result_array();
+            if ($this->session->userdata('id_role') == 2 || $this->session->userdata('id_role') == 6) {
+              $cek_akses = $this->db->get_where('tbl_akses', ['id_role' => $this->session->userdata('id_role')])->result_array();
               foreach ($cek_akses as $cek) {
                 list_akses_user($cek['id_sub_menu'], 15, $cek['akses'], 1, 'jurnalumum2', 'Jurnal Umum');
                 list_akses_user($cek['id_sub_menu'], 16, $cek['akses'], 1, 'neraca2', 'Neraca');
@@ -147,8 +147,8 @@
             <!-- ======menampilkan list sub menu dengan kondisi hak akses============ -->
 
             <?php
-            if ($this->session->userdata('id_role') == 2) {
-              $cek_akses = $this->db->get_where('tbl_akses', ['id_role' => 2])->result_array();
+            if ($this->session->userdata('id_role') == 2 || $this->session->userdata('id_role') == 6) {
+              $cek_akses = $this->db->get_where('tbl_akses', ['id_role' => $this->session->userdata('id_role')])->result_array();
               foreach ($cek_akses as $cek) {
                 list_akses_user($cek['id_sub_menu'], 29, $cek['akses'], 1, 'juice2_4u', 'Juice 4U');
                 list_akses_user($cek['id_sub_menu'], 30, $cek['akses'], 1, 'juice_distri2', 'Juice Distributor');
@@ -178,8 +178,8 @@
             <!-- ======menampilkan list sub menu dengan kondisi hak akses============ -->
 
             <?php
-            if ($this->session->userdata('id_role') == 2) {
-              $cek_akses = $this->db->get_where('tbl_akses', ['id_role' => 2])->result_array();
+            if ($this->session->userdata('id_role') == 2 || $this->session->userdata('id_role') == 6) {
+              $cek_akses = $this->db->get_where('tbl_akses', ['id_role' => $this->session->userdata('id_role')])->result_array();
               foreach ($cek_akses as $cek) {
                 list_akses_user($cek['id_sub_menu'], 31, $cek['akses'], 1, 'penjualan2', 'Penjualan');
                 list_akses_user($cek['id_sub_menu'], 18, $cek['akses'], 1, 'manager2', 'Manager P & L');
