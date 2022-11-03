@@ -91,9 +91,9 @@ class Users extends CI_Controller
         }
     }
 
-    public function aktivasiUser($kode_id)
+    public function aktivasiUser($id)
     {
-        $data = $this->M_user->aktivasiUser($kode_id);
+        $data = $this->M_user->aktivasiUser($id);
         if ($data[1] === 0) {
             $this->session->set_flashdata('non-active', $data[0]);
         } else {

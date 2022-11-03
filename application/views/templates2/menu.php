@@ -50,8 +50,8 @@
             <h6 class="collapse-header">Custom Master:</h6>
 
             <?php
-            if ($this->session->userdata('id_role') == 2) {
-              $cek_akses = $this->db->get_where('tbl_akses', ['id_role' => 2])->result_array();
+            if ($this->session->userdata('id_role') == 2 || $this->session->userdata('id_role') == 6) {
+              $cek_akses = $this->db->get_where('tbl_akses', ['id_role' => $this->session->userdata('id_role')])->result_array();
               // ===================fungsi list akses menu user=================================
               function list_akses_user($id_menu, $value, $id_akses, $value_akses, $url, $nama)
               {

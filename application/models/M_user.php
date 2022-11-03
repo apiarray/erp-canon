@@ -89,12 +89,12 @@ class M_user extends CI_Model
         $this->db->update('users', $data);
     }
 
-    public function aktivasiUser($kode_id)
+    public function aktivasiUser($id)
     {
         $this->db->select('username, activated');
-        $active = $this->db->get_where('users', ['kode_id' => $kode_id])->row_array();
+        $active = $this->db->get_where('users', ['id' => $id])->row_array();
 
-        $this->db->where('kode_id', $kode_id);
+        $this->db->where('id', $id);
         if ($active['activated'] == 1) {
             $this->db->update('users', ['activated' => 0]);
             return [$active['username'], 0];
