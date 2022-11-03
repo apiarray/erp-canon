@@ -221,7 +221,7 @@ class Override extends CI_Controller
     $response = array(
       'kodemitra' => $id,
       'data' => $data['data'],
-      'saldo_override' => $data['data'][0]['saldo_override'],
+      'saldo_override' => !empty($data['data']) ? $data['data'][0]['saldo_override'] : 0,
       'success' => !empty($data['data']) ? true : false,
     );
 
@@ -232,10 +232,10 @@ class Override extends CI_Controller
     $ttlfc = $this->input->get('ttlfc');
     if($ttlfc) {
       
-      $totalfc = $data['data'][0]['saldo_override'];
+      $totalfc = !empty($data['data']) ? $data['data'][0]['saldo_override'] : 0;
 
-      if($ttlfc < 15000000) $totalfc = (2/100*$ttlfc);
-      if($ttlfc > 15000000) $totalfc = (4/100*$ttlfc);
+      if($ttlfc < 15000000) $totalfc += (2/100*$ttlfc);
+      if($ttlfc > 15000000) $totalfc += (4/100*$ttlfc);
 
       $saldo_override = array(
         'saldo_override' => $totalfc,

@@ -131,7 +131,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= base_url('manager2/tambahDataPenjualanManager');?>" method="POST"> 
+            <!-- <form action="<?= base_url('manager2/tambahDataPenjualanManager');?>" method="POST"> -->
+            <?= form_open('manager2/tambahDataPenjualanManager', array('method'=>'post')); ?>
                 <div class="modal-body ">
                     <div id="kodeappend">
                         <div>
@@ -198,7 +199,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= base_url('manager2/editDataPenjualanManager');?>" method="POST">
+            <!-- <form action="<?= base_url('manager2/editDataPenjualanManager');?>" method="POST"> -->
+            <?= form_open('manager2/editDataPenjualanManager', array('method'=>'post')); ?>
                 <div class="modal-body ">
                     <input type="hidden" name="id" value=""> 
                     <div id="kodeeditappend">

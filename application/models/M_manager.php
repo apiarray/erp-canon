@@ -25,7 +25,7 @@ class M_manager extends CI_Model {
       $this->db->select('*, daftar_mitra.name,weekly_manager2.id as wmid');
       $this->db->from('weekly_manager2');
       $this->db->join('daftar_mitra', 'weekly_manager2.kode_id = daftar_mitra.kode');
-      // $this->db->where('weekly_manager2.validasi', 'V');
+      $this->db->where('weekly_manager2.validasi', 'V');
       $query = $this->db->get();
       return $query->result_array();
     }
@@ -160,6 +160,9 @@ class M_manager extends CI_Model {
     }
     if($fil['tgl_sampai'] != ''){
       $this->db->where('tgl <= ', $fil['tgl_sampai']);
+    }
+    if($fil['validasi'] != ''){
+      $this->db->where('validasi', $fil['validasi']);
     }
     
     $this->db->where('kode_id',"$kodeid");
