@@ -76,7 +76,7 @@ class Pengeluaran extends CI_Controller {
             }
 
             $this->session->set_flashdata('flash','Ditambahkan');
-            redirect('pengeluaran');
+            //redirect('pengeluaran');
         }
         
     }

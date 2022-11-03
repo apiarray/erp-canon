@@ -366,7 +366,7 @@ class DOMPDF {
     // TODO: use the $encoding variable
     // FIXME: Determine character encoding, switch to UTF8, update meta tag. Need better http/file stream encoding detection, currently relies on text or meta tag.
     mb_detect_order('auto');
-    
+    ini_set('display_errors', 0);
     if (mb_detect_encoding($str) !== 'UTF-8') {
       $metatags = array(
         '@<meta\s+http-equiv="Content-Type"\s+content="(?:[\w/]+)(?:;\s*?charset=([^\s"]+))?@i',
