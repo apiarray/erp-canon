@@ -1,15 +1,33 @@
 <?php
 
 class M_juice extends CI_Model {
+
+
     public function tampil_data($weekending) {
         if (!$weekending) {
-            return $this->db->get('juice')->result_array();
+            $this->db->select('weekly_manager2.tgl_validasi as tgl_validasi,daftar_mitra.name as nama_mitra, weekly_manager2.nominal_total as total,
+            daftar_mitra.kota AS lokasi');
+            $this->db->from('weekly_manager2');
+            $this->db->join('daftar_mitra', 'weekly_manager2.kode_id = daftar_mitra.kode');
+            $query = $this->db->get();
+            return $query->result_array();
         } else {
-            return $this->db->get_where('juice', ['weekending' => $weekending])->result_array();
+            $this->db->select('weekly_manager2.tgl_validasi as tgl_validasi,daftar_mitra.name as nama_mitra, weekly_manager2.nominal_total as total,
+            daftar_mitra.kota AS lokasi');
+            $this->db->from('weekly_manager2');
+            $this->db->join('daftar_mitra', 'weekly_manager2.kode_id = daftar_mitra.kode');
+            $this->db->where('tgl_validasi',$weekending);
+            $query = $this->db->get();
+            return $query->result_array();
         }
     }
     public function tampil_semua_data(){
-        return $this->db->get('juice')->result_array();
+        $this->db->select('weekly_manager2.tgl_validasi as tgl_validasi,daftar_mitra.name as nama_mitra');
+        $this->db->from('weekly_manager2');
+        $this->db->join('daftar_mitra', 'weekly_manager2.kode_id = daftar_mitra.kode');
+        $query = $this->db->get();
+        return $query->result_array();
+
     }
     public function tambahDataJuice(){
         $data = [
@@ -36,11 +54,11 @@ class M_juice extends CI_Model {
     }
 
     public function get_tgl() {
-        $this->db->select('weekending');
+        $this->db->select('tgl_validasi');
         $this->db->distinct();
-        $this->db->where_not_in('weekending', 'up');
-        $this->db->order_by('id', 'DESC');
-        return $this->db->get('juice')->result_array();
+        $this->db->where('tgl_validasi is NOT NULL', NULL, FALSE);
+        $this->db->order_by('tgl_validasi', 'DESC');
+        return $this->db->get('weekly_manager2')->result_array();
     }
 
     public function getDataById($id) {
@@ -76,11 +94,37 @@ class M_juice extends CI_Model {
     
     public function tampil_data_by_mitra()
     {
-      $this->db->select('weekly_manager2.tgl_validasi as tgl_validasi,daftar_mitra.name as nama_mitra');
-      $this->db->from('weekly_manager2');
-      $this->db->join('daftar_mitra', 'weekly_manager2.kode_id = daftar_mitra.kode');
-      $this->db->where('weekly_manager2.validasi', 'V');
+      $this->db->select('daftar_mitra.name');
+      $this->db->distinct();
+      $this->db->from('daftar_mitra');
+      $this->db->join('weekly_manager2', 'weekly_manager2.kode_id = daftar_mitra.kode');
       $query = $this->db->get();
       return $query->result_array();
     }
+
+    public function tampil_data_like($bulan) {
+        $this->db->select('weekly_manager2.tgl_validasi as tgl_validasi,daftar_mitra.name as nama_mitra, weekly_manager2.nominal_total as total,
+        daftar_mitra.kota AS lokasi');
+        $this->db->from('weekly_manager2');
+        $this->db->join('daftar_mitra', 'weekly_manager2.kode_id = daftar_mitra.kode');
+        $this->db->like('tgl_validasi', $bulan);
+
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
+    public function tampil_data_mitra($name){
+        $this->db->select('weekly_manager2.tgl_validasi as tgl_validasi,daftar_mitra.name as nama_mitra, weekly_manager2.nominal_total as total,
+        daftar_mitra.kota AS lokasi');
+        $this->db->from('weekly_manager2');
+        $this->db->join('daftar_mitra', 'weekly_manager2.kode_id = daftar_mitra.kode');
+        $this->db->like('daftar_mitra.name', $name);
+
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
+    
+
+    
 }
