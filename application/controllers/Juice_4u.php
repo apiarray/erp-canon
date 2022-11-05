@@ -41,6 +41,12 @@ class Juice_4u extends CI_Controller {
     public function tampil_data($weekending = NULL) {
         echo json_encode($this->m_juice->tampil_data($weekending));
     }
+    public function tampil_data_bulanan($bulan = NULL) {
+        echo json_encode($this->m_juice->tampil_data_like($bulan));
+    }
+    public function tampil_data_mitra($nama = NULL) {
+        echo json_encode($this->m_juice->tampil_data_mitra($nama));
+    }
 
     public function tambah(){
         
