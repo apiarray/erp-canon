@@ -1,15 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-class Juice_4u extends CI_Controller {
-    public function __construct() {
+class Juice2_4u extends CI_Controller {
+    public function __construct(){
         parent::__construct();
-        $this->load->model('m_juice');
         $this->load->model('M_bulan');
         $this->load->model('M_Tahun');
+        $this->load->model('m_juice');
         $this->load->library('form_validation');
     }
     public function index(){
@@ -25,9 +22,9 @@ class Juice_4u extends CI_Controller {
         // if ($this->input->post('keyword')) {
         //     $data['gudang'] = $this->m_gudang->cariDataGudang();
         // }
-        $this->load->view('templates/header',$topik);
-        $this->load->view('juice/index',$data);
-        $this->load->view('templates/footer');
+        $this->load->view('templates2/header',$topik);
+        $this->load->view('juice2/index',$data);
+        $this->load->view('templates2/footer');
     }
 
     public function get_tgl() {
@@ -41,6 +38,12 @@ class Juice_4u extends CI_Controller {
     public function tampil_data($weekending = NULL) {
         echo json_encode($this->m_juice->tampil_data($weekending));
     }
+    public function tampil_data_bulanan($bulan = NULL) {
+        echo json_encode($this->m_juice->tampil_data_like($bulan));
+    }
+    public function tampil_data_mitra($nama = NULL) {
+        echo json_encode($this->m_juice->tampil_data_mitra($nama));
+    }
 
     public function tambah(){
         
@@ -53,15 +56,15 @@ class Juice_4u extends CI_Controller {
 
 
         if ($this->form_validation->run() == FALSE) {
-            $this->load->view('templates/header',$data);
+            $this->load->view('templates2/header',$data);
             $this->load->view('juice/tambah');
         }else {
             $this->m_juice->tambahDataJuice();
             $this->session->set_flashdata('flash','Ditambahkan');
-            redirect('juice_4u');
+            redirect('juice2_4u');
         }
     }
-
+   
     public function edit() {
         $this->form_validation->set_rules('nama2','Nama','required');
         $this->form_validation->set_rules('lokasi2','Lokasi','required');
@@ -75,68 +78,15 @@ class Juice_4u extends CI_Controller {
         } else {
             $this->m_juice->editDataJuice();
             $this->session->set_flashdata('flash','Diedit');
-            redirect('juice_4u');
+            redirect('juice2_4u');
         }
     }
-   
+
     public function hapus($id){
         $this->m_juice->hapusDataJuice($id);
         $this->session->set_flashdata('flash','Dihapus');
-        redirect('juice_4u');
-    }
-    public function excel()
-    {
-        $spreadsheet = new Spreadsheet();
-        $spreadsheet->getProperties()->setCreator('Maulana Hidayat - re:code lab')
-            ->setLastModifiedBy('Maulana Hidayat - re:code lab')
-            ->setTitle('Tes Export Excel')
-            ->setSubject('Tes Export Excel')
-            ->setDescription('Tes Export Excel')
-            ->setKeywords(' Tes Export Excel')
-            ->setCategory('Test export excel');
-
-    //Add data
-        $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue('A1', 'Nama')
-            ->setCellValue('B1', 'Lokasi')
-            ->setCellValue('C1', 'Point')
-            ->setCellValue('D1', 'Omzet');
-
-        $i = 2;
-
-        // $mahasiswa = $this->model_mahasiswa->getAll();
-        $produk = $this->m_juice->tampil_semua_data();
-
-        foreach ($produk as $erp) {
-            $spreadsheet->setActiveSheetIndex(0)
-                ->setCellValue('A' . $i, $erp['nama'])
-                ->setCellValue('B' . $i, $erp['lokasi'])
-                ->setCellValue('C' . $i, $erp['point'])
-                ->setCellValue('D' . $i, $erp['omzet']);
-                // ->setCellValue('G' . $i, $erp->alamat);
-            $i++;
-        }
-
-        $spreadsheet->getActiveSheet()->setTitle('Report Excel Juice 4U' . date('Y-m-d'));
-        $spreadsheet->setActiveSheetIndex(0);
-
-    
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="Report Excel Juice 4U.xlsx"');
-        header('Cache-Control: max-age=0');
-
-        header('Cache-Control: max-age=1');
-
-
-        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
-        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header('Pragma: public'); // HTTP/1.0
-
-        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save('php://output');
-        exit;
-
+        redirect('juice2_4u');
+        
     }
     
 }
