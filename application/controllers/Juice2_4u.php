@@ -11,7 +11,7 @@ class Juice2_4u extends CI_Controller {
     }
     public function index(){
         $topik['judul'] = 'Halaman Menu Juice4U';
-        $data['tahun'] = $this->M_Tahun->tampil_data();
+        $data['tahun'] = $this->M_Tahun->getTahunByActive();
         $data['bulan'] = $this->M_bulan->tampil_data();
         $data['mitra'] = $this->m_juice->tampil_data_by_mitra();
         // $data['produk'] = $this->m_juice->get_by_role();
@@ -37,6 +37,12 @@ class Juice2_4u extends CI_Controller {
 
     public function tampil_data($weekending = NULL) {
         echo json_encode($this->m_juice->tampil_data($weekending));
+    }
+    public function tampil_data_bulanan($bulan = NULL) {
+        echo json_encode($this->m_juice->tampil_data_like($bulan));
+    }
+    public function tampil_data_mitra($nama = NULL) {
+        echo json_encode($this->m_juice->tampil_data_mitra($nama));
     }
 
     public function tambah(){
