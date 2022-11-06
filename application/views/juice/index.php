@@ -291,7 +291,7 @@
                         0
                         </td>
                         <td width="">
-                        ${results[i].total}
+                        ${parseFloat(results[i].total)}
                         </td>
                         <td style="text-align:center">
                         <a onclick="getDataById(${results[i].id})" class="btn btn-success text-white" style=""><i class="fa fa-edit"></i>Edit</i></a>
