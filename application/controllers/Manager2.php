@@ -19,11 +19,13 @@ class Manager2 extends CI_Controller {
         $dfil['validasi'] = 'V';
 
         $data['manager'] = $this->M_manager->tampil_data();
-        $data['datas'] = $this->M_manager->tampil_data_manager($dfil);
+        $data['datas'] = $this->M_manager->tampil_data_manager($dfil, true);
         $data['kode_barang'] = $this->M_manager->kode_barang();
         $data['barang'] = $this->M_manager->get_barang_mitra2($this->session->userdata('kode_id'));
         $data['user'] = $this->M_manager->getMitra();
-        // echo json_encode($data);
+
+        $data['user_session'] = $this->session->userdata();
+        // echo json_encode($data['user_session']);
 
         $this->load->view('templates/header',$topik);
         $this->load->view('manager2/index',$data);

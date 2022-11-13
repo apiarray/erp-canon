@@ -35,6 +35,27 @@ class M_Daftarmitra extends CI_Model {
     return $this->db->get($this->table)->result_array();
   }
 
+  public function create($data)
+  {
+    return $this->db->insert($this->table,$data);
+  }
+
+  public function getLastIndex(){
+    $this->db->select_max('kode');
+    $query = $this->db->get($this->table);
+    return $query->result();
+  }
+
+  public function getLastKode(){
+    // MT-00001
+    $jsonArr = $this->getLastIndex();
+    $docno = array_column($jsonArr, 'kode');
+    $num = preg_replace('/\D/', '', $docno[0]);
+    $newKode = "MT-" . str_pad((int)$num+1, 5, '0', STR_PAD_LEFT);
+
+    echo ($newKode);
+  }
+
 }
 
 /* End of file M_Daftarmitra_model.php */
