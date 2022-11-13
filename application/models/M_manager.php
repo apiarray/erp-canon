@@ -5,8 +5,13 @@ class M_manager extends CI_Model {
       return $this->db->get('manager')->result_array();
     }
 
-    public function tampil_data_mitra()
+    public function tampil_data_mitra($fil="")
     {
+      
+      if($fil && $fil['jabatan'] != ''){
+        $this->db->where('jabatan', $fil['jabatan']);
+      }
+
       return $this->db->get('daftar_mitra')->result_array();
     }
 
@@ -27,6 +32,7 @@ class M_manager extends CI_Model {
       $this->db->join('daftar_mitra', 'weekly_manager2.kode_id = daftar_mitra.kode');
       $this->db->where('weekly_manager2.validasi', 'V');
       $query = $this->db->get();
+      // echo $this->db->last_query();
       return $query->result_array();
     }
 
@@ -157,16 +163,16 @@ class M_manager extends CI_Model {
       $this->db->join('daftar_mitra dm', 'kode_id = dm.kode');
     }
 
-    if($fil['faktur'] != ''){
+    if($fil && $fil['faktur'] != ''){
       $this->db->where('no_invoice', $fil['faktur']);
     }
-    if($fil['tgl_mulai'] != ''){
+    if($fil && $fil['tgl_mulai'] != ''){
       $this->db->where('tgl >= ', $fil['tgl_mulai']);
     }
-    if($fil['tgl_sampai'] != ''){
+    if($fil && $fil['tgl_sampai'] != ''){
       $this->db->where('tgl <= ', $fil['tgl_sampai']);
     }
-    if($fil['validasi'] != ''){
+    if($fil && $fil['validasi'] != ''){
       $this->db->where('validasi', $fil['validasi']);
     }
     
@@ -417,7 +423,12 @@ class M_manager extends CI_Model {
 
     public function getMitra()
     {
-      $query = $this->db->query('SELECT `name`,`kode` FROM daftar_mitra LEFT JOIN users ON daftar_mitra.kode = users.kode_id')->row();
+      $this->db->select('name, kode');
+      $this->db->from('daftar_mitra');
+      $this->db->join('users', 'users.kode_id = daftar_mitra.kode');
+
+      // $query = $this->db->query('SELECT `name`,`kode` FROM daftar_mitra LEFT JOIN users ON daftar_mitra.kode = users.kode_id')->row();
+      $query = $this->db->get()->row();
       return $query;
     }
 }

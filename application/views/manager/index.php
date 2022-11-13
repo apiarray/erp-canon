@@ -54,7 +54,7 @@
                 <div class="input-group-prepend">
                     <label for="noinv" class="input-group-text">Mitra :</label>
                 </div>
-                <select class="form-control" name="mitra">
+                <select class="form-control" name="mitra" id="mitra">
                   <option value="0">Pilih Mitra</option>
                   <?php foreach($mitra as $k => $v){ ?>
                     <option value="<?= $v['kode']?>"><?= $v['kode'].' - '.$v['name'] ?></option>
@@ -85,17 +85,11 @@
                 </div>
 
                 <select class="form-control" name="jabatan" id="jabatan">
-                 <option value="">-- Pilih --</option>
-                 <?php foreach ($jabatan as $j) :?>
-                    <option name="jabatan"><?= $j['name'];?></option>
-                <?php endforeach;?>
+                    <option value="">-- Pilih --</option>
+                    <?php foreach ($jabatan as $j) :?>
+                    <option value="<?= $j['name'];?>"><?= $j['name'];?></option>
+                    <?php endforeach;?>
                 </select>
-                    <!-- <option value="">Pilih jabatan</option>
-                    <option value="Divisional Manager">Divisional Manager</option>
-                    <option value="Branch Manager">Branch Manager</option>
-                    <option value="Tenant Manager">Tenant Manager</option> -->
-                    <!-- <option value=""></option> -->
-                <!-- </select> -->
             </div>
             <!-- <div class="d-flex mt-1"> -->
                 <div class="input-group input-group-sm mt-1">
@@ -104,7 +98,9 @@
                   </div>
                   <select name="manager" id="manager" class="form-control form-control-sm" style="border-top-right-radius: 3px; border-bottom-right-radius: 3px;">
                     <option value="">Pilih manager</option>
-                    <!-- <option value=""></option> -->
+                    <?php foreach ($manager as $j) :?>
+                    <option value="<?= $j['name'];?>"><?= $j['name'];?></option>
+                    <?php endforeach;?>
                   </select>
                     <div class="form-check ml-2 mt-1">
                       <input class="form-check-input" type="checkbox" value="koreksi" id="koreksi" name="koreksi">
@@ -145,6 +141,8 @@
                     <th class="text-center">No Invoice</th>
                     <th class="text-center">Kode Mitra</th>
                     <th class="text-center">Nama Mitra</th>
+                    <th class="text-center">Manager</th>
+                    <th class="text-center">Jabatan</th>
                     <th class="text-center">Total Penjualan</th>
                     <th class="text-center">Aksi</th>
                     <th class="text-center">Tanggal Validasi</th>
@@ -168,6 +166,8 @@
                     <td><?= $v['no_invoice_manager'] ?></td>
                     <td><?= $v['no_invoice'] ?></td>
                     <td><?= $v['kode_id'] ?></td>
+                    <td><?= $v['name'] ?></td>
+                    <td><?= $v['name'] ?></td>
                     <td><?= $v['name'] ?></td>
                     <td><?= number_format($v['nominal_total'], 2, ',', '.'); ?></td>
                     <td>
@@ -319,5 +319,23 @@
 
       }
     });
+
   });
+  
+
+    // jabatan
+    $('#jabatan').on('change', function() {
+        var selected = $(this).val();
+        fetch('<?= base_url('manager/getmitra'); ?>/' + encodeURIComponent(selected))
+        .then(response => response.json())
+        .then((result) => {
+            console.log(result)
+            let data = `<option value="">Pilih Mitra</option>`;
+            result.data.forEach(function(item) {
+                data += `<option value="${item.kode}">${item.kode} - ${item.name}</option>`;
+            });
+
+            $('select[name=mitra]').html(data);
+        });
+    });
 </script>
