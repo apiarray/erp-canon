@@ -1,16 +1,30 @@
 <div class="container">
-    <div class="col-md-6">
+    <div class="row-fluid">
         <h5>Tambah Form Data</h5>
 
         <form action="<?= base_url('team2/tambah');?>" method="POST"> 
             <div class="form-row">
-                <div class="form-group col-md-6">
-                <label for="kode">ID</label>
-                <input type="text" class="form-control" id="kode" name="kode" required>
+                <div class="form-group col-md-3">
+                    <label for="kode">ID</label>
+                    <input type="text" class="form-control" id="kode" name="kode" required>
                 </div>
-                <div class="form-group col-md-6">
-                <label for="inputNama">Nama</label>
-                <input type="text" class="form-control" id="inputNama" name="nama" required>
+                <div class="form-group col-md-3">
+                    <label for="inputNama">Nama</label>
+                    <input type="text" class="form-control" id="inputNama" name="nama" required>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="inputNama">User</label>
+                    <!-- <input type="text" class="form-control" name="user_mitra" required> -->
+                    <select class="form-control select2" name="user_mitra" id="mitra">
+                        <?php foreach($listMitra as $a){ ?>
+                            <option value="<?= $a['kode'] ?>"><?= $a['kode'] . '- ' . $a['name'] ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="inputNama">Kode dan Nama Mitra</label>
+                    <input type="text" class="form-control" name="nama_mitra" readonly>
+                    <input type="hidden" class="form-control" name="kode_mitra">
                 </div>
             </div>
             <div class="form-row">
@@ -20,10 +34,10 @@
                 </div>
                 <div class="form-group col-md-4">
                  <label for="jabatan">Jabatan</label>
-                 <select class="form-control" name="jabatan" id="jabatan">
+                 <select class="form-control select2" name="jabatan" id="jabatan">
                  <option value="">-- Pilih --</option>
-                 <?php foreach ($jabatan as $j) :?>
-                    <option name="jabatan"><?= $j;?></option>
+                 <?php foreach ($jabatanList as $jbt) :?>
+                    <option value="<?=$jbt['kode'];?>"><?= $jbt['name'];?></option>
                 <?php endforeach;?>
                 </select>
              </div>
@@ -63,3 +77,17 @@
             </form>
     </div>
 </div>
+
+<script>
+$(document).ready(function() {
+    $('.select2').select2();
+    $('#mitra').select2().on('change', function(){
+        var text = $(this).find("option:selected").text();
+        var value = $(this).val();
+        console.log(value + "; " + text)
+        // Set selected 
+        $('input[name=nama_mitra').val(text);
+        $('input[name=kode_mitra').val(value);
+    });
+});
+</script>

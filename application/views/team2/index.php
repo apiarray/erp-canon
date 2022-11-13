@@ -115,6 +115,9 @@
                                 <th>No.</th>
                                 <th>ID</th>
                                 <th>Nama</th>
+                                <th>User</th>
+                                <th>Kode Mitra</th>
+                                <th>Nama Mitra</th>
                                 <th>Tgl Lahir</th>
                                 <th>Jabatan</th>
                                 <th>Tahun Gabung</th>
@@ -145,6 +148,9 @@
                                         <?php
                                         echo $erp['nama'] ?>
                                     </td>
+                                    <td width=""><?=$erp['name'] ?></td>
+                                    <td width=""><?=$erp['kode'] ?></td>
+                                    <td width=""><?=$erp['nama'] ?></td>
                                     <td>
                                         <?php
                                         echo $erp['tgl_lahir'] ?>
