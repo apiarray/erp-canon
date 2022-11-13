@@ -5,6 +5,7 @@ class Team2 extends CI_Controller
     public function __construct(){
         parent::__construct();
         $this->load->model('M_team');
+        // $this->load->model('M_daftar');
         $this->load->model('M_Daftarmitra');
         $this->load->model('M_JabatanMitra');
     }
@@ -33,9 +34,8 @@ class Team2 extends CI_Controller
         $this->form_validation->set_rules('email','Email','required');
 
         if ($this->form_validation->run() == TRUE) {
-            // $formdata = $this->input->post();
-            // echo json_encode($formdata); die();s
-
+            
+            // Tambah Team
             $data = [
                 "kode" => $this->input->post('kode', true),
                 "nama" => $this->input->post('nama', true),
@@ -48,8 +48,26 @@ class Team2 extends CI_Controller
                 "email" => $this->input->post('email', true),
                 "kodemitra" => $this->input->post('kode_mitra', true),
             ];
-
             $this->M_team->tambahDataTeam($data);
+
+            // Tambah Daftar Mitra
+            
+            $data = [
+                "kode" => $this->m_Daftarmitra->getLastKode(),
+                "name" => $this->input->post('name', true),
+                "tgl_lahir" => $this->input->post('tgl_lahir', true),
+                "jabatan" => $this->input->post('jabatan', true),
+                "promoter" => $this->input->post('promoter', true),
+                "thn_gabung" => $this->input->post('thn_gabung', true),
+                "gudang" => $this->input->post('gudang', true),
+                "alamat" => $this->input->post('alamat', true),
+                "kota" => $this->input->post('kota', true),
+                "telepon" => $this->input->post('telepon', true),
+                "email" => $this->input->post('email', true)
+    
+            ];
+            // $this->M_Daftarmitra->create($data);
+
             $this->session->set_flashdata('flash','Ditambahkan');
             redirect('team2');
         }

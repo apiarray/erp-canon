@@ -145,12 +145,17 @@ class M_manager extends CI_Model {
 	 return $query->result_array();
 	}
 
-	function tampil_data_manager($fil) {
+	function tampil_data_manager($fil, $jointabel="") {
     // $kodeid=$this->session->userdata("kode_id");
     $kodeid = ($fil['idmitra']) ? $fil['idmitra'] : $this->session->userdata("kode_id");
 
     $this->db->select('*');
     $this->db->from('weekly_manager2');
+
+    // join with daftar_mitra
+    if($jointabel) {
+      $this->db->join('daftar_mitra dm', 'kode_id = dm.kode');
+    }
 
     if($fil['faktur'] != ''){
       $this->db->where('no_invoice', $fil['faktur']);
