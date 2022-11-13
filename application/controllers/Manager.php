@@ -12,6 +12,7 @@ class Manager extends CI_Controller {
         $topik['judul'] = 'Halaman Menu Manager Lain';
         $data['jabatan'] = $this->M_daftar->tampil_jabatan();
         $data['manager'] = $this->m_manager->tampil_data();
+        // echo json_encode($data['manager']);
         $data['mitra'] = $this->m_manager->tampil_data_mitra();
         $data['managerpl'] = $this->m_manager->tampil_data_pl_valid();
        
@@ -264,5 +265,40 @@ class Manager extends CI_Controller {
             $this->session->set_flashdata('flash','Diubah');
             redirect('manager');
         }
-}
+    }
+
+    public function getMitra($id) {
+        // $jabatan = $this->M_daftar->tampil_jabatan();
+        // $nama_jabatan = array_filter($jabatan, function($arr) use ($id) {
+        //     if($arr['id'] == $id) return $arr;
+        // });
+
+        // $filter = array(
+        //     'jabatan' => ($nama_jabatan) ? $nama_jabatan[0]['name'] : null
+        // );
+
+        if(is_string($id)) {
+            $filter = array(
+                'jabatan' => urldecode($id)
+            );
+        }
+
+        $mitra   = $this->m_manager->tampil_data_mitra($filter);
+        // $data[] = array_column($mitra, 'name', 'kode');
+        $data = array();
+        foreach ($mitra as $k => $item ) {
+            $data[$k] = array(
+                'kode' => $item['kode'],
+                'name' => $item['name']
+            );
+        }
+
+        $response = array(
+            'id' => $id,
+            'data' => ($data),
+            'success' => true,
+        );
+
+        echo json_encode($response);
+    }
 }
