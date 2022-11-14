@@ -27,7 +27,7 @@ class M_setup_jurnal extends CI_Model
     for ($i = 0; $i < count($finansials); $i++) {
       $finansial = [
         "elemen" => $finansials[$i],
-        "tipe" => $this->input->post('d/kjurnalFinansial', true)[$i],
+        "tipe" => $this->input->post('d/kjurnalFinansial', true)[$i], 
         "nominal" => $this->input->post('nominaljurnalFinansial', true)[$i],
         "setup_jurnal_id" => $setupJurnalID,
       ];

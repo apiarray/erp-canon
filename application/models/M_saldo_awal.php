@@ -5,7 +5,7 @@ class M_saldo_awal extends CI_Model
   public function tampil_data()
   {
     return $this->db->get('tbl_setup_jurnal')->result_array();
-  }
+  } 
   public function tambahDataSetupJurnal($dataSetupJurnal)
   {
     $this->db->insert('tbl_setup_jurnal', $dataSetupJurnal);

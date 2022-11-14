@@ -48,7 +48,7 @@ class Penerimaan extends CI_Controller
 		$this->load->view('templates/header', $topik);
 		$this->load->view('penerimaan/tampil_print', $x);
 		$this->load->view('templates/footer');
-	}
+	} 
 
 	public function cetak_faktur()
 	{
