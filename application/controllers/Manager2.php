@@ -27,9 +27,9 @@ class Manager2 extends CI_Controller {
         $data['user_session'] = $this->session->userdata();
         // echo json_encode($data['user_session']);
 
-        $this->load->view('templates/header',$topik);
+        $this->load->view('templates2/header',$topik);
         $this->load->view('manager2/index',$data);
-        $this->load->view('templates/footer');
+        $this->load->view('templates2/footer');
     }
 
     public function tampil_data() {
