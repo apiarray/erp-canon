@@ -397,8 +397,8 @@ console.log('start');
             $('#myModal').modal('hide');
             document.getElementById("kode_id").value = $(this).attr('data-kodeid');
             $('#myModal').modal('hide');
-            document.getElementById("gudang1").value = $(this).attr('data-gudangt');
-            $('#myModal').modal('hide');
+            //document.getElementById("gudang_tujuan").value = $(this).attr('data-gudangt');
+            //$('#myModal').modal('hide');
         });
 
         $(document).on('click', '.pilih1', function (e) {
@@ -482,7 +482,7 @@ console.log('start');
 			'<input type="text" class="form-control kode-input" id="kode'+counterb+'" 		name="kode[]" onclick="get_barang(this.value,' + counterb + ')"  required>', 
 			'<input type="text" class="form-control" id="namabrg'+counterb+'" 	name="nama[]" required readonly>', 
 			'<input type="text" class="form-control" id="gudang'+counterb+'" 	name="gudang_asal[]" required readonly>', 
-			'<input type="text" class="form-control" id="gudang1'+counterb+'" 	name="gudang_tujuan[]" required>'
+			'<input type="text" class="form-control" id="gudang_tujuan'+counterb+'" 	name="gudang_tujuan[]" required>'
 			]).draw( false );
 		//console.log('<input type="text" name="kode[]" id="kode'+counter+'"  class="form-control form-control-sm" data-toggle="modal" data-target="#myModal1"  />');
 		counterb ++;
@@ -607,7 +607,7 @@ function sumAllSubtotal() {
 
 function saveData() {
         let databarang = [];
-        
+        console.log('let_save');	
         $("input[name='nama[]']").each(function (i, val) {
             databarang.push({
                 kode: $("input[name='kode[]']").eq(i).val(),
@@ -662,9 +662,10 @@ function saveData() {
             dataType: 'json',
             data: data,
             success: function(result) {
+				console.log('Ajax Run');
                 if (result['errors']) {
-                    let alert_danger = '<div class="alert alert-danger alert-dismissible fade show alert-success" role="alert">' + result['errors']   + '</div>';
-
+                    let alert_danger = `<div class="alert alert-danger alert-dismissible fade show alert-success" role="alert">` + result['errors']   + '</div>';
+					console.log(alert_danger);
                     $('#alert-space').html(alert_danger);
                 } else {
                     $('input[name=kode_id]').val('');
@@ -699,10 +700,10 @@ function saveData() {
                     $('select[name=pembayaran]').val('');
                     $('input[name=total_pengiriman]').val('');
                     getLatestNoDO();
+					console.log(alert_success);
                     $('#alert-space').html(alert_success);
                     setTimeout(() => $('.alert-success').alert('close'), 5000);
                 }
-				 console.log('sukses');
             }
         });
     }  
@@ -758,6 +759,6 @@ function saveData() {
         kodebarangdipilih = kunci;
 	};
 </script>
-
+<?php // print_r($data2->result_array()) ?>
 
 

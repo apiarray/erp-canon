@@ -896,8 +896,8 @@
             total_pengiriman: $('input[name=total_pengiriman]').val(),
             barang : databarang
         };
-        console.log(data);
-        let alert_success = '<div class="alert alert-success alert-dismissible fade show alert-success" role="alert">Data Pengiriman <strong>berhasil</strong> ditambahkan!<button type="submit" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+        //console.log(data);
+        let alert_success = `<div class="alert alert-success alert-dismissible fade show alert-success" role="alert">Data Pengiriman <strong>berhasil</strong> diubah!<button type="submit" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>`;
 
         $.ajax({
             type: "POST",
@@ -906,13 +906,14 @@
             data: data,
             success: function(result) {
                 if (result['errors']) {
-                    let alert_danger = '<div class="alert alert-danger alert-dismissible fade show alert-success" role="alert">' + result['errors']   + '</div>';
+                    let alert_danger = `<div class="alert alert-danger alert-dismissible fade show alert-success" role="alert">` + result['errors']   + '</div>';
 
                     $('#alert-space').html(alert_danger);
                 } else {
-                    location.reload();
-                    getLatestNoDO();
                     $('#alert-space').html(alert_success);
+					console.log(alert_success);
+					//location.reload();
+                    getLatestNoDO();                    
                     setTimeout(() => $('.alert-success').alert('close'), 5000);
                 }
             }

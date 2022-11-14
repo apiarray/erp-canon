@@ -91,7 +91,7 @@
         </div>
         <div class="input-group input-group-sm">
           <div class="input-group-prepend">
-            <label for="weekending" class="input-group-text">Setup Jurnal  :</label>
+            <label for="weekending" class="input-group-text">Setup Jurnal :</label>
           </div>
 		  <?php echo 'a'.$setupJurnal['kode_jurnal']?>
           <input type="text" disabled value="<?= $setupJurnal['kode_jurnal'] ?>" class="form-control form-control-sm">
