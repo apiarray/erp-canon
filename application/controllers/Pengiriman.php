@@ -15,6 +15,12 @@ class Pengiriman extends CI_Controller
     $x['data1'] = $this->m_pengiriman->tampil_data();
     $x['kode'] = $this->m_pengiriman->kode();
     $x['data'] = $this->m_pengiriman->tampil_datamitra();
+	
+	$this->db->select('*');
+    $this->db->from('tbl_setup_jurnal');
+    $this->db->where('formulir',"pengiriman_barang");
+    $x['setup_jurnal'] = $this->db->get()->result_array();
+	
     $this->load->view('templates/header', $topik);
     $this->load->view('pengiriman/index', $x);
     $this->load->view('templates/footer');
