@@ -51,10 +51,8 @@
                 <label class="input-group-text" for="tahun">Tahun</label>
             </div>
             <select class="form-control" id="tahun">
-                <option value="">Pilih Tahun</option>
-                <?php foreach($tahun as $thn) : ?>
-                  <option value="<?php echo $thn['year'];?>" <?php echo ($thn['year'] ==  date("Y")) ? ' selected="selected"' : '';?>><?php echo $thn['year'];?></option>
-                <?php endforeach; ?>
+                <!-- <option value="">Pilih Tahun</option> -->
+                  <option value="<?php echo $tahun['year'];?>"><?php echo $tahun['year'];?></option>
             </select>
         </div>
     </form>
@@ -88,8 +86,9 @@
                 </div>
                 <select class="form-control" id="weekending">
                     <option value="">Pilih tanggal</option>
+                    
                     <?php foreach($tgl as $tanggal) : ?>
-                    <option value="<?= $tanggal['weekending']; ?>"><?= $tanggal['weekending']; ?></option>
+                    <option value="<?= $tanggal['tgl_validasi']; ?>"><?= $tanggal['tgl_validasi']; ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
@@ -105,15 +104,15 @@
                     <option value="">Pilih Mitra</option>
                     <option value="">Show All</option>
                    <?php foreach($mitra as $row):?>
-                    <option value="<?=$row['tgl_validasi']?>"><?=$row['nama_mitra']?></option>
+                    <option value="<?=$row['name']?>"><?=$row['name']?></option>
                     <?php endforeach;?>
                 </select>
             </div>
         </form>
     </div>
 </div>
-<button class="btn btn-primary mb-2" data-toggle="modal" data-target="#modalTambah">Tambah Data</button>
-<a href="<?= base_url('juice_4u/export');?>" class="btn btn-success mb-2">Export Excell</a>
+<button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#modalTambah">Tambah Data</button>
+<a href="<?= base_url('juice_4u/excel');?>" class="btn btn-success mb-2">Export Excell</a>
 
 <div class="table-responsive">
 <!-- <table class="table" id="dataTable" width="" cellspacing="0"> -->
@@ -167,7 +166,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="<?= base_url('juice2_4u/tambah'); ?>" class="form-horizontal" method="POST">
+      <form action="<?= base_url('juice_4u/tambah'); ?>" class="form-horizontal" method="POST">
         <div class="modal-body">
           <div class="form-group">
             <label for="">Nama</label>
@@ -210,7 +209,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="<?= base_url('juice2_4u/edit'); ?>" class="form-horizontal" method="POST">
+      <form action="<?= base_url('juice_4u/edit'); ?>" class="form-horizontal" method="POST">
         <div class="modal-body">
           <div class="form-group">
             <label for="">Nama</label>
@@ -220,7 +219,7 @@
 
           <div class="form-group">
             <label for="">Lokasi</label>
-            <input type="text" name="lokasi2" id="lokasi2" class="form-control" autocomplete="off">
+            <input type="text" name="lokasi2" id="lokasi2" placeholder="Masukkan nama gudang" class="form-control" autocomplete="off">
             <small><span class="text-danger"><?=form_error('lokasi');?></span></small>
           </div>
 
@@ -247,22 +246,26 @@
 
 <script>
     $('.datepicker').datepicker();
-    $(document).ready(function(){
+      $(document).ready(function(){
         allData()
       })
-
+      
+    
+  
     function allData() {
-        let weekending = $('#weekending').val();
-        let mitra = $('#mitra').val();
-        let tahun = $('#tahun').val();
-        let bulan = $('#bulan').val();
-        let date = bulan + '-' + tahun;
-        let fetchUrl = weekending != '' ?"juice_4u/tampil_data/" + weekending: (bulan != '' && tahun != '')? "juice_4u/tampil_data_bulanan/" +date:(mitra != '')?"juice_4u/tampil_data/" + mitra:'juice_4u/tampil_data' ;
+      let weekending = $('#weekending').val();
+      let mitra = $('#mitra').val();
+      let tahun = $('#tahun').val();
+      let bulan = $('#bulan').val();
+      let date = tahun + '-' + bulan;
+      console.log(mitra)
+        let fetchUrl = weekending != '' ?"juice2_4u/tampil_data/" + weekending: (bulan != '' && tahun != '')? "juice2_4u/tampil_data_bulanan/" +date:(mitra != '')?"juice2_4u/tampil_data_mitra/" + mitra:'juice2_4u/tampil_data' ;
 
         $.ajax({
             url: "<?= base_url(); ?>" + fetchUrl,
             success: function(result) {
                 let results = JSON.parse(result);
+                console.log(result )
                 let data = "";
                 let totalPoint = 0;
                 let totalOmzet = 0;
@@ -271,41 +274,42 @@
                     data = `<tr><td class="text-center" colspan="6">Tidak ada data ditampilkan. Silahkan pilih tanggal weekending untuk menampilkan data.</td></tr>`;
                 } else {
                     for (let i = 0; i < results.length; i++) {
-                      totalPoint = Number(results[i].point) + totalPoint
-                        totalOmzet = parseFloat(results[i].omzet) + totalOmzet
+                        totalPoint = 0
+                        totalOmzet = parseFloat(results[i].total) + totalOmzet
                         data += `
                         <tr>
                         <td class="text-center">
                         ${i+1}
                         </td>
                         <td>
-                        ${results[i].nama}
+                        ${results[i].nama_mitra}
                         </td>
                         <td width="">
                         ${results[i].lokasi}
                         </td>
                         <td width="">
-                        ${results[i].point}
+                        0
                         </td>
                         <td width="">
-                        ${results[i].omzet}
+                        ${formatRupiah(results[i].total)}
                         </td>
                         <td style="text-align:center">
                         <a onclick="getDataById(${results[i].id})" class="btn btn-success text-white" style=""><i class="fa fa-edit"></i>Edit</i></a>
-                        <a href="<?= base_url(); ?>juice2_4u/hapus/${results[i].id}" class="btn btn-danger " style="" onclick="return confirm('Yakin ingin dihapus?');"><i class="fa fa-trash"></i>Hapus</a>
+                        <a href="<?= base_url(); ?>juice_4u/hapus/${results[i].id}" class="btn btn-danger " style="" onclick="return confirm('Yakin ingin dihapus?');"><i class="fa fa-trash"></i>Hapus</a>
                         </td>
                         </tr>
                         `;
                     }
                 }
                 $('#total-point').val(totalPoint)
-                $('#total-omzet').val(totalOmzet+' %')
+                $('#total-omzet').val(totalOmzet)
                 $('#show_data').html(data);
             }
         });
     }
 
-    // Fetch data
+    
+
     // Fetch data
     $('#weekending').on('change', function() {
       $('#bulan').val('')
@@ -327,8 +331,22 @@
       
     });
 
+    // Tutup buku
+    $('#tutup_buku_btn').on('click', function() {
+        let tgl_tutup_buku = $('#tutup_buku').val();
+        let tutupBukuUrl = "account/tutup_buku/" + tgl_tutup_buku;
+
+        $.ajax({
+            url: "<?= base_url(); ?>" + tutupBukuUrl,
+            success: function(result) {
+                alert('Proses tutup buku telah dilakukan!');
+                window.location.reload();
+            }
+        });
+    });
+
     function getDataById(id) {
-        let url = "juice2_4u/getDataById/" + id;
+        let url = "juice_4u/getDataById/" + id;
 
         $.ajax({
             url: "<?= base_url(); ?>" + url,
@@ -344,4 +362,21 @@
             }
         });
     }
+     /* Fungsi formatRupiah */
+		function formatRupiah(angka, prefix){
+			var number_string = angka.replace(/[^,\d]/g, '').toString(),
+			split   		= number_string.split(','),
+			sisa     		= split[0].length % 3,
+			rupiah     		= split[0].substr(0, sisa),
+			ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+ 
+			// tambahkan titik jika yang di input sudah menjadi angka ribuan
+			if(ribuan){
+				separator = sisa ? '.' : '';
+				rupiah += separator + ribuan.join('.');
+			}
+ 
+			rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+			return prefix == undefined ? rupiah : (rupiah ? rupiah : '');
+		}
 </script>

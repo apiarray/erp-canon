@@ -88,7 +88,7 @@
                     <option value="">Pilih tanggal</option>
                     
                     <?php foreach($tgl as $tanggal) : ?>
-                    <option value="<?= $tanggal['weekending']; ?>"><?= $tanggal['weekending']; ?></option>
+                    <option value="<?= $tanggal['tgl_validasi']; ?>"><?= $tanggal['tgl_validasi']; ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
@@ -104,7 +104,7 @@
                     <option value="">Pilih Mitra</option>
                     <option value="">Show All</option>
                    <?php foreach($mitra as $row):?>
-                    <option value="<?=$row['tgl_validasi']?>"><?=$row['nama_mitra']?></option>
+                    <option value="<?=$row['name']?>"><?=$row['name']?></option>
                     <?php endforeach;?>
                 </select>
             </div>
@@ -253,17 +253,19 @@
     
   
     function allData() {
-        let weekending = $('#weekending').val();
-        let mitra = $('#mitra').val();
-        let tahun = $('#tahun').val();
-        let bulan = $('#bulan').val();
-        let date = bulan + '-' + tahun;
-        let fetchUrl = weekending != '' ?"juice_4u/tampil_data/" + weekending: (bulan != '' && tahun != '')? "juice_4u/tampil_data_bulanan/" +date:(mitra != '')?"juice_4u/tampil_data/" + mitra:'juice_4u/tampil_data' ;
+      let weekending = $('#weekending').val();
+      let mitra = $('#mitra').val();
+      let tahun = $('#tahun').val();
+      let bulan = $('#bulan').val();
+      let date = tahun + '-' + bulan;
+      console.log(mitra)
+        let fetchUrl = weekending != '' ?"juice_4u/tampil_data/" + weekending: (bulan != '' && tahun != '')? "juice_4u/tampil_data_bulanan/" +date:(mitra != '')?"juice_4u/tampil_data_mitra/" + mitra:'juice_4u/tampil_data' ;
 
         $.ajax({
             url: "<?= base_url(); ?>" + fetchUrl,
             success: function(result) {
                 let results = JSON.parse(result);
+                console.log(result )
                 let data = "";
                 let totalPoint = 0;
                 let totalOmzet = 0;
@@ -272,24 +274,24 @@
                     data = `<tr><td class="text-center" colspan="6">Tidak ada data ditampilkan. Silahkan pilih tanggal weekending untuk menampilkan data.</td></tr>`;
                 } else {
                     for (let i = 0; i < results.length; i++) {
-                        totalPoint = Number(results[i].point) + totalPoint
-                        totalOmzet = parseFloat(results[i].omzet) + totalOmzet
+                        totalPoint = 0
+                        totalOmzet = parseFloat(results[i].total) + totalOmzet
                         data += `
                         <tr>
                         <td class="text-center">
                         ${i+1}
                         </td>
                         <td>
-                        ${results[i].nama}
+                        ${results[i].nama_mitra}
                         </td>
                         <td width="">
                         ${results[i].lokasi}
                         </td>
                         <td width="">
-                        ${results[i].point}
+                        0
                         </td>
                         <td width="">
-                        ${results[i].omzet}
+                        ${formatRupiah(results[i].total)}
                         </td>
                         <td style="text-align:center">
                         <a onclick="getDataById(${results[i].id})" class="btn btn-success text-white" style=""><i class="fa fa-edit"></i>Edit</i></a>
@@ -300,11 +302,13 @@
                     }
                 }
                 $('#total-point').val(totalPoint)
-                $('#total-omzet').val(totalOmzet+' %')
+                $('#total-omzet').val(totalOmzet)
                 $('#show_data').html(data);
             }
         });
     }
+
+    
 
     // Fetch data
     $('#weekending').on('change', function() {
@@ -358,4 +362,22 @@
             }
         });
     }
+    
+    /* Fungsi formatRupiah */
+		function formatRupiah(angka, prefix){
+			var number_string = angka.replace(/[^,\d]/g, '').toString(),
+			split   		= number_string.split(','),
+			sisa     		= split[0].length % 3,
+			rupiah     		= split[0].substr(0, sisa),
+			ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+ 
+			// tambahkan titik jika yang di input sudah menjadi angka ribuan
+			if(ribuan){
+				separator = sisa ? '.' : '';
+				rupiah += separator + ribuan.join('.');
+			}
+ 
+			rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+			return prefix == undefined ? rupiah : (rupiah ? rupiah : '');
+		}
 </script>

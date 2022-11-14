@@ -93,6 +93,8 @@
             <tr>
                 <th>-</th>
                 <th>No. Inv</th>
+                <th>Nama Mitra</th>
+                <th>Jabatan</th>
                 <th>Tanggal</th>
                 <th>Nominal Total</th>
                 <th>Aksi</th>
@@ -105,6 +107,8 @@
                     <!-- <td><input type="checkbox" name="" id=""></td> -->
                     <td>-</td>
                     <td><?= $data['no_invoice'] ?></td>
+                    <td><?= $data['name'] ?></td>
+                    <td><?= $data['jabatan'] ?></td>
                     <td><?= $data['tgl'] ?></td>
                     <td><?= number_format($data['nominal_total'], 2, ',', '.') ?></td>
                     <td>
@@ -135,9 +139,18 @@
             <?= form_open('manager2/tambahDataPenjualanManager', array('method'=>'post')); ?>
                 <div class="modal-body ">
                     <div id="kodeappend">
-                        <div>
-                            <button type="button" class="btn btn-success mb-3" id="addKode"><i class="fa fa-plus"></i> tambah baru</button>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button type="button" class="btn btn-success mb-3" id="addKode"><i class="fa fa-plus"></i> tambah baru</button>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" value="<?= $user_session['name'] ?>" readonly>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" value="<?= $user_session['jabatan'] ?>" readonly>
+                            </div>
                         </div>
+
                         <div class="row">
                             <div class="form-row col-md-2">
                                 <label for="kode">Kode Barang</label>
@@ -148,10 +161,10 @@
                                 <?php endforeach; ?>
                                 </select>
                             </div>
-                            <div class="form-row col-md-2">
+                            <!-- <div class="form-row col-md-2">
                                 <label for="fc">FC</label>
                                 <input type="text" name="fc[]" id="fc0" class="form-control">
-                            </div>
+                            </div> -->
                             <div class="form-row col-md-2">
                                 <label for="stok">Stok</label>
                                 <input type="text" name="stok[]" id="stok0" class="form-control" readonly>

@@ -115,13 +115,14 @@
                                 <th>No.</th>
                                 <th>ID</th>
                                 <th>Nama</th>
-                                <th>Tgl Lahir</th>
                                 <th>Jabatan</th>
+                                <th>Promoter</th>
+                                <th>Tgl Lahir</th>
                                 <th>Tahun Gabung</th>
                                 <th>Alamat</th>
                                 <th>Kota/Kecamatan</th>
                                 <th>No. Telepon</th>
-                                <th>Email</th>
+                                <!-- <th>Email</th> -->
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -147,12 +148,12 @@
                                     </td>
                                     <td>
                                         <?php
-                                        echo $erp['tgl_lahir'] ?>
+                                        echo $erp['jabatan'] ?>
                                     </td>
-
+                                    <td width=""><?=$erp['promoter'] ?></td>
                                     <td>
                                         <?php
-                                        echo $erp['jabatan'] ?>
+                                        echo $erp['tgl_lahir'] ?>
                                     </td>
                                     <td>
                                         <?php
@@ -167,9 +168,9 @@
                                     <td class="">
                                         <?php echo $erp['no_telpon'] ?>
                                     </td>
-                                    <td class="">
+                                    <!-- <td class="">
                                         <?php echo $erp['email'] ?>
-                                    </td>
+                                    </td> -->
 
                                     <td>
 
