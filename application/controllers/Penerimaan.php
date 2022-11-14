@@ -19,7 +19,7 @@ class Penerimaan extends CI_Controller
 		$x['kode1'] = $this->m_penerimaan->kode1();
 		$this->load->view('templates/header', $topik);
 		$this->load->view('penerimaan/index', $x);
-		$this->load->view('templates/footer');
+		$this->load->view('templates/footer'); 
 	}
 
 	public function index_tampil()
@@ -54,6 +54,21 @@ class Penerimaan extends CI_Controller
 	{
 		ob_start();
 		$data['penerimaan'] = $this->m_penerimaan->tampil_cetak();
+		$this->load->view('penerimaan/print', $data);
+		$html = ob_get_contents();
+		ob_end_clean();
+		require_once('./asset/html2pdf/html2pdf.class.php');
+		$pdf = new HTML2PDF('P', 'A4', 'en');
+		$pdf->WriteHTML($html);
+		$pdf->Output('Data Penerimaan.pdf', 'D');
+	}
+	
+	public function cetak($id)
+	{
+		ob_start();
+		ini_set('display_errors', 0);
+		$data['penerimaan'] = $this->m_penerimaan->tampil_cetak($id);
+		
 		$this->load->view('penerimaan/print', $data);
 		$html = ob_get_contents();
 		ob_end_clean();
@@ -106,7 +121,7 @@ class Penerimaan extends CI_Controller
 		$dataPenerimaan = [
 			"no_sj" => $this->input->post('no_sj', true),
 			"tanggal" => $this->input->post('tanggal', true),
-			"no_lpb" => $this->input->post('no_lpb', true),
+			"no_lpb" => $this->input->post('no_lpb', true), 
 			"no_po" => $this->input->post('no_po', true),
 			"no_kontiner" => $this->input->post('no_kontiner', true),
 			"no_polisi" => $this->input->post('no_polisi', true),

@@ -498,7 +498,7 @@
                         <input type="text" class="form-control" id="qty_perkarton_rske<?= $v['kode'] ?>" name="qty_perkarton_rsk[]" value="<?= $v['qty_perkarton_rusak']?>" required>
                     </td>
                     <td style="text-align:center;">
-                            <input type="text" class="form-control" id="totalee<?= $v['kode'] ?>" name="total[]" value="<?= $v['total']?>" onkeyup="sumSubtotale(<?= $k?>)"  required>
+                            <input type="text" class="form-control" id="totalee<?= $v['kode'] ?>" name="total[]" value="<?= $v['total']?>" onKeyUp="sumSubtotale(<?= $k?>)"  required>
                     </td>
                     <td style="text-align:center;">
                             <input type="text" class="form-control" id="total_rske<?= $v['kode'] ?>" name="total_rsk[]" value="<?= $v['total_rusak']?>" required>
@@ -510,7 +510,7 @@
                             <input type="text" class="form-control" id="qty_rske<?= $v['kode'] ?>" name="stok_rsk[]" value="<?= $v['stok_rusak']; ?>" readonly>
                     </td>
                     <td style="text-align:center;">
-                            <input type="text" class="form-control" id="harga_juale<?= $v['kode'] ?>" name="harga_jual[]" value="<?= $v['harga_jual']; ?>" onkeyup="sumSubtotale(<?= $k?>)" readonly>
+                            <input type="text" class="form-control" id="harga_juale<?= $v['kode'] ?>" name="harga_jual[]" value="<?= $v['harga_jual']; ?>" onKeyUp="sumSubtotale(<?= $k?>)" readonly>
                     </td>
                     <td style="text-align:center;">
                             <input type="text" class="form-control" id="subtotale<?= $v['kode'] ?>" name="subtotal[]" value="<?= $v['subtotal']; ?>" readonly>
@@ -616,7 +616,7 @@
         </div>
 </div>
 <br>
-  <button type="button" onclick="saveData()" class="btn btn-primary mb-2 mt-2">Edit</button>
+  <button type="button" onClick="saveData()" class="btn btn-primary mb-2 mt-2">Edit</button>
  <a href="<?= base_url('pengiriman');?>" class="btn btn-success">Kembali</a>
  <!-- </form> -->
 

@@ -702,6 +702,7 @@ function saveData() {
                     $('#alert-space').html(alert_success);
                     setTimeout(() => $('.alert-success').alert('close'), 5000);
                 }
+				 console.log('sukses');
             }
         });
     }  
