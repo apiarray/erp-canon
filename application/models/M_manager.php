@@ -155,8 +155,8 @@ class M_manager extends CI_Model {
     // $kodeid=$this->session->userdata("kode_id");
     $kodeid = ($fil['idmitra']) ? $fil['idmitra'] : $this->session->userdata("kode_id");
 
-    $this->db->select('*');
-    $this->db->from('weekly_manager2');
+    $this->db->select('wm.*, dm.name,jabatan');
+    $this->db->from('weekly_manager2 wm');
 
     // join with daftar_mitra
     if($jointabel) {
@@ -185,11 +185,13 @@ class M_manager extends CI_Model {
 	function hapusDataManager($id) {
     $this->db->where('id', $id);
 		$this->db->delete('weekly_manager2');
+    // echo $this->db->last_query();
 	}
 
 	function hapusDataBarangManager($weeklymid) {
     $this->db->where('id_weekly_manager2', $weeklymid);
 		$this->db->delete('weekly_manager2_barang');
+    // echo $this->db->last_query();
 	}
 
   public function getDataSearch()

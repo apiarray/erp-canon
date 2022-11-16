@@ -195,7 +195,7 @@ class Manager2 extends CI_Controller {
         $this->M_manager->hapusDataBarangManager($id);
 
         $this->session->set_flashdata('flash2','Dihapus');
-        redirect('manager2');
+        // redirect('manager2');
     }
 
     public function edit($id){
