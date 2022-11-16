@@ -22,7 +22,7 @@ class M_team extends CI_Model
         $this->db->join('daftar_mitra dm', 'dm.kode=tm.kodemitra', 'left');
         // return $this->db->select("*")->from("team")->get()->result_array();
         $query = $this->db->get(); 
-        echo $this->db->last_query();
+        // echo $this->db->last_query();
         if($query->num_rows() != 0) {
             return $query->result_array();
         }

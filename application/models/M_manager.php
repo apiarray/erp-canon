@@ -172,7 +172,7 @@ class M_manager extends CI_Model {
     if($fil && $fil['tgl_sampai'] != ''){
       $this->db->where('tgl <= ', $fil['tgl_sampai']);
     }
-    if($fil && $fil['validasi'] != ''){
+    if(!empty($fil['validasi'])){
       $this->db->where('validasi', $fil['validasi']);
     }
     

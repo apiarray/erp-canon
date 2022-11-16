@@ -158,6 +158,7 @@
               <?php }else{ ?>
                 <?php 
                   $totalall = 0;
+                //   echo json_encode($managerpl);
                   foreach($managerpl as $k => $v){ 
                     $totalall += floatval($v['nominal_total']);
                     ?>
@@ -167,8 +168,8 @@
                     <td><?= $v['no_invoice'] ?></td>
                     <td><?= $v['kode_id'] ?></td>
                     <td><?= $v['name'] ?></td>
-                    <td><?= $v['name'] ?></td>
-                    <td><?= $v['name'] ?></td>
+                    <td><?= $v['promoter'] ?></td>
+                    <td><?= $v['jabatan'] ?></td>
                     <td><?= number_format($v['nominal_total'], 2, ',', '.'); ?></td>
                     <td>
                       <button data-id="<?= $v['wmid'] ?>" data-tglvalid="<?= $v['tgl_validasi'] ?>" class="mb-1 btn btn-warning edit">Edit</button>
