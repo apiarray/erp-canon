@@ -173,7 +173,7 @@ class Manager2 extends CI_Controller {
             $data['nama'] = $barang[0]['nama'];
             $data['stok'] = $this->input->post('stok',true)[$i];
             $data['qty_terjual'] = $this->input->post('qty',true)[$i];
-            $data['fc'] = $this->input->post('fc',true)[$i];
+            $data['fc'] = ($this->input->post('fc',true)[$i]) ? $this->input->post('fc',true)[$i] : 0;
             $data['harga_setor'] = $this->input->post('harga_setor',true)[$i];
             $data['total_item'] = $this->input->post('total_item',true)[$i];
 
