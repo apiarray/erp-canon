@@ -638,7 +638,9 @@ $('#addKode').on('click', function(e) {
 
     let text = "Apakah anda yakin untuk menghapus ? ";
     if (confirm(text) == true) {
-        location.href = fetchUrl + "manager2/hapus/" + id;
+        var url = fetchUrl + "manager2/hapus/" + id;
+        // console.log(url, '_url');
+        location.href = url;
     }
 
   });
