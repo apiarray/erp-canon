@@ -136,9 +136,9 @@
                     $kode_akun = $dt['id_coa'];
                     $manager = $dt['manager'];
                     $gudang = $dt['gudang'];
-                    $unitmasuk = $dt['unitmasuk'];
-                    $unitkeluar = $dt['unitkeluar'];
-                    $qty = $dt['qty'];
+                    $unitmasuk = $dt['total_diterima'];
+                    $unitkeluar = $dt['total_dikirim'];
+                    $qty = $dt['total_diterima'] - $dt['total_dikirim'];
                     $unitbagus = $dt['unitbagus'];
                     $unitrusak = $dt['unitrusak'];
                     $hpp = $dt['hpp'];
@@ -194,7 +194,7 @@
                             <?= $unitkeluar; ?>
                         </td>
                         <td class="">
-                            <?= $qty; ?>
+                            <?= $qty <= 0 ? 0 : $qty; ?>
                         </td>
                         <td class="">
                             <?php if ($hpp == "") { ?>
