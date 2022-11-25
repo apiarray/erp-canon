@@ -53,7 +53,27 @@ class M_barang extends CI_Model
 
     function show_barang()
     {
-        return $this->db->get('produk');
+        $this->db->select('SUM(total) as total_barang, kode');
+        $this->db->from('pengiriman_barang');
+        $this->db->group_by('kode');
+        $countItemSent = $this->db->get_compiled_select();
+
+        $this->db->select('SUM(total_qty) as total_barang, kode');
+        $this->db->from('penerimaan_item');
+        $this->db->group_by('kode');
+        $countItemReceived = $this->db->get_compiled_select();
+
+        $this->db->select('
+            produk.*,
+            IFNULL(pengiriman_item.total_barang, 0) as total_dikirim,
+            IFNULL(penerimaan_item.total_barang, 0) as total_diterima,
+        ');
+        $this->db->from('produk');
+        $this->db->join("($countItemSent) as pengiriman_item", 'pengiriman_item.kode = produk.kode', 'left');
+        $this->db->join("($countItemReceived) as penerimaan_item", 'penerimaan_item.kode = produk.kode', 'left');
+        $getAllItem = $this->db->get();
+
+        return $getAllItem;
     }
 
     public function showBarangClient()
