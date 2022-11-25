@@ -52,7 +52,7 @@
                     </div>
                     <div class="input-group-prepend">
                         <label for="noinv" class="input-group-text mt-2">Total Sisa :</label>
-                        <input type="text" class="form-control mt-2">
+                        <input id="total-sisa" type="text" class="form-control mt-2">
 
                     </div>
                 </div>
@@ -119,7 +119,7 @@
         const kode = $("#kode").val()
         const gudang = $("#gudang").val()
 
-        const url = "<?= base_url('Kartu_stok/getAllProduk') ?>";
+        const url = "<?= base_url('Kartu_stok/getProdukByFilter') ?>";
 
         let postData = new FormData();
         postData.append('kode', kode);
@@ -137,7 +137,8 @@
 
     const initDataToTable = (data) => {
         $("#mytable > tbody").empty();
-        data.forEach((item, index) => {
+        data.result.forEach((item, index) => {
+            const stok = item.stok <= 0 ? 0 : item.stok;
             $("#mytable > tbody").append(`
                 <tr class="text-center">
                     <td>${index + 1}</td>
@@ -145,19 +146,22 @@
                     <td>${item.nama}</td>
                     <td>${item.kategori}</td>
                     <td>${item.gudang}</td>
-                    <td>${item.stok}</td>
+                    <td>${stok}</td>
                     <td>${numberFormat(item.hpp)}</td>
-                    <td>${numberFormat(item.jumlah)}</td>
+                    <td>${numberFormat(stok * item.hpp)}</td>
                 </tr>
             `)
         })
+
+        $("#total-sisa").val(data.total)
 
         $('#mytable').DataTable({
             'paging': true,
             'lengthChange': false,
             'ordering': true,
             'info': true,
-            'autoWidth': false
+            'autoWidth': false,
+            'retrieve': true
         })
     }
 </script>

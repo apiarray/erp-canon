@@ -27,7 +27,10 @@ class Kartu_stok extends CI_Controller
     public function getAllProduk()
     {
         $result = $this->M_KartuStok->getAllProduk();
-        echo json_encode($result);
+        echo json_encode([
+            'result' => $result,
+            'total' => '-'
+        ]);
     }
 
     public function getProdukByFilter()
@@ -37,10 +40,19 @@ class Kartu_stok extends CI_Controller
 
         if ($kode == "all") {
             $result = $this->M_KartuStok->getAllProduk();
-            echo json_encode($result);
+            echo json_encode([
+                'result' => $result,
+                'total' => '-',
+            ]);
         } else {
             $result = $this->M_KartuStok->getProdukByFilter($kode, $gudang);
-            echo json_encode($result);
+            $formattedResult = array_map(fn ($item) => $item->stok, $result);
+            $summedTotal = array_sum($formattedResult);
+
+            echo json_encode([
+                'result' => $result,
+                'total' => $summedTotal,
+            ]);
         }
     }
     //     public function tambah(){
