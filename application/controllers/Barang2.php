@@ -37,16 +37,15 @@ class Barang2 extends CI_Controller
     // }
     public function index()
     {
-        // var_dump($this->session->userdata('kode_id'));die();
         $topik['judul'] = 'Halaman Menu Produk';
         $gudangId = $this->session->userdata('gudang');
         $username = $this->session->userdata('username');
-        // var_dump($username);
+        $mitraId = $this->session->userdata('kode_id');
 
         if ($this->input->get('kode') != '' || $this->input->get('barang') != '') {
-            $data['produk'] = $this->M_barang->get_barang_mitra2($this->session->userdata('kode_id'), $this->input->get('kode'), $this->input->get('barang'));
+            $data['produk'] = $this->M_barang->get_barang_mitra2($mitraId, $this->input->get('kode'), $this->input->get('barang'));
         } else {
-            $data['produk'] = $this->M_barang->get_barang_mitra2($this->session->userdata('kode_id'));
+            $data['produk'] = $this->M_barang->get_barang_mitra2($mitraId);
         }
 
         $this->load->view('templates2/header', $topik);
@@ -84,6 +83,7 @@ class Barang2 extends CI_Controller
             redirect('barang');
         }
     }
+
     public function transfergudang($id)
     {
         $topik['judul'] = 'Form Transfer Gudang';
@@ -144,7 +144,6 @@ class Barang2 extends CI_Controller
         }
     }
 
-
     public function itemrusak($id)
     {
         $topik['judul'] = 'Form Item Rusak';
@@ -175,14 +174,13 @@ class Barang2 extends CI_Controller
         }
     }
 
-
-
     public function hapus($id)
     {
         $this->M_barang->hapusDataProduk($id);
         $this->session->set_flashdata('flash2', 'Dihapus');
         redirect('barang2');
     }
+
     public function transfer_gudang()
     {
 
@@ -197,8 +195,6 @@ class Barang2 extends CI_Controller
         $this->form_validation->set_rules('gudang_tujuan', 'gudang tujuan', 'required');
         $this->form_validation->set_rules('qty', 'qty', 'required');
         $this->form_validation->set_rules('kode_id', 'Kode Id', 'required');
-
-
 
         // $this->form_validation->set_rules('image','Image','required');
 
@@ -226,8 +222,6 @@ class Barang2 extends CI_Controller
         $this->form_validation->set_rules('jumlah', 'Jumlah', 'required');
         $this->form_validation->set_rules('kode_id', 'Kode Id', 'required');
 
-
-
         // $this->form_validation->set_rules('image','Image','required');
 
         if ($this->form_validation->run() == FALSE) {
@@ -253,8 +247,6 @@ class Barang2 extends CI_Controller
         $this->form_validation->set_rules('supplier_tujuan', 'Supplier  Tujuan', 'required');
         $this->form_validation->set_rules('jumlah', 'Jumlah', 'required');
         $this->form_validation->set_rules('kode_id', 'Kode Id', 'required');
-
-
 
         // $this->form_validation->set_rules('image','Image','required');
 
