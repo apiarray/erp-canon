@@ -374,7 +374,11 @@ class M_barang extends CI_Model
         $this->db->join('users', 'users.mitra_id = daftar_mitra.id');
         $this->db->where('users.kode_id', $kode_mitra);
         $this->db->limit(1);
-        $selectedMitra = $this->db->get()->row_array();
+        $selectedMitra = $this->db->get()->row_array() ?? [];
+
+        if (!array_key_exists('kode', $selectedMitra)) {
+            return [];
+        }
 
         $this->db->select('id');
         $this->db->from('pengiriman');
