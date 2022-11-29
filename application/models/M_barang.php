@@ -367,11 +367,18 @@ class M_barang extends CI_Model
         return $query->result();
     }
 
-    public function get_barang_mitra2($kode_mitra, $kode_barang = '', $nama_barang = '')
+    public function get_barang_mitra2($kode_mitra, $kode_barang = null, $nama_barang = null)
     {
+        $this->db->select('daftar_mitra.kode');
+        $this->db->from('daftar_mitra');
+        $this->db->join('users', 'users.mitra_id = daftar_mitra.id');
+        $this->db->where('users.kode_id', $kode_mitra);
+        $this->db->limit(1);
+        $selectedMitra = $this->db->get()->row_array();
+
         $this->db->select('id');
         $this->db->from('pengiriman');
-        $this->db->where('kode_id', $kode_mitra);
+        $this->db->where('kode_id', $selectedMitra['kode']);
         $mitrapengiriman = $this->db->get()->result_array();
 
         $idpengiriman = [];
@@ -379,7 +386,6 @@ class M_barang extends CI_Model
         foreach ($mitrapengiriman as $k => $v) {
             $idpengiriman[] = $v['id'];
         }
-        // var_dump($idpengiriman);die();
 
         if (count($idpengiriman) > 0) {
             $this->db->select('*, SUM(total) as total');
@@ -395,9 +401,6 @@ class M_barang extends CI_Model
                 $this->db->where('pengiriman_barang.nama', $nama_barang);
             }
             $result = $this->db->get()->result_array();
-
-            // echo json_encode($result);die();
-            // var_dump($result[0]['kode']);
         } else {
             $result = [];
         }
