@@ -118,7 +118,7 @@
                         html += `<option value="">--Belum Ada Data--</option>`;
                     }
                 }
-                $("#promoter").append(html);
+                $("#promoter").html(html);
             }
         })
     }
