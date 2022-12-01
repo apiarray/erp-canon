@@ -34,7 +34,7 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label for="promoter">Promoter</label>
-                    <select class="form-control" name="promoter" id="prometer"></select>
+                    <select class="form-control" name="promoter" id="promoter"></select>
                 </div>
             </div>
             <div class="form-row">
@@ -101,7 +101,7 @@
                 $("#prometer").empty()
                 let html = "";
 
-                if (value == "Vice President") {
+                if (value == "001") {
                     html += `<option value="">--Pilih--</option>`
                 } else {
                     if (response.length > 0) {
@@ -118,9 +118,7 @@
                         html += `<option value="">--Belum Ada Data--</option>`;
                     }
                 }
-                $("#prometer").append(html);
-
-
+                $("#promoter").append(html);
             }
         })
     }
@@ -130,4 +128,8 @@
         const selectedCode = selectedText.split(' - ')[0];
         handlePromotor(selectedCode);
     });
+
+    $(document).ready(function() {
+        $('#promoter').select2();
+    })
 </script>
