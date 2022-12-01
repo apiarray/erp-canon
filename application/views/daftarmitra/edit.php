@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="col-md-6">
+    <div class="col-md-6 col-lg-10">
         <h5>Edit Form Data</h5>
 
         <form action="<?= base_url() ?>daftar_mitra/prosesEdit" method="POST">
@@ -22,12 +22,12 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label for="dosen_pa">Jabatan</label>
-                    <select name="jabatan" id="jabatan" class="form-control" onchange="handlePromotor(this.value)">
+                    <select name="jabatan" id="jabatan" class="form-control">
                         <?php foreach ($jabatan as $pr) : ?>
                             <?php if ($pr['name'] == $data['jabatan']) : ?>
-                                <option value="<?= $pr['name'] ?>" selected><?= $pr['name'] ?></option>
+                                <option value="<?= $pr['name'] ?>" selected><?= $pr['kode'] ?> - <?= $pr['name'] ?></option>
                             <?php else : ?>
-                                <option value="<?= $pr['name'] ?>"><?= $pr['name'] ?></option>
+                                <option value="<?= $pr['name'] ?>"><?= $pr['kode'] ?> - <?= $pr['name'] ?></option>
                             <?php endif; ?>
                         <?php endforeach; ?>
                     </select>
@@ -108,13 +108,14 @@
                         html += `<option value="">--Pilih--</option>`
                         $.each(response, function(i, v) {
                             if (v.name == dataDb) {
-                                html += `<option value="${v.name}" selected>${v.name}</option>`
+                                html += `<option value="${v.name}" selected>${v.jabatan} - ${v.name}</option>`
                             } else {
-                                html += `<option value="${v.name}">${v.name}</option>`
+                                html += `<option value="${v.name}">${v.jabatan} - ${v.name}</option>`
                             }
                         })
                     } else {
                         html += `<option value="">--Pilih--</option>`;
+                        html += `<option value="">--Belum Ada Data--</option>`;
                     }
                 }
                 $("#prometer").append(html);
@@ -123,4 +124,10 @@
             }
         })
     }
+
+    $('#jabatan').change(function() {
+        const selectedText = this.options[this.selectedIndex].text;
+        const selectedCode = selectedText.split(' - ')[0];
+        handlePromotor(selectedCode);
+    });
 </script>
