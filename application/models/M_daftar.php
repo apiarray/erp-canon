@@ -138,22 +138,37 @@ class M_daftar extends CI_Model
     {
         $this->db->select('name as jabatan, kode');
         $this->db->from('jabatan_mitra');
-        $this->db->where('kode <=', $kode);
-        $this->db->order_by('kode', 'ASC');
+        
+        if (!$type == 'edit') {
+            $this->db->where('kode <=', $kode);
+            $this->db->order_by('kode', 'ASC');
+        }
+
+        if ($type == 'edit') {
+            $this->db->where('kode <', $kode);
+            $this->db->order_by('kode', 'DESC');
+            $this->db->limit(1);
+        }
+
         $selectedRole = $this->db->get()->result_array();
+
+        if (count($selectedRole) <= 0) {
+            return [];
+        }
 
         $extractedRole = array_map(fn ($item) => $item['jabatan'], $selectedRole);
         
         $this->db->select("daftar_mitra.name, jabatan");
         $this->db->from("daftar_mitra");
         $this->db->join('jabatan_mitra', 'jabatan_mitra.name = daftar_mitra.jabatan');
+        
         $this->db->where_in('daftar_mitra.jabatan', $extractedRole);
-        $this->db->order_by('jabatan_mitra.kode', 'ASC');
-        $result = $this->db->get()->result();
 
-        if ($type == 'edit') {
-            $this->db->where("name !=", $name);
+        if (!$type == 'edit') {
+            $this->db->order_by('jabatan_mitra.kode', 'ASC');
         }
+
+        $result = $this->db->get()->result();
 
         return $result;
     }
