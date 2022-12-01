@@ -129,7 +129,7 @@
                     }
                 }
 
-                $("#promoter").append(html);
+                $("#promoter").html(html);
             }
         })
     }
