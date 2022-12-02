@@ -460,4 +460,31 @@ class M_barang extends CI_Model
         // die();
         return $result;
     }
+
+    public function get_jenis_barang_mitra_groupped($manager)
+    {
+        $this->db->select('COUNT(pengiriman_barang.nama) as total_jenis_barang');
+        $this->db->from('pengiriman_barang');
+        $this->db->join('pengiriman', 'pengiriman.id = pengiriman_barang.pengiriman_id');
+        $this->db->where('pengiriman.kepada', $manager);
+        $result = $this->db->get()->row_array();
+
+        return $result['total_jenis_barang'];
+    }
+
+    public function sum_total_barang_mitra($manager)
+    {
+        $this->db->select('
+            IFNULL(SUM(pengiriman_barang.total), 0) as total_amount
+        ');
+        $this->db->from('pengiriman_barang');
+        $this->db->join('pengiriman', 'pengiriman.id = pengiriman_barang.pengiriman_id');
+        $this->db->where('kepada', $manager);
+        //$this->db->group_by('pengiriman_barang.kode, kepada');
+        $pengirimanProdukMitra = $this->db->get()->row_array();
+
+        $totalDikirim = $pengirimanProdukMitra ? $pengirimanProdukMitra['total_amount'] : 0;
+
+        return $totalDikirim;
+    }
 }

@@ -320,4 +320,22 @@ class M_pengiriman extends CI_Model
 	public function getCoa(){
         return $this->db->get('tbl_mapping_coa')->result_array();
     }
+
+    public function getReceivedAssetMitra($mitra)
+    {
+        $this->db->select('
+            pengiriman_barang.*,
+            tbl_category.name as kategori,
+            pengiriman.tanggal,
+            pengiriman.no_do
+        ');
+        $this->db->from('pengiriman_barang');
+        $this->db->join('produk', 'produk.kode = pengiriman_barang.kode', 'left');
+        $this->db->join('tbl_category', 'tbl_category.kode = produk.kode', 'left');
+        $this->db->join('pengiriman', 'pengiriman.id = pengiriman_barang.pengiriman_id');
+        $this->db->where('pengiriman.kepada', $mitra);
+        $this->db->order_by('pengiriman.tanggal', 'DESC');
+
+        return $this->db->get()->result_array();
+    }
 }
