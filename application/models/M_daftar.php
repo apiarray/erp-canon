@@ -158,7 +158,7 @@ class M_daftar extends CI_Model
 
         $extractedRole = array_map(fn ($item) => $item['jabatan'], $selectedRole);
         
-        $this->db->select("daftar_mitra.name, jabatan");
+        $this->db->select("daftar_mitra.name, jabatan, jabatan_mitra.kode");
         $this->db->from("daftar_mitra");
         $this->db->join('jabatan_mitra', 'jabatan_mitra.name = daftar_mitra.jabatan');
         
