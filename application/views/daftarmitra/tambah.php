@@ -116,7 +116,12 @@
                 let html = "";
 
                 if (value == "001") {
+                    const vpList = response.filter(item => item.kode == 001);
+
                     html += `<option value="">--Pilih--</option>`
+                    $.each(vpList, function(i, v) {
+                        html += `<option value="${v.name}">${v.jabatan} - ${v.name}</option>`
+                    })
                 } else {
                     if (response.length > 0) {
                         html += `<option value="">--Pilih--</option>`
