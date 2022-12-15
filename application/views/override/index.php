@@ -14,7 +14,8 @@
             <table class="table table-bordered" id="xdataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th rowspan="2">No </th>
+						<th rowspan="2">No </th> 
+                        <th rowspan="2">. </th>
                         <th rowspan="2">Jabatan</th>
                         <th rowspan="2">Persen (%)</th>
                         <th colspan="3" class="text-center">Batasan Penjualan</th>
@@ -32,7 +33,8 @@
                         foreach($overrides as $override) {
                         ?>
                         <tr>
-                            <td><?=$no;?>. <button id="addRow<?= $no ?>" name=2 >+</button> <button onclick="myFunction('Harry Potter','Wizard')"> ++ </button> </td>
+							<td><?=$no;?></td>
+                            <td> <!--button id="addRow<?= $no ?>" name=2 >+</button--> <button id="pos<?=$no;?>" onclick="addJabatan(<?=$no;?>,<?=$no + 1;?>)"> + </button> </td>
                             <td><?=$override['name']; ?></td>
                             <td class="text-center"><?=$override['persen']; ?></td>
                             <td class="text-center"><?=$override['omsetless_15']; ?></td>
@@ -155,13 +157,14 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript">
 	//variabel jabatan 
+	var baris = 1;
 	var djabatan = [];
 	var djabatankode = [];
 	var maxjabatan = <?php echo count($jabatanList)?>;
-		   <?php foreach ($jabatanList as $jabtan) : ?>
+    <?php foreach ($jabatanList as $jabtan) : ?>
 		   djabatan.push(['<?php echo $jabtan['name']?>']);
 		   djabatankode.push(['<?php echo $jabtan['kode'] ?>']);
-		   <?php endforeach; ?>
+	<?php endforeach; ?>
 	//variabel ovveride <?=$override['persen']; ?>
 	
 	var override=[];
@@ -264,19 +267,40 @@
 		
 		$('#addRow1').on('click', function (posisi) {
 			if (maxjabatan > counterjabatan) {
-				t.row.add([counter + '.1', djabatan[counterjabatan], '2' , counter + '.4', counter + '.5', counter + '.7', counter + '.7']).draw(false);
+				t.row.add([counter + '..1', djabatan[counterjabatan], '2' , counter + '.4', counter + '.5', counter + '.7', counter + '.7']).draw(false);
 				counterjabatan++;
 			} else window.alert('tidak ada subjabatan lagi');
 		});
 		
 		$('#addRow2').on('click', function (posisi) {
 			if (maxjabatan > counterjabatan) {
-				t.row.add([counter + '.1', djabatan[counterjabatan], '2' , counter + '.4', counter + '.5', counter + '.7', counter + '.7']).draw(false);
+				t.row.add([counter, '.1', djabatan[counterjabatan], '2' , counter + '.4', counter + '.5', counter + '.7', counter + '.7']).draw(false);
 				counterjabatan++;
 			} else window.alert('tidak ada subjabatan lagi');
 		});
 		// Automatically add a first row of data
 		//$('#addRow').click();
+		console.log(this.value);
 	});
 	console.log(djabatan[0]);
+	
+	function addJabatan(posisi, posjabatan)
+	{
+		var t = $('#xdataTable').DataTable();
+		var counter = posisi;
+		var counterjabatan = posjabatan;
+		var subpos = posisi;
+		var subjab = posjabatan + 1;
+		console.log('barisposisi:' + posisi);
+		console.log('counter:' + counter);
+		console.log('subjab:' + posjabatan);
+		if (maxjabatan > counterjabatan) {
+			t.row.add([counter + '.' + subjab, '<button id="apos'+ baris +'" onclick="addJabatan(' + subpos + ',' + subjab +')"> +' + subjab + ' </button>', djabatan[counterjabatan], '2' , '' + '.4' + '-' + baris + '.1' + '', counter + '.5', counter + '.7', counter + '.7']).draw(false);
+			counter++;
+			baris++;
+			document.getElementById("apos" + baris).disabled = true;
+		} else window.alert('tidak ada subjabatan lagi!');
+		//counter + '.' + subjab + 
+	}
+	
 </script>
