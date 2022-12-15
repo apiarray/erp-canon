@@ -300,7 +300,7 @@
 			baris++;
 			document.getElementById("apos" + baris).disabled = true;
 		} else window.alert('tidak ada subjabatan lagi!');
-		//counter + '.' + subjab + 
+		//counter + '.' + subjab +   
 	}
 	
 </script>
